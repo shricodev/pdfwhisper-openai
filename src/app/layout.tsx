@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en" className="light">
       <body
         className={cn(
-          "min-h-screen antialiased grainy bg-gradient-to-r from-rose-50 to-teal-50",
+          "min-h-screen antialiased bg-gradient-to-r from-rose-50 to-teal-50",
           inter.className
         )}
       >

@@ -1,10 +1,12 @@
-import { buttonVariants } from "@/components/ui/Button";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
-import { Separator } from "@/components/ui/separator";
-import WrapWidth from "@/helpers/WrapWidth";
-import { Lightbulb, LogInIcon } from "lucide-react";
 import Link from "next/link";
 import { Star } from "lucide-react";
+import { Lightbulb, LogInIcon } from "lucide-react";
+
+import WrapWidth from "@/helpers/WrapWidth";
+
+import { Separator } from "@/components/ui/Separator";
+import { buttonVariants } from "@/components/ui/Button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
 
 export default function Home() {
   return (
@@ -54,7 +56,7 @@ export default function Home() {
           target="_blank"
           className={buttonVariants({
             size: "lg",
-            className: "mt-2 rounded-[2rem]",
+            className: "mt-2 rounded-[1.5rem]",
           })}
         >
           Get Started <LogInIcon className="ml-2 h-5 w-5" />

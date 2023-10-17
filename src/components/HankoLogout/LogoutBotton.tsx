@@ -1,18 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, HTMLAttributes } from "react";
 import { useRouter } from "next/navigation";
 import { Hanko } from "@teamhanko/hanko-elements";
+import { Button, buttonVariants } from "../ui/Button";
 
-const hankoApi = process.env.NEXT_PUBLIC_HANKO_API_URL;
+interface LogoutBtnProps extends HTMLAttributes<HTMLDivElement> {}
 
-export function LogoutBtn() {
+const hankoApi = process.env.NEXT_PUBLIC_HANKO_API_URL ?? "";
+
+export function LogoutBtn({ className }: LogoutBtnProps) {
   const router = useRouter();
   const [hanko, setHanko] = useState<Hanko>();
 
   useEffect(() => {
     import("@teamhanko/hanko-elements").then(({ Hanko }) =>
-      setHanko(new Hanko(hankoApi ?? ""))
+      setHanko(new Hanko(hankoApi))
     );
   }, []);
 
@@ -23,13 +26,19 @@ export function LogoutBtn() {
       router.refresh();
       return;
     } catch (error) {
-      console.error("Error during logout:", error);
+      console.error("Error during logout", error);
     }
   };
 
   return (
-    <button type="button" onClick={logout}>
+    <Button
+      className={buttonVariants({
+        variant: "default",
+        className,
+      })}
+      onClick={logout}
+    >
       Logout
-    </button>
+    </Button>
   );
 }

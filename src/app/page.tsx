@@ -171,7 +171,7 @@ export default function Home() {
 
         <div className="mb-4 flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-full border-2 border-gray-200 bg-white px-7 py-2 shadow-md backdrop-blur transition-all hover:border-2 hover:border-gray-200 hover:bg-white/80">
           <a
-            href="https://github.com/shricodev/docswhisper-openai"
+            href="https://github.com/shricodev/pdfwhisper-openai"
             target="_blank"
             rel="noopener"
             className="text-sm font-semibold text-gray-700"

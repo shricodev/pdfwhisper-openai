@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Flame } from "lucide-react";
+import { Flame, LogInIcon } from "lucide-react";
 
 import WrapWidth from "@/helpers/WrapWidth";
 
@@ -15,7 +15,7 @@ const Navbar = () => {
             className="flex z-60 font-semibold ml-4 gap-1 items-center"
           >
             <Flame className="w-7 h-7" />
-            docswhisper.
+            pdfwhisper.
           </Link>
 
           <div className="hidden items-center space-x-4 sm:flex">
@@ -37,6 +37,7 @@ const Navbar = () => {
                 })}
               >
                 Login
+                <LogInIcon className="ml-px w-5 h-5" />
               </Link>
             </>
           </div>

@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { jwtVerify, createRemoteJWKSet } from "jose";
 
-const hankoApiUrl = process.env.NEXT_PUBLIC_HANKO_API_URL;
+const hankoApiUrl = process.env.NEXT_PUBLIC_HANKO_API_URL ?? "";
 
 export async function middleware(req: NextRequest) {
   const hanko = req.cookies.get("hanko")?.value;
@@ -18,5 +18,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard"],
+  matcher: ["/profile", "/dashboard"],
 };

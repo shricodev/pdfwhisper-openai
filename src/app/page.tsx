@@ -7,8 +7,9 @@ import WrapWidth from "@/helpers/WrapWidth";
 import { Separator } from "@/components/ui/Separator";
 import { buttonVariants } from "@/components/ui/Button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
+import { getUserId } from "@/lib/getUserID";
 
-export default function Home() {
+export default async function Home() {
   return (
     <>
       <WrapWidth className="mb-12 mt-28 sm:mt-40 flex flex-col items-center justify-center text-center">
@@ -53,7 +54,6 @@ export default function Home() {
         </p>
         <Link
           href="/dashboard"
-          target="_blank"
           className={buttonVariants({
             size: "lg",
             className: "mt-2 rounded-[1.5rem]",

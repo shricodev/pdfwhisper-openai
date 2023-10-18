@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 
 import { cn } from "@/lib/utils";
+import Providers from "@/components/Providers/Providers";
 
 import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
@@ -20,15 +21,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="light">
-      <body
-        className={cn(
-          "min-h-screen antialiased bg-gradient-to-r from-rose-50 to-teal-50",
-          inter.className
-        )}
-      >
-        <Navbar />
-        {children}
-      </body>
+      <Providers>
+        <body
+          className={cn(
+            "min-h-screen antialiased bg-gradient-to-r from-rose-50 to-teal-50",
+            inter.className
+          )}
+        >
+          <Navbar />
+          {children}
+        </body>
+      </Providers>
     </html>
   );
 }

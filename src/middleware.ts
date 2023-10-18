@@ -18,5 +18,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/profile", "/dashboard"],
+  matcher: ["/profile", "/dashboard", "/dashboard:path*", "/auth-callback"],
 };

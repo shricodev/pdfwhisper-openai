@@ -1,42 +1,62 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { trpc } from "../_trpc/client";
-import { Loader2 } from "lucide-react";
+import { useContext, useEffect } from "react";
+
 import Error from "next/error";
-import getUserData from "@/lib/getUserData";
+import { Loader2 } from "lucide-react";
+import axios, { AxiosError } from "axios";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
 
-// eslint-disable-next-line @next/next/no-async-client-component
+import { toast } from "@/hooks/use-toast";
+import { useCustomToast } from "@/hooks/use-custom-toast";
+
+import { AuthCallbackType } from "@/lib/validators/authCallback";
+
+import { UserDataContext } from "@/components/Providers/UserDataContext";
+
 const Page = () => {
-  const searchParams = useSearchParams();
-  const origin = searchParams.get("origin");
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { loginToast } = useCustomToast();
+  const { email, id } = useContext(UserDataContext);
 
-  // const userData = await getUserData();
+  const originParam = searchParams.get("origin");
 
-  trpc.authCallback.useQuery(
-    { email: "random@gmail.com", id: "slkdjfslfjslkdfjsf-1231231" },
-    {
-      onSuccess: (data) => {
-        if (data.success) {
-          // user is in the database
-          router.push(origin ? `/${origin}` : `/dashboard`);
-        }
-      },
-      onError: (err) => {
-        if (err.data?.code === "UNAUTHORIZED") {
-          router.push("/login");
-        }
+  const { mutate: authCallback } = useMutation({
+    mutationFn: async () => {
+      const payload: AuthCallbackType = {
+        id,
+        email,
+      };
 
-        if (err.data?.code === "INTERNAL_SERVER_ERROR") {
-          return <Error statusCode={500} />;
+      await axios.post("/api/auth-callback", payload);
+    },
+    onSuccess: () => {
+      router.push(originParam ? `/${originParam}` : `/dashboard`);
+    },
+    onError: (error: any) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          return loginToast();
         }
-      },
-    }
-  );
+      }
+      toast({
+        title: "Something went wrong. Please try again later",
+        description: error.message,
+        variant: "default",
+      });
+      return <Error statusCode={500} />;
+    },
+  });
+
+  useEffect(() => {
+    if (id && email) authCallback();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, email]);
 
   return (
-    <div className="w-full mt-24 flex justify-center">
+    <div className="w-full flex justify-center items-center h-[calc(100vh-56px)]">
       <div className="flex flex-col items-center gap-2">
         <Loader2 className="h-8 w-8 animate-spin text-zinc-800" />
         <h3 className="font-semibold text-xl">

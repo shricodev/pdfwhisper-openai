@@ -6,6 +6,7 @@ import Providers from "@/components/Providers/Providers";
 
 import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
+import { Toaster } from "@/components/ui/Toaster";
 
 const inter = Poppins({ subsets: ["latin"], weight: ["400", "500", "600"] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
             inter.className
           )}
         >
+          <Toaster />
           <Navbar />
           {children}
         </body>

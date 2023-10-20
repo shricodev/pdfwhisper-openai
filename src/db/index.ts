@@ -1,9 +1,18 @@
-import { neon, neonConfig } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
+import { PrismaClient } from "@prisma/client";
 
-neonConfig.fetchConnectionCache = true;
+declare global {
+  // eslint-disable-next-line no-var
+  var cachedPrisma: PrismaClient;
+}
 
-if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is not defined");
+let prisma: PrismaClient;
+if (process.env.NODE_ENV === "production") {
+  prisma = new PrismaClient();
+} else {
+  if (!global.cachedPrisma) {
+    global.cachedPrisma = new PrismaClient();
+  }
+  prisma = global.cachedPrisma;
+}
 
-const sql = neon(process.env.DATABASE_URL);
-export const db = drizzle(sql);
+export const db = prisma;

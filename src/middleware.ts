@@ -11,7 +11,7 @@ export async function middleware(req: NextRequest) {
   );
 
   try {
-    const verifiedJWT = await jwtVerify(hanko ?? "", JWKS);
+    await jwtVerify(hanko ?? "", JWKS);
   } catch {
     return NextResponse.redirect(new URL("/login", req.url));
   }

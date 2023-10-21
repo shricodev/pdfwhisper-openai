@@ -1,6 +1,7 @@
 import { getUserId } from "@/lib/getUserID";
 import { redirect } from "next/navigation";
 import { db } from "@/db";
+import Dashboard from "@/components/Dashboard/Dashboard";
 
 const Page = async () => {
   const userId = await getUserId();
@@ -17,7 +18,7 @@ const Page = async () => {
 
   if (!dbUser) redirect("/auth-callback?origin=dashboard");
 
-  return <div>Dashboard {userId}</div>;
+  return <Dashboard />;
 };
 
 export default Page;

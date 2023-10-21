@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { register, Hanko } from "@teamhanko/hanko-elements";
 
 import { UserDataContext } from "../Providers/UserDataContext";
+import dynamic from "next/dynamic";
 
 const hankoApi = process.env.NEXT_PUBLIC_HANKO_API_URL ?? "";
 

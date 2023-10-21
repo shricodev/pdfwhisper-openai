@@ -1,15 +1,25 @@
-import HankoProfile from "@/components/HankoProfile/HankoProfile";
-import { LogoutBtn } from "@/components/HankoLogout/LogoutBotton";
+import dynamic from "next/dynamic";
+import type { ComponentType } from "react";
+
+// These are imported dynamically to get rid of a hanko bug.
+// ReferenceError: CustomEvent is not defined
+const HankoProfile = dynamic(
+  () => import("@/components/HankoProfile/HankoProfile"),
+  {
+    ssr: false,
+  }
+);
+import LogoutButton from "@/components/HankoLogout/LogoutBotton";
 
 type Props = {};
 
-const page = (props: Props) => {
+const Page: ComponentType<Props> = (props) => {
   return (
     <div className="mx-auto w-fit flex flex-col justify-center space-y-6 px-6">
       <HankoProfile />
-      <LogoutBtn />
+      <LogoutButton />
     </div>
   );
 };
 
-export default page;
+export default Page;

@@ -1,44 +1,48 @@
 import { ZodError } from "zod";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { db } from "@/db";
 
 import { getUserId } from "@/lib/getUserID";
-import { AuthCallbackValidator } from "@/lib/validators/authCallback";
+import { DeletePDFValidator } from "@/lib/validators/deletePDF";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const userId = await getUserId();
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
+
     const body = await req.json();
 
     // Parse the body with zod to make sure the request is what we expect.
-    const { email, id } = AuthCallbackValidator.parse(body);
+    const { id } = DeletePDFValidator.parse(body);
 
     // Validate all the data is there.
     // id is sent from the frontend. They both are same.
-    if (!userId || !email || !id) {
+    if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const dbUser = await db.user.findFirst({
+    const file = await db.file.findFirst({
       where: {
-        id: userId,
+        id,
+        userId,
       },
     });
 
-    if (!dbUser) {
-      await db.user.create({
-        data: {
-          id: userId,
-          email: email,
-        },
-      });
+    if (!file) {
+      return new NextResponse("Not Found", { status: 404 });
     }
-    return NextResponse.json({ success: true });
+
+    await db.file.delete({
+      where: {
+        id,
+      },
+    });
+
+    return NextResponse.json({ success: true, file });
   } catch (error) {
     if (error instanceof ZodError) {
       return new NextResponse(error.message, { status: 422 });

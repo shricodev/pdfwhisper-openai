@@ -5,11 +5,11 @@ import { useRouter } from "next/navigation";
 import { Hanko } from "@teamhanko/hanko-elements";
 import { Button, buttonVariants } from "../ui/Button";
 
-interface LogoutBtnProps extends HTMLAttributes<HTMLDivElement> {}
+interface LogoutButtonProps extends HTMLAttributes<HTMLDivElement> {}
 
 const hankoApi = process.env.NEXT_PUBLIC_HANKO_API_URL ?? "";
 
-export function LogoutBtn({ className }: LogoutBtnProps) {
+export default function LogoutButton({ className }: LogoutButtonProps) {
   const router = useRouter();
   const [hanko, setHanko] = useState<Hanko>();
 

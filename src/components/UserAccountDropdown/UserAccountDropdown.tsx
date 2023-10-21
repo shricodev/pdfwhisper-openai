@@ -12,10 +12,9 @@ import {
   DropdownMenuItem,
 } from "../ui/DropdownMenu";
 import { UserDataContext } from "../Providers/UserDataContext";
-import { logOut } from "@/lib/userActions";
 import UserAvatar from "../UserIcon/UserIcon";
 import { useRouter } from "next/navigation";
-import { LogoutBtn } from "../HankoLogout/LogoutBotton";
+import LogoutButton from "../HankoLogout/LogoutBotton";
 
 const UserAccountDropdown = () => {
   const { email } = useContext(UserDataContext);
@@ -50,14 +49,8 @@ const UserAccountDropdown = () => {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem
-          onSelect={async (event) => {
-            event.preventDefault();
-            router.refresh();
-          }}
-          className="cursor-pointer"
-        >
-          <LogoutBtn className="w-full" />
+        <DropdownMenuItem className="cursor-pointer">
+          <LogoutButton className="w-full" />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

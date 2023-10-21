@@ -8,6 +8,8 @@ import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import { Toaster } from "@/components/ui/Toaster";
 
+import "react-loading-skeleton/dist/skeleton.css";
+
 const inter = Poppins({ subsets: ["latin"], weight: ["400", "500", "600"] });
 
 export const metadata: Metadata = {

@@ -9,6 +9,10 @@ export function isUserLoggedIn() {
   return !!hanko.session.isValid();
 }
 
-export default async function getUserData() {
+export async function logOut() {
+  return await hanko.user.logout();
+}
+
+export async function getUserData() {
   return await hanko.user.getCurrent();
 }

@@ -7,7 +7,6 @@ import WrapWidth from "@/helpers/WrapWidth";
 import { Separator } from "@/components/ui/Separator";
 import { buttonVariants } from "@/components/ui/Button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
-import { getUserId } from "@/lib/getUserID";
 
 export default async function Home() {
   return (

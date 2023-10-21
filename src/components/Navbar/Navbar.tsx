@@ -1,9 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import { Flame, LogInIcon } from "lucide-react";
 
 import WrapWidth from "@/helpers/WrapWidth";
 
 import { buttonVariants } from "../ui/Button";
+import UserAccountDropdown from "../UserAccountDropdown/UserAccountDropdown";
+import { isUserLoggedIn } from "@/lib/userActions";
 
 const Navbar = () => {
   return (
@@ -29,16 +33,20 @@ const Navbar = () => {
               >
                 Pricing
               </Link>
-              <Link
-                href="/login"
-                className={buttonVariants({
-                  variant: "default",
-                  size: "sm",
-                })}
-              >
-                Login
-                <LogInIcon className="ml-px w-5 h-5" />
-              </Link>
+              {isUserLoggedIn() ? (
+                <UserAccountDropdown />
+              ) : (
+                <Link
+                  href="/login"
+                  className={buttonVariants({
+                    variant: "default",
+                    size: "sm",
+                  })}
+                >
+                  Login
+                  <LogInIcon className="ml-px w-5 h-5" />
+                </Link>
+              )}
             </>
           </div>
         </div>

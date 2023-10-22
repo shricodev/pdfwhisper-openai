@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { getUserId } from "@/lib/getUserID";
+import { getUserId } from "@/lib/getUserDetailsServer";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {

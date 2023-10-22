@@ -1,6 +1,9 @@
-import { getUserId } from "@/lib/getUserID";
 import { redirect } from "next/navigation";
+
 import { db } from "@/db";
+
+import { getUserId } from "@/lib/getUserDetailsServer";
+
 import Dashboard from "@/components/Dashboard/Dashboard";
 
 const Page = async () => {

@@ -1,29 +1,40 @@
-"use client";
-
 import Link from "next/link";
-import { Flame, LogInIcon } from "lucide-react";
+import { Flame, Github, LogInIcon } from "lucide-react";
 
 import WrapWidth from "@/helpers/WrapWidth";
 
 import { buttonVariants } from "../ui/Button";
 import UserAccountDropdown from "../UserAccountDropdown/UserAccountDropdown";
-import { isUserLoggedIn } from "@/lib/userActions";
+import { isAuth } from "@/lib/getUserDetailsServer";
 
-const Navbar = () => {
+const Navbar = async () => {
+  const isAuthenticated = await isAuth();
   return (
-    <nav className="h-14 sticky inset-x-0 top-0 z-50 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all pr-4">
+    <nav className="sticky inset-x-0 top-0 z-50 h-14 w-full border-b border-gray-200 bg-white/75 pr-4 backdrop-blur-lg transition-all">
       <WrapWidth>
         <div className="flex h-14 items-center justify-between border-b border-zinc-200">
           <Link
             href="/"
-            className="flex z-60 font-semibold ml-4 gap-1 items-center"
+            className="z-60 ml-4 flex items-center gap-1 font-semibold"
           >
-            <Flame className="w-7 h-7" />
+            <Flame className="h-7 w-7" />
             pdfwhisper.
           </Link>
 
           <div className="hidden items-center space-x-4 sm:flex">
             <>
+              <a
+                href="https://github.com/shricodev/pdfwhisper-openai"
+                target="_blank"
+                rel="noopener"
+                className={buttonVariants({
+                  variant: "subtle",
+                  size: "sm",
+                })}
+              >
+                <Github className="h-5 w-5" />
+                <span className="ml-[2px] font-medium">GitHub</span>
+              </a>
               <Link
                 href="/pricing"
                 className={buttonVariants({
@@ -33,7 +44,7 @@ const Navbar = () => {
               >
                 Pricing
               </Link>
-              {isUserLoggedIn() ? (
+              {isAuthenticated ? (
                 <UserAccountDropdown />
               ) : (
                 <Link
@@ -44,7 +55,7 @@ const Navbar = () => {
                   })}
                 >
                   Login
-                  <LogInIcon className="ml-px w-5 h-5" />
+                  <LogInIcon className="ml-px h-5 w-5" />
                 </Link>
               )}
             </>

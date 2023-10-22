@@ -56,10 +56,10 @@ const Page = () => {
   }, [id, email]);
 
   return (
-    <div className="w-full flex justify-center items-center h-[calc(100vh-56px)]">
+    <div className="flex h-[calc(100vh-56px)] w-full items-center justify-center">
       <div className="flex flex-col items-center gap-2">
         <Loader2 className="h-8 w-8 animate-spin text-zinc-800" />
-        <h3 className="font-semibold text-xl">
+        <h3 className="text-xl font-semibold">
           Setting up your account. Please hold tight... 🫡
         </h3>
         <p>You will be redirected automatically.</p>

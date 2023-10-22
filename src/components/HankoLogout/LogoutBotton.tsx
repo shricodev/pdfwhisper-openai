@@ -15,7 +15,7 @@ export default function LogoutButton({ className }: LogoutButtonProps) {
 
   useEffect(() => {
     import("@teamhanko/hanko-elements").then(({ Hanko }) =>
-      setHanko(new Hanko(hankoApi))
+      setHanko(new Hanko(hankoApi)),
     );
   }, []);
 

@@ -10,6 +10,8 @@ import {
   DialogTrigger,
 } from "../ui/Dialog";
 import { Button } from "../ui/Button";
+import Dropzone from 'react-dropzone'
+import FileUploadDropzone from '../FileUploadDropzone/FileUploadDropzone';
 
 const FileUploadButton = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -27,13 +29,7 @@ const FileUploadButton = () => {
         <Button>PDF Upload</Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Are you sure absolutely sure?</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </DialogDescription>
-        </DialogHeader>
+        <FileUploadDropzone />
       </DialogContent>
     </Dialog>
   );

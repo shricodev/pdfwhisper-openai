@@ -3,10 +3,9 @@
 import { useEffect, useCallback, useState, useContext } from "react";
 
 import { useRouter } from "next/navigation";
-import { register, Hanko } from "@teamhanko/hanko-elements";
+import { Hanko } from "@teamhanko/hanko-elements";
 
 import { UserDataContext } from "../Providers/UserDataContext";
-import dynamic from "next/dynamic";
 
 const hankoApi = process.env.NEXT_PUBLIC_HANKO_API_URL ?? "";
 
@@ -18,7 +17,7 @@ export default function HankoAuth() {
 
   useEffect(() => {
     import("@teamhanko/hanko-elements").then(({ Hanko }) =>
-      setHanko(new Hanko(hankoApi))
+      setHanko(new Hanko(hankoApi)),
     );
   }, []);
 
@@ -33,13 +32,15 @@ export default function HankoAuth() {
         redirectAfterLogin();
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [hanko, redirectAfterLogin]
+    [hanko, redirectAfterLogin],
   );
 
   useEffect(() => {
-    register(hankoApi).catch((error) => {
-      console.error("Registration failed", error);
-    });
+    import("@teamhanko/hanko-elements").then(({ register }) =>
+      register(hankoApi).catch((error) => {
+        console.error("Registration failed", error);
+      }),
+    );
   }, []);
 
   return <hanko-auth />;

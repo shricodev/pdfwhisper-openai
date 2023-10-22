@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 import { db } from "@/db";
 
-import { getUserId } from "@/lib/getUserID";
+import { getUserId } from "@/lib/getUserDetailsServer";
 import { AuthCallbackValidator } from "@/lib/validators/authCallback";
 
 export async function POST(req: Request) {

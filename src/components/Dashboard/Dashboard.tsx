@@ -65,7 +65,7 @@ const Dashboard = () => {
   return (
     <main className="mx-auto max-w-7xl md:p-10">
       <div className="mt-8 flex flex-col items-start justify-between gap-4 border-b border-gray-200 pb-5 sm:flex-row sm:items-center sm:gap-0">
-        <h1 className="mb-3 font-bold text-4xl text-gray-900">
+        <h1 className="mb-3 text-4xl font-bold text-gray-900">
           Your Uploads 📂
         </h1>
         <FileUploadButton />
@@ -76,7 +76,7 @@ const Dashboard = () => {
             .sort(
               (a, b) =>
                 new Date(b.createdAt).getTime() -
-                new Date(a.createdAt).getTime()
+                new Date(a.createdAt).getTime(),
             )
             .map((file) => (
               <li
@@ -87,7 +87,7 @@ const Dashboard = () => {
                   href={`/dashboard/${file.id}`}
                   className="flex flex-col gap-2"
                 >
-                  <div className="pt-6 px-6 flex w-full items-center justify-between space-x-6">
+                  <div className="flex w-full items-center justify-between space-x-6 px-6 pt-6">
                     <Text className="h-10 w-10" />
                     <div className="flex-1 truncate">
                       <div className="flex items-center space-x-3">
@@ -99,7 +99,7 @@ const Dashboard = () => {
                   </div>
                 </Link>
 
-                <div className="px-6 mt-4 grid grid-cols-3 place-items-center py-4 gap-6 text-xs text-zinc-500">
+                <div className="mt-4 grid grid-cols-3 place-items-center gap-6 px-6 py-4 text-xs text-zinc-500">
                   <div className="flex items-center gap-2">
                     <PlusCircle className="h-4 w-4" />
                     {format(new Date(file.createdAt), "MMM yyyy")}
@@ -128,14 +128,14 @@ const Dashboard = () => {
         </ul>
       ) : isFetching ? (
         <SkeletonTheme baseColor="#fff" highlightColor="#f1fdfa">
-          <Skeleton height={80} className="my-2" count={1} />
-          <Skeleton height={80} className="my-2" count={1} />
-          <Skeleton height={80} className="my-2" count={1} />
+          <Skeleton height={80} className="my-2 flex items-center" count={1} />
+          <Skeleton height={80} className="my-2 flex items-center" count={1} />
+          <Skeleton height={80} className="my-2 flex items-center" count={1} />
         </SkeletonTheme>
       ) : (
         <div className="mt-20 flex flex-col items-center gap-2">
           <Ghost className="h-10 w-10 text-zinc-800" />
-          <h3 className="font-semibold text-xl">
+          <h3 className="text-xl font-semibold">
             You have not uploaded any files.
           </h3>
           <p>Start by uploading your first PDF file 🗃️</p>

@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { db } from "@/db";
 
-import { getUserId } from "@/lib/getUserID";
+import { getUserId } from "@/lib/getUserDetailsServer";
 import { DeletePDFValidator } from "@/lib/validators/deletePDF";
 
 export async function POST(req: NextRequest) {

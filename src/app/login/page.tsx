@@ -7,7 +7,7 @@ const HankoAuth = dynamic(() => import("@/components/HankoAuth/HankoAuth"), {
 
 export default function LoginPage() {
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex min-h-screen items-center justify-center">
       <HankoAuth />
     </div>
   );

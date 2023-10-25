@@ -56,9 +56,9 @@ const Page = () => {
   }, [id, email]);
 
   return (
-    <div className="flex h-[calc(100vh-56px)] w-full items-center justify-center">
+    <div className="flex h-[calc(100vh-112px)] w-full items-center justify-center">
       <div className="flex flex-col items-center gap-2">
-        <Loader2 className="h-8 w-8 animate-spin text-zinc-800" />
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
         <h3 className="text-xl font-semibold">
           Setting up your account. Please hold tight... 🫡
         </h3>

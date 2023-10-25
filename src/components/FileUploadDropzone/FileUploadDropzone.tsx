@@ -132,13 +132,13 @@ const FileUploadDropzone = () => {
                   />
                   {uploadProgress >= 50 && uploadProgress < 100 ? (
                     <div className="flex items-center justify-center gap-1 pt-2 text-center text-sm text-zinc-700">
-                      <Loader2 className="h-3 w-3 animate-spin" />
+                      <Loader2 className="h-3 w-3 animate-spin text-primary" />
                       Almost There...✨
                     </div>
                   ) : null}
                   {uploadProgress === 100 ? (
                     <div className="flex items-center justify-center gap-1 pt-2 text-center text-sm text-zinc-700">
-                      <Loader2 className="h-3 w-3 animate-spin" />
+                      <Loader2 className="h-3 w-3 animate-spin text-primary" />
                       Redirecting...🚀
                     </div>
                   ) : null}

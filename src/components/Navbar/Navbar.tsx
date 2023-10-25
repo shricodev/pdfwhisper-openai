@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Flame, Github, LogInIcon } from "lucide-react";
+import { Flame, Github, LogInIcon, Rocket } from "lucide-react";
 
 import WrapWidth from "@/helpers/WrapWidth";
 
@@ -17,7 +17,7 @@ const Navbar = async () => {
             href="/"
             className="z-60 ml-4 flex items-center gap-1 font-semibold"
           >
-            <Flame className="h-7 w-7" />
+            <Rocket className="h-6 w-6" />
             pdfwhisper.
           </Link>
 

@@ -117,7 +117,7 @@ const Dashboard = () => {
                     variant="destructive"
                   >
                     {currentlyDeletingFile === file.id ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <Loader2 className="h-4 w-4 animate-spin text-primary" />
                     ) : (
                       <Bomb className="h-4 w-4" />
                     )}

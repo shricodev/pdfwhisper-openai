@@ -9,6 +9,7 @@ import Providers from "@/components/Providers/Providers";
 
 import "./globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
+import ParticipationBanner from "@/components/ParticipationBanner/ParticipationBanner";
 
 const inter = Poppins({ subsets: ["latin"], weight: ["400", "500", "600"] });
 
@@ -25,6 +26,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const hackathonEndDate = new Date("2023-11-06");
+  const currentDate = new Date();
   return (
     <html lang="en" className="light">
       <Providers>
@@ -35,6 +38,9 @@ export default function RootLayout({
           )}
         >
           <Toaster />
+          {currentDate.getTime() < hackathonEndDate.getTime() ? (
+            <ParticipationBanner />
+          ) : null}
           <Navbar />
           {children}
         </body>

@@ -1,17 +1,26 @@
 "use client";
 
+import { useState } from "react";
+
+import Dropzone from "react-dropzone";
+import { useRouter } from "next/navigation";
+import { FileText, Loader2, UploadCloud } from "lucide-react";
+
 import {
   SUBSCRIBED_USER_FILE_SIZE,
   UNSUBSCRIBED_USER_FILE_SIZE,
 } from "@/config";
-import { FileText, Loader2, UploadCloud } from "lucide-react";
-import { useState } from "react";
-import Dropzone from "react-dropzone";
-import { Progress } from "../ui/Progress";
-import { useUploadThing } from "@/lib/uploadThing";
+
 import { toast } from "@/hooks/use-toast";
 
+import { useUploadThing } from "@/lib/uploadThing";
+
+import { Progress } from "../ui/Progress";
+import axios from "axios";
+import { File } from "@prisma/client";
+
 const FileUploadDropzone = () => {
+  const router = useRouter();
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [isUploading, setIsUploading] = useState<boolean>(false);
 
@@ -58,8 +67,22 @@ const FileUploadDropzone = () => {
               "There was an error uploading your file. Please try again later.",
           });
         }
+
         clearInterval(progress);
         setUploadProgress(100);
+
+        try {
+          const { data, status }: { data: File; status: number } =
+            await axios.post("/api/get-pdf", { key });
+          if (status === 200) {
+            router.push(`/dashboard/${data.id}`);
+          }
+        } catch (error) {
+          return toast({
+            variant: "destructive",
+            title: "Something went wrong. Please try again later.",
+          });
+        }
       }}
     >
       {({ getRootProps, getInputProps, acceptedFiles }) => (
@@ -105,6 +128,7 @@ const FileUploadDropzone = () => {
                   <Progress
                     value={uploadProgress}
                     className="h-1 w-full rounded-xl bg-zinc-200"
+                    progressColor={uploadProgress === 100 ? "bg-green-500" : ""}
                   />
                   {uploadProgress >= 50 && uploadProgress < 100 ? (
                     <div className="flex items-center justify-center gap-1 pt-2 text-center text-sm text-zinc-700">

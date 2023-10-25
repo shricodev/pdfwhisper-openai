@@ -1,20 +1,23 @@
 import { ZodError } from "zod";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { db } from "@/db";
 
-import { getUserId } from "@/lib/getUserDetailsServer";
+import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
 import { AuthCallbackValidator } from "@/lib/validators/authCallback";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const userId = await getUserId();
+    const isAuthenticated = await isAuth();
 
-    if (!userId) {
+    if (!isAuthenticated) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
+
     const body = await req.json();
 
+    // Not so necessary as it is already handled above, but just to be sure.
+    const userId = await getUserId();
     // Parse the body with zod to make sure the request is what we expect.
     const { email, id } = AuthCallbackValidator.parse(body);
 

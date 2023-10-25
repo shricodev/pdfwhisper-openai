@@ -1,9 +1,17 @@
-import { db } from "@/db";
-import { getUserId } from "@/lib/getUserDetailsServer";
 import { NextRequest, NextResponse } from "next/server";
+
+import { db } from "@/db";
+
+import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
 
 export async function GET(req: NextRequest) {
   try {
+    const isAuthenticated = await isAuth();
+
+    if (!isAuthenticated) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
     const userId = await getUserId();
 
     if (!userId) {
@@ -16,7 +24,6 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    console.log("this is data", data);
     return NextResponse.json(data);
   } catch (error) {
     if (error && typeof error === "object" && "message" in error) {

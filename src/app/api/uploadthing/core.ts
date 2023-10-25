@@ -1,5 +1,8 @@
-import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
+
+import { db } from "@/db";
+
+import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
 
 const f = createUploadthing();
 
@@ -15,7 +18,18 @@ export const ourFileRouter = {
       if (!userId) throw new Error("Unauthorized");
       return { userId };
     })
-    .onUploadComplete(async ({ metadata, file }) => {}),
+    .onUploadComplete(async ({ metadata, file }) => {
+      const createdFile = await db.file.create({
+        data: {
+          key: file.key,
+          name: file.name,
+          userId: metadata.userId,
+          // The file.url throws timeout error sometimes. So, we are directly using the S3 url.
+          url: `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`,
+          uploadStatus: "PROCESSING",
+        },
+      });
+    }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

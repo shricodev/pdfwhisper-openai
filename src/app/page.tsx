@@ -1,18 +1,24 @@
 import Link from "next/link";
 import { Star } from "lucide-react";
+import { redirect } from "next/navigation";
 import { Lightbulb, LogInIcon } from "lucide-react";
 
 import WrapWidth from "@/helpers/WrapWidth";
+
+import { isAuth } from "@/lib/getUserDetailsServer";
 
 import { Separator } from "@/components/ui/Separator";
 import { buttonVariants } from "@/components/ui/Button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
 
 export default async function Home() {
+  const isAuthenticated = await isAuth();
+  if (isAuthenticated) redirect("/dashboard");
+
   return (
     <>
-      <WrapWidth className="mb-12 mt-28 sm:mt-40 flex flex-col items-center justify-center text-center">
-        <div className="mb-20 text-left mx-3">
+      <WrapWidth className="mb-12 mt-28 flex flex-col items-center justify-center text-center sm:mt-40">
+        <div className="mx-3 mb-20 text-left">
           <Alert className="shadow-md">
             <Lightbulb className="h-4 w-4" />
             <AlertTitle>Heads up!</AlertTitle>
@@ -48,7 +54,7 @@ export default async function Home() {
           Whisper with your <span className="text-purple-500">PDF</span> in{" "}
           <span className="text-orange-500">seconds</span>
         </h1>
-        <p className="mt-4 max-w-prose text-zinc-700 sm:text-lg px-5">
+        <p className="mt-4 max-w-prose px-5 text-zinc-700 sm:text-lg">
           DocWhisper allows you to have a conversation with your PDF documents
         </p>
         <Link
@@ -62,13 +68,13 @@ export default async function Home() {
         </Link>
       </WrapWidth>
 
-      <Separator className="w-72 mx-auto h-[2px]" />
+      <Separator className="mx-auto h-[2px] w-72" />
 
       {/* Features of the site */}
       <div className="mx-auto my-24 max-w-5xl">
         <div className="mb-12 px-6 lg:px-8">
           <div className="mx-auto max-w-2xl sm:text-center">
-            <h2 className="mt-2 font-bold text-4xl text-gray-900 sm:text-3xl ">
+            <h2 className="mt-2 text-4xl font-bold text-gray-900 sm:text-3xl ">
               Start to chat with your PDF in seconds 😲
             </h2>
             <p className="mt-4 text-lg text-gray-600">
@@ -78,9 +84,9 @@ export default async function Home() {
         </div>
 
         {/* steps to use the project */}
-        <ol className="my-8 mx-4 space-y-4 pt-8 md:flex md:space-x-12 md:space-y-0">
+        <ol className="mx-4 my-8 space-y-4 pt-8 md:flex md:space-x-12 md:space-y-0">
           <li className="md:flex-1">
-            <div className="flex flex-col space-y-2 border-l-4 border-zinc-300 py-2 pl-4 md:border-l-0 md:pb-0 md:pl-0 md:pt-4 max-w-5xl mx-auto">
+            <div className="mx-auto flex max-w-5xl flex-col space-y-2 border-l-4 border-zinc-300 py-2 pl-4 md:border-l-0 md:pb-0 md:pl-0 md:pt-4">
               <span className="text-sm font-medium text-purple-600">
                 Step 1
               </span>
@@ -100,7 +106,7 @@ export default async function Home() {
             </div>
           </li>
           <li className="md:flex-1">
-            <div className="flex flex-col space-y-2 border-l-4 border-zinc-300 py-2 pl-4 md:border-l-0 md:pb-0 md:pl-0 md:pt-4 max-w-5xl mx-auto">
+            <div className="mx-auto flex max-w-5xl flex-col space-y-2 border-l-4 border-zinc-300 py-2 pl-4 md:border-l-0 md:pb-0 md:pl-0 md:pt-4">
               <span className="text-sm font-medium text-purple-600">
                 Step 2
               </span>
@@ -114,7 +120,7 @@ export default async function Home() {
             </div>
           </li>
           <li className="md:flex-1">
-            <div className="flex flex-col space-y-2 border-l-4 border-zinc-300 py-2 pl-4 md:border-l-0 md:pb-0 md:pl-0 md:pt-4 max-w-5xl mx-auto">
+            <div className="mx-auto flex max-w-5xl flex-col space-y-2 border-l-4 border-zinc-300 py-2 pl-4 md:border-l-0 md:pb-0 md:pl-0 md:pt-4">
               <span className="text-sm font-medium text-purple-600">
                 Step 3
               </span>
@@ -128,14 +134,14 @@ export default async function Home() {
           </li>
         </ol>
 
-        <Separator className="w-72 mx-auto h-[2px]" />
+        <Separator className="mx-auto h-[2px] w-72" />
       </div>
 
       {/* Promise from our side */}
-      <div className="mx-auto mt-24 mb-0 max-w-5xl">
+      <div className="mx-auto mb-0 mt-24 max-w-5xl">
         <div className="mb-12 px-6 lg:px-8">
           <div className="mx-auto max-w-2xl sm:text-center">
-            <h2 className="mt-2 font-bold text-4xl text-gray-900 sm:text-3xl ">
+            <h2 className="mt-2 text-4xl font-bold text-gray-900 sm:text-3xl ">
               Our Firm Promise - In Security 🔒
             </h2>
             <p className="mt-4 text-lg text-gray-600">
@@ -156,7 +162,7 @@ export default async function Home() {
       </div>
 
       {/* star hanko and the project */}
-      <div className="flex justify-center gap-5 flex-wrap">
+      <div className="flex flex-wrap justify-center gap-5">
         <div className="mb-4 flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-full border-2 border-gray-200 bg-white px-7 py-2 shadow-md backdrop-blur transition-all hover:border-2 hover:border-gray-200 hover:bg-white/80">
           <a
             href="https://github.com/teamhanko/hanko"
@@ -164,7 +170,7 @@ export default async function Home() {
             rel="noopener"
             className="text-sm font-semibold text-gray-700"
           >
-            Star Hanko <Star className="ml-2 w-5 h-5 inline" />
+            Star Hanko <Star className="ml-2 inline h-5 w-5" />
           </a>
         </div>
 
@@ -175,7 +181,7 @@ export default async function Home() {
             rel="noopener"
             className="text-sm font-semibold text-gray-700"
           >
-            Star Project <Star className="ml-2 w-5 h-5 inline" />
+            Star Project <Star className="ml-2 inline h-5 w-5" />
           </a>
         </div>
       </div>

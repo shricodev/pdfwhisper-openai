@@ -1,17 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/Dialog";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/Dialog";
 import { Button } from "../ui/Button";
-import Dropzone from 'react-dropzone'
-import FileUploadDropzone from '../FileUploadDropzone/FileUploadDropzone';
+import FileUploadDropzone from "../FileUploadDropzone/FileUploadDropzone";
 
 const FileUploadButton = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);

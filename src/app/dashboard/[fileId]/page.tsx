@@ -1,7 +1,10 @@
-import RenderPDF from "@/components/RenderPDF/RenderPDF";
-import { db } from "@/db";
-import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
 import { notFound, redirect } from "next/navigation";
+
+import { db } from "@/db";
+
+import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
+
+import RenderPDF from "@/components/RenderPDF/RenderPDF";
 
 interface PageProps {
   params: {

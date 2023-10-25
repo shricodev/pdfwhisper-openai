@@ -1,10 +1,10 @@
-import { ZodError } from "zod";
 import { NextRequest, NextResponse } from "next/server";
 
 import { db } from "@/db";
 
 import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
-import { DeletePDFValidator } from "@/lib/validators/deletePDF";
+import { GetPDFValidator } from "@/lib/validators/getUserPDF";
+import { ZodError } from "zod";
 
 export async function POST(req: NextRequest) {
   try {
@@ -21,34 +21,29 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
+    const { key } = GetPDFValidator.parse(body);
 
-    // Parse the body with zod to make sure the request is what we expect.
-    const { id } = DeletePDFValidator.parse(body);
-
-    // Validate all the data is there.
-    // id is sent from the frontend. They both are same.
-    if (!userId) {
-      return new NextResponse("Unauthorized", { status: 401 });
+    if (!key) {
+      return new NextResponse("Bad Request", { status: 400 });
     }
+
+    // Add a 3 sec sleep time to accomodate the uploadThing onUploadComplete function.
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const file = await db.file.findFirst({
       where: {
-        id,
+        key,
         userId,
       },
     });
 
     if (!file) {
-      return new NextResponse("Not Found", { status: 404 });
+      return new NextResponse("The requested file was not found", {
+        status: 404,
+      });
     }
 
-    await db.file.delete({
-      where: {
-        id,
-      },
-    });
-
-    return NextResponse.json({ success: true, file });
+    return NextResponse.json(file);
   } catch (error) {
     if (error instanceof ZodError) {
       return new NextResponse(error.message, { status: 422 });

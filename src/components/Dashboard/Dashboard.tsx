@@ -71,7 +71,7 @@ const Dashboard = () => {
         <FileUploadButton />
       </div>
       {userFiles && userFiles.length > 0 ? (
-        <ul className="mt-8 grid grid-cols-1 gap-6 divide-y divide-zinc-200 md:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-8 grid grid-cols-1 gap-6 divide-y divide-zinc-200 px-2 md:grid-cols-2 md:px-0 lg:grid-cols-3">
           {userFiles
             .sort(
               (a, b) =>
@@ -102,12 +102,12 @@ const Dashboard = () => {
                 <div className="mt-4 grid grid-cols-3 place-items-center gap-6 px-6 py-4 text-xs text-zinc-500">
                   <div className="flex items-center gap-2">
                     <PlusCircle className="h-4 w-4" />
-                    {format(new Date(file.createdAt), "MMM yyyy")}
+                    {format(new Date(file.createdAt), "MMM d yyyy")}
                   </div>
 
                   <div className="flex items-center gap-2">
                     <MessageCircle className="h-4 w-4" />
-                    mocked
+                    10
                   </div>
 
                   <Button

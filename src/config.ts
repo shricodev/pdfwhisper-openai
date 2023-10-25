@@ -1,2 +1,2 @@
 export const SUBSCRIBED_USER_FILE_SIZE = 15; // 15 MB
-export const UNSUBSCRIBED_USER_FILE_SIZE = 4; // 5 MB
+export const UNSUBSCRIBED_USER_FILE_SIZE = 5; // 5 MB

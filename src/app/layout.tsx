@@ -7,9 +7,10 @@ import Navbar from "@/components/Navbar/Navbar";
 import { Toaster } from "@/components/ui/Toaster";
 import Providers from "@/components/Providers/Providers";
 
+import ParticipationBanner from "@/components/ParticipationBanner/ParticipationBanner";
 import "./globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import ParticipationBanner from "@/components/ParticipationBanner/ParticipationBanner";
+import "simplebar-react/dist/simplebar.min.css";
 
 const inter = Poppins({ subsets: ["latin"], weight: ["400", "500", "600"] });
 

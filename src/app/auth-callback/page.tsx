@@ -11,7 +11,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import { useCustomToast } from "@/hooks/use-custom-toast";
 
-import { AuthCallbackType } from "@/lib/validators/authCallback";
+import { TAuthCallback } from "@/lib/validators/authCallback";
 
 import { UserDataContext } from "@/components/Providers/UserDataContext";
 
@@ -25,7 +25,7 @@ const Page = () => {
 
   const { mutate: authCallback } = useMutation({
     mutationFn: async () => {
-      const payload: AuthCallbackType = {
+      const payload: TAuthCallback = {
         id,
         email,
       };

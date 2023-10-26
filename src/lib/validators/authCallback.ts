@@ -5,4 +5,4 @@ export const AuthCallbackValidator = z.object({
   email: z.string().email(),
 });
 
-export type AuthCallbackType = z.infer<typeof AuthCallbackValidator>;
+export type TAuthCallback = z.infer<typeof AuthCallbackValidator>;

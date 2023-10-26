@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 
-type Props = {
+interface Props {
   className?: string;
   children: React.ReactNode;
-};
+}
 
 const WrapWidth = ({ className, children }: Props) => {
   return (

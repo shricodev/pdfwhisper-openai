@@ -34,9 +34,9 @@ import "react-pdf/dist/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import FullscreenPDF from "../FullscreenPDF/FullscreenPDF";
 
-type Props = {
+interface Props {
   url: string;
-};
+}
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 

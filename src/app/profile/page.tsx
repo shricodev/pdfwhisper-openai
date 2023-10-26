@@ -9,9 +9,15 @@ const HankoProfile = dynamic(
     ssr: false,
   },
 );
-import LogoutButton from "@/components/HankoLogout/LogoutBotton";
 
-type Props = {};
+const LogoutButton = dynamic(
+  () => import("@/components/HankoLogout/LogoutBotton"),
+  {
+    ssr: false,
+  },
+);
+
+interface Props {}
 
 const Page: ComponentType<Props> = (props) => {
   return (

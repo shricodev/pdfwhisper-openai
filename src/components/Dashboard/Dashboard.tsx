@@ -21,6 +21,7 @@ import FileUploadButton from "../FileUploadButton/FileUploadButton";
 
 import { Button } from "../ui/Button";
 import { toast } from "@/hooks/use-toast";
+import { TDeletePDF } from "@/lib/validators/deletePDF";
 
 const Dashboard = () => {
   const [currentlyDeletingFile, setCurrentlyDeletingFile] = useState<
@@ -43,7 +44,7 @@ const Dashboard = () => {
   // TODO: Make sure to auto refresh the site after a file was deleted.
   const { mutate: deleteFile } = useMutation({
     mutationFn: async (id: string) => {
-      const payload: { id: string } = { id };
+      const payload: TDeletePDF = { id };
       await axios.post(`/api/delete-pdf`, payload);
     },
     onMutate: (id: string) => {

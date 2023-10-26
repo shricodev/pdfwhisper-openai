@@ -55,7 +55,7 @@ export default async function Home() {
           <span className="text-orange-500">seconds</span>
         </h1>
         <p className="mt-4 max-w-prose px-5 text-zinc-700 sm:text-lg">
-          DocWhisper allows you to have a conversation with your PDF documents
+          PDFwhisper allows you to have a conversation with your PDF documents
         </p>
         <Link
           href="/dashboard"

@@ -7,9 +7,9 @@ import { Document, Page } from "react-pdf";
 import { toast } from "@/hooks/use-toast";
 import { useResizeDetector } from "react-resize-detector";
 
-type Props = {
+interface Props {
   url: string;
-};
+}
 
 const FullscreenPDF = ({ url }: Props) => {
   const [numberPages, setNumberPages] = useState<number>();

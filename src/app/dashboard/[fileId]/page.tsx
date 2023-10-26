@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
 
 import RenderPDF from "@/components/RenderPDF/RenderPDF";
+import WrapChat from "@/components/Chat/WrapChat/WrapChat";
 
 interface PageProps {
   params: {
@@ -42,7 +43,7 @@ const page = async ({ params }: PageProps) => {
         </div>
 
         <div className="flex-[0.75] shrink-0 border-t border-gray-200 lg:w-96 lg:border-l lg:border-t-0">
-          {/* <ChatWrapper isSubscribed={plan.isSubscribed} fileId={file.id} /> */}
+          <WrapChat fileId={file.id} />
         </div>
       </div>
     </div>

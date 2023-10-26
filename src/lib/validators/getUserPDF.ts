@@ -4,4 +4,4 @@ export const GetPDFValidator = z.object({
   key: z.string(),
 });
 
-export type GetPDFType = z.infer<typeof GetPDFValidator>;
+export type TGetPDF = z.infer<typeof GetPDFValidator>;

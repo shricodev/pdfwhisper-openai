@@ -18,6 +18,7 @@ import { useUploadThing } from "@/lib/uploadThing";
 import { Progress } from "../ui/Progress";
 import axios from "axios";
 import { File } from "@prisma/client";
+import { TGetPDF } from "@/lib/validators/getUserPDF";
 
 const FileUploadDropzone = () => {
   const router = useRouter();
@@ -72,8 +73,9 @@ const FileUploadDropzone = () => {
         setUploadProgress(100);
 
         try {
+          const payload: TGetPDF = { key };
           const { data, status }: { data: File; status: number } =
-            await axios.post("/api/get-pdf", { key });
+            await axios.post("/api/get-pdf", payload);
           if (status === 200) {
             router.push(`/dashboard/${data.id}`);
           }

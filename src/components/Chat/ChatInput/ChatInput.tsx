@@ -30,7 +30,7 @@ const ChatInput = ({ isDisabled }: Props) => {
                 onChange={handleUserInputChange}
                 ref={tareaRef}
                 placeholder="Ask your questions..."
-                className="scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch resize-none py-3 pr-12 text-base"
+                className="scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch resize-none rounded-lg py-3 pr-12 text-base"
                 onKeyDown={(event) => {
                   if (event.key === "Enter" && !event.shiftKey) {
                     event.preventDefault();

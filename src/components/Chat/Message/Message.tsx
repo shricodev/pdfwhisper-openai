@@ -40,7 +40,7 @@ const Message = ({ message, isNextMsgSamePerson }: Props) => {
         })}
       >
         <div
-          className={cn("inline-block rounded-lg px-4 py-2", {
+          className={cn("inline-block rounded-2xl px-4 py-2", {
             "bg-primary text-white": message.isUserMessage,
             "bg-gray-200 text-gray-900": !message.isUserMessage,
           })}
@@ -48,7 +48,7 @@ const Message = ({ message, isNextMsgSamePerson }: Props) => {
           {typeof message.text === "string" ? (
             <ReactMarkdown
               className={cn("prose", {
-                "text-zinc-50": message.isUserMessage,
+                "text-zinc-50 selection:text-zinc-800": message.isUserMessage,
               })}
             >
               {message.text}

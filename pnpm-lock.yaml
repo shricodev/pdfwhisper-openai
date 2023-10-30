@@ -18,8 +18,8 @@ dependencies:
     specifier: ^1.1.2
     version: 1.1.2
   '@prisma/client':
-    specifier: ^5.4.2
-    version: 5.4.2(prisma@5.4.2)
+    specifier: ^5.5.2
+    version: 5.5.2(prisma@5.4.2)
   '@radix-ui/react-avatar':
     specifier: ^1.0.4
     version: 1.0.4(@types/react-dom@18.2.14)(@types/react@18.2.29)(react-dom@18.2.0)(react@18.2.0)
@@ -71,6 +71,9 @@ dependencies:
   dotenv:
     specifier: ^16.3.1
     version: 16.3.1
+  easy-currencies:
+    specifier: ^1.7.0
+    version: 1.7.0
   jose:
     specifier: 4.14.4
     version: 4.14.4
@@ -140,6 +143,9 @@ dependencies:
   uploadthing:
     specifier: ^5.7.1
     version: 5.7.1(zod@3.22.4)
+  uuid:
+    specifier: ^9.0.1
+    version: 9.0.1
   zod:
     specifier: ^3.22.4
     version: 3.22.4
@@ -157,6 +163,9 @@ devDependencies:
   '@types/react-dom':
     specifier: ^18
     version: 18.2.14
+  '@types/uuid':
+    specifier: ^9.0.6
+    version: 9.0.6
   autoprefixer:
     specifier: ^10.4.16
     version: 10.4.16(postcss@8.4.31)
@@ -544,8 +553,8 @@ packages:
       typescript: 4.9.5
     dev: false
 
-  /@prisma/client@5.4.2(prisma@5.4.2):
-    resolution: {integrity: sha512-2xsPaz4EaMKj1WS9iW6MlPhmbqtBsXAOeVttSePp8vTFTtvzh2hZbDgswwBdSCgPzmmwF+tLB259QzggvCmJqA==}
+  /@prisma/client@5.5.2(prisma@5.4.2):
+    resolution: {integrity: sha512-54XkqR8M+fxbzYqe+bIXimYnkkcGqgOh0dn0yWtIk6CQT4IUCAvNFNcQZwk2KqaLU+/1PHTSWrcHtx4XjluR5w==}
     engines: {node: '>=16.13'}
     requiresBuild: true
     peerDependencies:
@@ -554,12 +563,12 @@ packages:
       prisma:
         optional: true
     dependencies:
-      '@prisma/engines-version': 5.4.1-2.ac9d7041ed77bcc8a8dbd2ab6616b39013829574
+      '@prisma/engines-version': 5.5.1-1.aebc046ce8b88ebbcb45efe31cbe7d06fd6abc0a
       prisma: 5.4.2
     dev: false
 
-  /@prisma/engines-version@5.4.1-2.ac9d7041ed77bcc8a8dbd2ab6616b39013829574:
-    resolution: {integrity: sha512-wvupDL4AA1vf4TQNANg7kR7y98ITqPsk6aacfBxZKtrJKRIsWjURHkZCGcQliHdqCiW/hGreO6d6ZuSv9MhdAA==}
+  /@prisma/engines-version@5.5.1-1.aebc046ce8b88ebbcb45efe31cbe7d06fd6abc0a:
+    resolution: {integrity: sha512-O+qHFnZvAyOFk1tUco2/VdiqS0ym42a3+6CYLScllmnpbyiTplgyLt2rK/B9BTjYkSHjrgMhkG47S0oqzdIckA==}
     dev: false
 
   /@prisma/engines@5.4.2:
@@ -1384,7 +1393,6 @@ packages:
 
   /@types/uuid@9.0.6:
     resolution: {integrity: sha512-BT2Krtx4xaO6iwzwMFUYvWBWkV2pr37zD68Vmp1CDV196MzczBRxuEpD6Pr395HAgebC/co7hOphs53r8V7jew==}
-    dev: false
 
   /@typescript-eslint/parser@6.8.0(eslint@8.51.0)(typescript@5.2.2):
     resolution: {integrity: sha512-5tNs6Bw0j6BdWuP8Fx+VH4G9fEPDxnVI7yH1IAPkQH5RUtvKwRoqdecAPdQXv4rSOADAaz1LFBZvZG7VbXivSg==}
@@ -1845,10 +1853,23 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
+  /await-to-js@3.0.0:
+    resolution: {integrity: sha512-zJAaP9zxTcvTHRlejau3ZOY4V7SRpiByf3/dxx2uyKxxor19tpmpV2QRsTKikckwhaPmr2dVpxxMr7jOCYVp5g==}
+    engines: {node: '>=6.0.0'}
+    dev: false
+
   /axe-core@4.8.2:
     resolution: {integrity: sha512-/dlp0fxyM3R8YW7MFzaHWXrf4zzbr0vaYb23VBFCl83R7nWNPg/yaQw2Dc8jzCMmDVLhSdzH8MjrsuIUuvX+6g==}
     engines: {node: '>=4'}
     dev: true
+
+  /axios@0.24.0:
+    resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
+    dependencies:
+      follow-redirects: 1.15.3
+    transitivePeerDependencies:
+      - debug
+    dev: false
 
   /axios@1.5.1:
     resolution: {integrity: sha512-Q28iYCWzNHjAm+yEAot5QaAMxhMghWLFVf7rRdwhUI+c2jix2DUXjAHXVi+s1ibs3mjPO/cCgbA++3BjD0vP/A==}
@@ -2303,6 +2324,15 @@ packages:
   /dotenv@16.3.1:
     resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
     engines: {node: '>=12'}
+    dev: false
+
+  /easy-currencies@1.7.0:
+    resolution: {integrity: sha512-TO0ineIMCeRTF8QkzxVojKb6v+EpcKP49TchrQcCdXvvqfy1MbdGC8NF3sJAqlIlwY8nDFIkGwsjbIeyAQtp9g==}
+    dependencies:
+      await-to-js: 3.0.0
+      axios: 0.24.0
+    transitivePeerDependencies:
+      - debug
     dev: false
 
   /electron-to-chromium@1.4.559:

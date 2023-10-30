@@ -7,7 +7,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 import Message from "../Message/Message";
 
-import { INFINITE_QUERY_LIMIT } from "@/config";
+import { INFINITE_QUERY_LIMIT } from "@/config/config";
 
 import { TGetMessageValidator } from "@/lib/validators/getMessage";
 import { TMessageFetched } from "@/types/message";

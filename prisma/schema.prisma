@@ -18,10 +18,11 @@ model User {
   Message Message[]
   File    File[]
 
-  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
-  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
-  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
-  stripePriceId          String?   @map(name: "stripe_price_id")
+  khaltiPidx             String?       @unique @map(name: "khalti_pidx")
+  khaltiPaymentStatus    PaymentStatus @default(Pending)
+  khaltiTransactionId    String?       @unique @map(name: "khalti_transaction_id")
+  khaltiPaymentId        String?       @unique @map(name: "khalti_payment_id")
+  khaltiCurrentPeriodEnd DateTime?     @map(name: "khalti_current_period_end")
 }
 
 enum UploadStatus {
@@ -31,14 +32,22 @@ enum UploadStatus {
   PENDING
 }
 
+enum PaymentStatus {
+  Completed
+  Pending
+  Initiated
+  Refunded
+  Expired
+}
+
 model File {
   id   String @id @default(cuid())
   name String
-  key      String
-  url      String
+  key  String
+  url  String
 
   uploadStatus UploadStatus @default(PENDING)
-  messages Message[]
+  messages     Message[]
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
@@ -49,8 +58,8 @@ model File {
 }
 
 model Message {
-  id   String @id @default(cuid())
-  text String @db.Text()
+  id            String  @id @default(cuid())
+  text          String  @db.Text()
   isUserMessage Boolean
 
   updatedAt DateTime @updatedAt

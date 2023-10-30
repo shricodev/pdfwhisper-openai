@@ -1,7 +1,7 @@
 import { ZodError } from "zod";
 import { NextRequest, NextResponse } from "next/server";
 
-import { INFINITE_QUERY_LIMIT } from "@/config";
+import { INFINITE_QUERY_LIMIT } from "@/config/config";
 
 import { db } from "@/db";
 

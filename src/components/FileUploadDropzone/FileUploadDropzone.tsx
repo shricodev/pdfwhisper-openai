@@ -9,7 +9,7 @@ import { FileText, Loader2, UploadCloud } from "lucide-react";
 import {
   SUBSCRIBED_USER_FILE_SIZE,
   UNSUBSCRIBED_USER_FILE_SIZE,
-} from "@/config";
+} from "@/config/config";
 
 import { toast } from "@/hooks/use-toast";
 

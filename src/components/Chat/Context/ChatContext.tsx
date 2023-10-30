@@ -1,11 +1,12 @@
 "use client";
 
-import { createContext, useState } from "react";
+import { createContext, useRef, useState } from "react";
 
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 
 import { TAddMessageValidator } from "@/lib/validators/addMessage";
+import { toast } from "@/hooks/use-toast";
 
 interface Props {
   fileId: string;
@@ -31,6 +32,7 @@ export const ChatContext = createContext<TChatContext>({
 export const ChatContextProvider = ({ fileId, children }: Props) => {
   const [message, setMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const backupMessage = useRef<string>("");
 
   const { mutate: sendMessage } = useMutation({
     mutationKey: ["addMessage"],
@@ -40,14 +42,38 @@ export const ChatContextProvider = ({ fileId, children }: Props) => {
         message,
       };
       const { data, status } = await axios.post("/api/message", payload);
-      if (status !== 200) throw new Error("Error adding message");
+      if (status !== 200) {
+        return toast({
+          title: "There was a problem sending this message",
+          description: "Please refresh this page and try again",
+          variant: "destructive",
+        });
+      }
       return data;
+    },
+    onMutate: () => {
+      backupMessage.current = message;
+      setMessage("");
+    },
+    onError: () => {
+      setMessage(backupMessage.current);
+    },
+    onSuccess: async (stream) => {
+      if (!stream) {
+        return toast({
+          title: "There was a problem sending this message",
+          description: "Please refresh this page and try again",
+          variant: "destructive",
+        });
+      }
+    },
+    onSettled: () => {
+      setIsLoading(false);
     },
   });
 
   const addMessage = () => {
     sendMessage({ message });
-    setMessage("");
   };
 
   const handleUserInputChange = (

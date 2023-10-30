@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const AuthCallbackValidator = z.object({
-  id: z.string().min(3),
+  id: z.string().min(1),
   email: z.string().email(),
 });
 

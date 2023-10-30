@@ -1,8 +1,12 @@
-import { createUploadthing, type FileRouter } from "uploadthing/next";
+import { createUploadthing } from "uploadthing/next";
 
 import { db } from "@/db";
 
 import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
+import { PDFLoader } from "langchain/document_loaders/fs/pdf";
+import { pinecone } from "@/lib/pinecone";
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { PineconeStore } from "langchain/vectorstores/pinecone";
 
 const f = createUploadthing();
 
@@ -29,7 +33,47 @@ export const ourFileRouter = {
           uploadStatus: "PROCESSING",
         },
       });
+
+      try {
+        const pdfResponse = await fetch(
+          `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`,
+        );
+        const pdfBlob = await pdfResponse.blob();
+        const loader = new PDFLoader(pdfBlob);
+        const pageLevelDocs = await loader.load();
+        const pagesAmount = pageLevelDocs.length;
+
+        const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX_NAME!);
+        const embeddings = new OpenAIEmbeddings({
+          openAIApiKey: process.env.OPENAI_API_KEY,
+        });
+
+        await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
+          pineconeIndex,
+          // ! The namespace feature is not supported for the free tier of Pinecone.
+          // namespace: createdFile.id,
+        });
+        await db.file.update({
+          where: {
+            id: createdFile.id,
+            userId: metadata.userId,
+          },
+          data: {
+            uploadStatus: "SUCCESS",
+          },
+        });
+      } catch (error) {
+        await db.file.update({
+          where: {
+            id: createdFile.id,
+            userId: metadata.userId,
+          },
+          data: {
+            uploadStatus: "FAILED",
+          },
+        });
+      }
     }),
-} satisfies FileRouter;
+};
 
 export type OurFileRouter = typeof ourFileRouter;

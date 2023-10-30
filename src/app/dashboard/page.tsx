@@ -2,15 +2,16 @@ import { redirect } from "next/navigation";
 
 import { db } from "@/db";
 
-import { getUserId } from "@/lib/getUserDetailsServer";
+import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
 
 import Dashboard from "@/components/Dashboard/Dashboard";
 
 const Page = async () => {
-  const userId = await getUserId();
-  const isAuthenticated = !!userId;
+  const isAuthenticated = await isAuth();
+  if (!isAuthenticated) return redirect("/login");
 
-  if (!isAuthenticated) redirect("/login");
+  const userId = await getUserId();
+  if (!userId) return redirect("/login");
 
   // search for user in database with userId
   const dbUser = await db.user.findFirst({

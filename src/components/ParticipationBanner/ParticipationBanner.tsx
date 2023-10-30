@@ -1,6 +1,6 @@
 const ParticipationBanner = () => {
   return (
-    <div className="hidden h-14 w-full items-center justify-center bg-gradient-to-r from-pink-400 to-pink-600 md:flex">
+    <div className="hidden h-14 w-full items-center justify-center bg-gradient-to-r from-rose-500 to-pink-500 md:flex">
       <h3 className="font-bold text-white selection:bg-red-300">
         PDFwhisper is taking part in Hanko Hackathon 🎉 Consider giving us a
         <a

@@ -11,6 +11,7 @@ import Messages from "../Messages/Messages";
 
 import { buttonVariants } from "@/components/ui/Button";
 import { useEffect } from "react";
+import { ChatContextProvider } from "../Context/ChatContext";
 
 interface Props {
   fileId: string;
@@ -105,13 +106,15 @@ const WrapChat = ({ fileId }: Props) => {
   }
 
   return (
-    <div className="relative flex min-h-full flex-col justify-between gap-2 divide-y divide-zinc-200 bg-zinc-50">
-      <div className="mb-28 flex flex-1 flex-col justify-between">
-        <Messages />
-      </div>
+    <ChatContextProvider fileId={fileId}>
+      <div className="relative flex min-h-full flex-col justify-between gap-2 divide-y divide-zinc-200 bg-zinc-50">
+        <div className="mb-28 flex flex-1 flex-col justify-between">
+          <Messages fileId={fileId} />
+        </div>
 
-      <ChatInput />
-    </div>
+        <ChatInput />
+      </div>
+    </ChatContextProvider>
   );
 };
 

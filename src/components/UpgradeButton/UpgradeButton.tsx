@@ -30,7 +30,7 @@ const UpgradeButton = ({ isSubscribed }: Props) => {
     }
   }, [email, id]);
 
-  const { data, mutate: createSubscription } = useMutation({
+  const { mutate: createSubscription } = useMutation({
     mutationFn: async () => {
       const payload = {
         customer_info: {

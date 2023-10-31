@@ -24,6 +24,8 @@
 
 ![PDFwhisper Demo](./public/images/readme-pdf-chat.png)
 
+![PDFwhisper Auth](./public/images/readme-auth.png)
+
 ![PDFwhisper Pricing Dialog](./public/images/readme-website-pricing-dialog.png)
 
 ## Install - (Suggested)
@@ -49,6 +51,33 @@ pnpm run dev
 The project currently supports **Google**, **Github** as our OAuth providers.
 
 ![PDFwhisper Login](./public/images/readme-website-oauth-providers.png)
+
+## Tech Stacks
+
+- **Frontend Technologies:**
+
+  - `ReactJS`: A JavaScript library for building user interfaces.
+  - `NextJS`: A framework for building React applications with server-side rendering and routing.
+  - `TailwindCSS`: A utility-first CSS framework for designing responsive web applications.
+  - `shadcn/ui`: A custom UI component library.
+
+- **Backend Technologies:**
+
+  - `NextJS - API Router`: A built-in API router for Next.js applications.
+
+- **Deployment and Hosting:**
+
+  - `Vercel`: A cloud platform for hosting and deploying web applications, particularly well-suited for Next.js applications.
+
+- **Authentication and Security:**
+
+  - `Hanko Passkey`: The most secure modern authentication system using passkeys.
+
+- **LLM and Vector Storage:**
+
+  - `VectorDB`: Used for storing OpenAI vectors
+
+  - `OpenAI`: LLM for generating text.
 
 ## Author
 

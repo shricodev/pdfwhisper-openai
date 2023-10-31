@@ -9,6 +9,7 @@ import { PAID_PLAN_PRICE } from "@/config/config";
 import { db } from "@/db";
 
 import { absoluteUrl } from "@/lib/utils";
+import { getUserSubscriptionPlan } from "@/lib/khalti";
 import { PaymentValidator } from "@/lib/validators/payment";
 import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
 
@@ -37,8 +38,8 @@ export async function POST(req: NextRequest) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    // const subscriptionPlan = await getUserSubscriptionPlan();
-    // if (subscriptionPlan.isSubscribe) return;
+    const subscriptionPlan = await getUserSubscriptionPlan();
+    if (subscriptionPlan.isSubscribed) return;
 
     // Parse the body with zod to make sure the request is what we expect.
     const body = await req.json();

@@ -29,7 +29,7 @@ export default async function Home() {
                 href="https://github.com/shricodev"
                 target="_blank"
                 rel="noopener"
-                className="text-blue-500"
+                className="text-purple-500"
               >
                 @shricodev
               </a>{" "}

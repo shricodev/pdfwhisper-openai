@@ -44,7 +44,7 @@ pnpm run dev
 
 ## Firm Promise - In Security 🔒
 
-> We use [Hanko Passkey](https://hanko.auth) for authentication. The most modern and secure way to authenticate. You can be sure that your data is safe with us. ✅ Your data shall never be compromised.
+> We use [Hanko Passkey](https://hanko.io) for authentication. The most modern and secure way to authenticate. You can be sure that your data is safe with us. ✅ Your data shall never be compromised.
 
 The project currently supports **Google**, **Github** as our OAuth providers.
 

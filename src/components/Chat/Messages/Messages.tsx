@@ -43,7 +43,8 @@ const Messages = ({ fileId }: Props) => {
     id: "loading-message",
     text: (
       <span className="flex h-full items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+        Loading...
+        <Loader2 className="ml-1.5 h-3 w-3 animate-spin text-primary" />
       </span>
     ),
     isUserMessage: false,

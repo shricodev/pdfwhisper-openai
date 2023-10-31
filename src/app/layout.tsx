@@ -12,7 +12,7 @@ import "./globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import "simplebar-react/dist/simplebar.min.css";
 
-const inter = Poppins({ subsets: ["latin"], weight: ["400", "500", "600"] });
+const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600"] });
 
 export const metadata: Metadata = {
   title: "PDFwhisper - OpenAI",
@@ -37,7 +37,7 @@ export default function RootLayout({
         <body
           className={cn(
             "min-h-screen bg-gradient-to-r from-rose-50 to-teal-50 antialiased",
-            inter.className,
+            poppins.className,
           )}
         >
           <Toaster />

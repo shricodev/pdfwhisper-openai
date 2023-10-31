@@ -53,17 +53,15 @@ export async function POST(req: NextRequest) {
     const websiteURL = absoluteUrl("/");
     const payload = {
       // amount: amountFromUSDtoNPR * 100, // convert to paisa
-      amount: 900 * 100, // TODO: Switch back to the previous line. This is for testing purposes.
+      amount: 900 * 100, // TODO: Switch back to the previous line after the project is done reviewing.
       customer_info,
-      purchase_order_id: uuidv4() + "_" + customer_info.name, // the name equals "userId" since we don't have a name for the user yet, so use the userId for now.
+      purchase_order_id: uuidv4() + "_" + customer_info.name, // the name equals "userId" since we don't have a name for the user yet from hanko, so use the userId for now.
       purchase_order_name: "Langchain Subscription",
       return_url: `${websiteURL}dashboard`,
       website_url: websiteURL,
     };
 
-    console.log("this is thee payload", payload);
-
-    const { data, status } = await axios.post(
+    const { data } = await axios.post(
       "https://a.khalti.com/api/v2/epayment/initiate/",
       payload,
       {
@@ -72,8 +70,6 @@ export async function POST(req: NextRequest) {
         },
       },
     );
-
-    console.log(data, status);
 
     return NextResponse.json({ data });
   } catch (error) {

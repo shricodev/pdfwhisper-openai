@@ -1,20 +1,25 @@
-import UpgradeButton from "@/components/UpgradeButton/UpgradeButton";
+import Link from "next/link";
+import { AlertCircle, ArrowRight, BadgeHelp, Check, Minus } from "lucide-react";
+
+import {
+  SUBSCRIBED_USER_FILE_SIZE,
+  UNSUBSCRIBED_USER_FILE_SIZE,
+} from "@/config/config";
+
+import WrapWidth from "@/helpers/WrapWidth";
+
+import { cn } from "@/lib/utils";
+import { isAuth } from "@/lib/getUserDetailsServer";
+
 import { buttonVariants } from "@/components/ui/Button";
+import UpgradeButton from "@/components/UpgradeButton/UpgradeButton";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/Tooltip";
-import {
-  SUBSCRIBED_USER_FILE_SIZE,
-  UNSUBSCRIBED_USER_FILE_SIZE,
-} from "@/config/config";
-import WrapWidth from "@/helpers/WrapWidth";
-import { isAuth } from "@/lib/getUserDetailsServer";
-import { cn } from "@/lib/utils";
-import { ArrowRight, BadgeHelp, Check, Minus } from "lucide-react";
-import Link from "next/link";
 
 const page = async () => {
   const isAuthenticated = await isAuth();
@@ -25,10 +30,6 @@ const page = async () => {
       tagline: "For small side projects.",
       quota: 5,
       features: [
-        {
-          text: "5 pages per PDF",
-          footnote: "The maximum amount of pages per PDF-file.",
-        },
         {
           text: `${UNSUBSCRIBED_USER_FILE_SIZE}MB file size limit`,
           footnote: "The maximum file size of a single PDF file.",
@@ -53,10 +54,6 @@ const page = async () => {
       quota: 20,
       features: [
         {
-          text: "20 pages per PDF",
-          footnote: "The maximum amount of pages per PDF-file.",
-        },
-        {
           text: `${SUBSCRIBED_USER_FILE_SIZE}MB file size limit`,
           footnote: "The maximum file size of a single PDF file.",
         },
@@ -76,12 +73,41 @@ const page = async () => {
 
   return (
     <>
+      <div className="mx-auto max-w-5xl pt-5 md:pt-8">
+        <Alert className="shadow-md">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Heads Up!</AlertTitle>
+          <AlertDescription>
+            This feature is not ready for production as it is in review. No
+            proper payment gateway like{" "}
+            <span className="text-base text-primary">Stripe</span>,{" "}
+            <span className="text-base text-primary">Razorpay</span>, are
+            available in <span className="font-semibold">Nepal</span>. However,
+            I have implemented{" "}
+            <span className="text-base text-primary">Khalti</span> payment
+            gateway for testing.
+            <h3 className="font-primary my-2 flex h-10 items-center border-l-4 border-orange-300 font-semibold">
+              <span className="pl-2">Test Credentials</span>
+            </h3>
+            <p className="text-zinc-700">
+              <span className="font-semibold">Mobile Number:</span> 9800000000,
+              9800000001, 9800000002
+            </p>
+            <p className="text-zinc-700">
+              <span className="font-semibold">MPIN:</span> 1111
+            </p>
+            <p className="text-zinc-700">
+              <span className="font-semibold">OTP:</span> 987654
+            </p>
+          </AlertDescription>
+        </Alert>
+      </div>
       <WrapWidth className="mx-auto mb-8 mt-24 max-w-5xl text-center">
         <div className="mx-auto mb-10 sm:max-w-lg">
           <h1 className="text-6xl font-bold sm:text-7xl">Pricing 💸</h1>
           <p className="mt-5 text-gray-600 sm:text-lg">
             Whether you&apos;re just trying out our service or upgrade to a PRO
-            Plan, we&apos;ve got you covered. 🔥🚀
+            Plan, I&apos;ve got you covered. 🔥🚀
           </p>
         </div>
         <div className="grid grid-cols-1 gap-10 pt-12 lg:grid-cols-2">

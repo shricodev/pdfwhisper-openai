@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -24,6 +26,19 @@
     --input: 220 13% 91%;
     --ring: 262.1 83.3% 57.8%;
     --radius: 0.5rem;
+
+    /* For customising Hanko components. */
+    --color: #111827;
+    --color-shade-1: #d1d5db;
+    --brand-color: #884dee;
+    --background-color: #ffffff;
+    --headline1-font-size: 29px;
+    --headline2-font-size: 16px;
+    --border-radius: 6px;
+    --font-size: 14px;
+    --item-height: 36px;
+    --link-color: #1c73e8;
+    --divider-padding: 0 15px;
   }
 
   .dark {
@@ -54,17 +69,58 @@
 }
 
 @layer utilities {
-  @variants responsive {
-    /* Hide scrollbar for Chrome, Safari and Opera */
-    ::-webkit-scrollbar {
-      display: none;
-      -ms-overflow-style: none; /* IE and Edge */
-      scrollbar-width: none; /* Firefox */
-    }
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  ::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 
-  .grainy {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAElBMVEUAAAD8/vz08vT09vT8+vzs7uxH16TeAAAAAXRSTlMAQObYZgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAuFJREFUOI0Vk+3NLiEIRG1B8ClAYAsQ2AIEt4D9ePtv5Xp/mZgYJ2fOFJKEfInkVWY2aglmQFkimRTV7MblYyVqD7HXyhKsSuPX12MeDhRHLtGvRG+P+B/S0Vu4OswR9tmvwNPyhdCDbVayJGads/WiUWcjCvCnruTBNHS9gmX2VzVbk7ZvB1gb1hkWFGl+A/n+/FowcO34U/XvKqZ/fHY+6vgRfU92XrOBUbGeeDfQmjWjdrK+frc6FdGReQhfSF5JvR29O2QrfNw1huTwlgsyXLo0u+5So82sgv7tsFZR2nxB6lXiquHrfD8nfYZ9SeT0LiuvSoVrxGY16pCNRZKqvwWsn5OHypPBELzohMCaRaa0ceTHYqe7X/gfJEEtKFbJpWoNqO+aS1cuTykGPpK5Ga48m6L3NefTr013KqYBQu929iP1oQ/7UwSR+i3zqruUmT84qmhzLpxyj7pr9kg7LKvqaXxZmdpn+6o8sHqSqojy02gU3U8q9PnpidiaLks0mbMYz+q2uVXsoBQ8bfURULYxRgZVYCHMv9F4OA7qxT2NPPpvGQ/sTDH2yznKh7E2AcErfcNsaIoN1izzbJiaY63x4QjUFdBSvDCvugPpu5xDny0jzEeuUQbcP1aGT9V90uixngTRLYNEIIZ6yOF1H8tm7rj2JxiefsVy53zGVy3ag5uuPsdufYOzYxLRxngKe7nhx3VAq54pmz/DK9/Q3aDam2Yt3hNXB4HuU87jKNd/CKZn77Qdn5QkXPfqSkhk7hGOXXB+7v09KbBbqdvxGqa0AqfK/atIrL2WXdAgXAJ43Wtwe/aIoacXezeGPMlhDOHDbSfHnaXsL2QzbT82GRwZuezdwcoWzx5pnOnGMUdHuiY7lhdyWzWiHnucLZQxYStMJbtcydHaQ6vtMbe0AcDbxG+QG14AL94xry4297xpy9Cpf1OoxZ740gHDfrK+gtsy0xabwJmfgtCeii79B6aj0SJeLbd7AAAAAElFTkSuQmCC);
+  hanko-auth,
+  hanko-profile {
+    font-family: "Poppins", Sans;
+    @apply shadow-2xl;
+  }
+
+  hanko-auth {
+    --container-max-width: 640px;
+    --container-padding: 40px;
+  }
+
+  hanko-profile {
+    --container-max-width: 550px;
+    --container-padding: 30px;
+  }
+
+  hanko-auth::part(container),
+  hanko-profile::part(container) {
+    @apply rounded-2xl;
+    border: solid 1px #d8dee3;
+  }
+
+  hanko-auth::part(headline1),
+  hanko-profile::part(headline1),
+  hanko-auth::part(headline2),
+  hanko-profile::part(headline2) {
+    color: #1f2328;
+    line-height: 36px;
+  }
+
+  hanko-auth::part(form-item) {
+    @apply min-w-full;
+  }
+
+  hanko-auth::part(input),
+  hanko-profile::part(input) {
+    @apply mb-3 bg-white;
+  }
+
+  hanko-auth::part(secondary-button) {
+    border-color: var(--color-shade-1);
+  }
+
+  hanko-auth::part(divider) {
+    @apply mx-0 my-6;
   }
 
   .scrollbar-w-2::-webkit-scrollbar {

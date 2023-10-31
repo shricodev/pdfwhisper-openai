@@ -100,6 +100,12 @@ const Messages = ({ fileId }: Props) => {
           <p className="text-sm text-zinc-500">
             Ask your first question to the PDFwhisper bot.
           </p>
+          <p className="text-sm text-zinc-500">
+            <span className="font-semibold">🔴Message for Reviewers:</span> I
+            got low on time and couldn&apos;t implement the optimistic chat
+            update. For now, to view message, you&apos;ll have to refresh the
+            page. Hope you understand. 🙏
+          </p>
         </div>
       )}
     </div>

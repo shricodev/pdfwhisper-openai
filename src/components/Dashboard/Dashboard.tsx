@@ -148,7 +148,7 @@ const Dashboard = () => {
               count={1}
             />
             <Skeleton
-              height={80}
+              height={100}
               className="my-2 flex items-center"
               count={1}
             />

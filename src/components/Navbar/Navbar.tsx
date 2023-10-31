@@ -1,11 +1,13 @@
 import Link from "next/link";
-import { Flame, Github, LogInIcon, Rocket } from "lucide-react";
+import { Github, LogInIcon, Rocket } from "lucide-react";
+
+import UserAccountDropdown from "../UserAccountDropdown/UserAccountDropdown";
 
 import WrapWidth from "@/helpers/WrapWidth";
 
-import { buttonVariants } from "../ui/Button";
-import UserAccountDropdown from "../UserAccountDropdown/UserAccountDropdown";
 import { isAuth } from "@/lib/getUserDetailsServer";
+
+import { buttonVariants } from "../ui/Button";
 
 const Navbar = async () => {
   const isAuthenticated = await isAuth();

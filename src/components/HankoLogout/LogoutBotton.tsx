@@ -1,10 +1,13 @@
 "use client";
 
 import { useState, useEffect, HTMLAttributes, useContext } from "react";
+
 import { useRouter } from "next/navigation";
 import { Hanko } from "@teamhanko/hanko-elements";
-import { Button, buttonVariants } from "../ui/Button";
+
 import { UserDataContext } from "../Providers/UserDataContext";
+
+import { Button, buttonVariants } from "../ui/Button";
 
 interface LogoutButtonProps extends HTMLAttributes<HTMLDivElement> {}
 

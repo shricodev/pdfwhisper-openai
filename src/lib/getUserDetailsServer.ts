@@ -1,5 +1,5 @@
-import { cookies } from "next/headers";
 import * as jose from "jose";
+import { cookies } from "next/headers";
 
 export async function getUserId() {
   const token = cookies().get("hanko")?.value;

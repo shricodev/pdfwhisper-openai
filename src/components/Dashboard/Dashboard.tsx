@@ -6,15 +6,17 @@ import axios from "axios";
 import Link from "next/link";
 import { format } from "date-fns";
 import { File } from "@prisma/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { Bomb, Ghost, Loader2, PlusCircle, Text } from "lucide-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import FileUploadButton from "../FileUploadButton/FileUploadButton";
 
-import { Button } from "../ui/Button";
 import { toast } from "@/hooks/use-toast";
+
 import { TDeletePDF } from "@/lib/validators/deletePDF";
+
+import { Button } from "../ui/Button";
 
 const Dashboard = () => {
   const queryClient = useQueryClient();

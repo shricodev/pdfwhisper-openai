@@ -1,4 +1,3 @@
-import { getUserData, isUserLoggedIn } from "@/lib/userActions";
 import React, {
   Dispatch,
   SetStateAction,
@@ -6,6 +5,8 @@ import React, {
   useEffect,
   useState,
 } from "react";
+
+import { getUserData, isUserLoggedIn } from "@/lib/userActions";
 
 interface UserDataContextType {
   id: string;

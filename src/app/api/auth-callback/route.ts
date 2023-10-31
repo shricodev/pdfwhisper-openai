@@ -14,10 +14,8 @@ export async function POST(req: NextRequest) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const body = await req.json();
-
-    // Not so necessary as it is already handled above, but just to be sure.
     const userId = await getUserId();
+    const body = await req.json();
     // Parse the body with zod to make sure the request is what we expect.
     const { email, id } = AuthCallbackValidator.parse(body);
 

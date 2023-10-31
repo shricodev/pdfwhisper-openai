@@ -5,13 +5,15 @@ import Skeleton from "react-loading-skeleton";
 import { Loader2, MessageCircle } from "lucide-react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
+import { ChatContext } from "../Context/ChatContext";
+
 import Message from "../Message/Message";
 
 import { INFINITE_QUERY_LIMIT } from "@/config/config";
 
 import { TGetMessageValidator } from "@/lib/validators/getMessage";
+
 import { TMessageFetched } from "@/types/message";
-import { ChatContext } from "../Context/ChatContext";
 
 interface Props {
   fileId: string;
@@ -19,23 +21,22 @@ interface Props {
 
 const Messages = ({ fileId }: Props) => {
   const { isLoading: isThinking } = useContext(ChatContext);
-  const { data, fetchNextPage, isFetchingNextPage, isLoading } =
-    useInfiniteQuery({
-      queryKey: ["get-messages"],
-      queryFn: async ({ pageParam = 0 }) => {
-        const payload: TGetMessageValidator = {
-          fileId,
-          limit: INFINITE_QUERY_LIMIT,
-        };
-        const { data, status } = await axios.get(`/api/get-messages`, {
-          params: payload,
-        });
-        if (status !== 200) throw new Error("Error getting messages");
-        return data as TMessageFetched;
-      },
-      getNextPageParam: (lastPage, pages) => lastPage?.nextCursor,
-      keepPreviousData: true,
-    });
+  const { data, fetchNextPage, isLoading } = useInfiniteQuery({
+    queryKey: ["get-messages"],
+    queryFn: async ({ pageParam = 0 }) => {
+      const payload: TGetMessageValidator = {
+        fileId,
+        limit: INFINITE_QUERY_LIMIT,
+      };
+      const { data, status } = await axios.get(`/api/get-messages`, {
+        params: payload,
+      });
+      if (status !== 200) throw new Error("Error getting messages");
+      return data as TMessageFetched;
+    },
+    getNextPageParam: (lastPage, pages) => lastPage?.nextCursor,
+    keepPreviousData: true,
+  });
 
   useEffect(() => {
     fetchNextPage();
@@ -100,11 +101,10 @@ const Messages = ({ fileId }: Props) => {
           <p className="text-sm text-zinc-500">
             Ask your first question to the PDFwhisper bot.
           </p>
-          <p className="text-sm text-zinc-500">
-            <span className="font-semibold">🔴Message for Reviewers:</span> I
-            got low on time and couldn&apos;t implement the optimistic chat
-            update. For now, to view message, you&apos;ll have to refresh the
-            page. Hope you understand. 🙏
+          <p className="max-w-2xl text-sm text-zinc-500">
+            <span className="font-semibold">🔴Message to Reviewers:</span>{" "}
+            Running low on time, couldn&apos;t add optimistic chat update.
+            Please refresh the page to view the message.
           </p>
         </div>
       )}

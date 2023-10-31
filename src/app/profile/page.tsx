@@ -1,5 +1,6 @@
-import dynamic from "next/dynamic";
 import type { ComponentType } from "react";
+
+import dynamic from "next/dynamic";
 
 // These are imported dynamically to get rid of a hanko bug.
 // ReferenceError: CustomEvent is not defined

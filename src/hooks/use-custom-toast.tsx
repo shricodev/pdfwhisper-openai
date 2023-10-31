@@ -19,7 +19,7 @@ export const useCustomToast = () => {
           className={cn(
             buttonVariants({
               variant: "subtle",
-            })
+            }),
           )}
         >
           Login

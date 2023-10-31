@@ -75,7 +75,7 @@ The project currently supports **Google**, **Github** as our OAuth providers.
 
 - **LLM and Vector Storage:**
 
-  - `VectorDB`: Used for storing OpenAI vectors
+  - `VectorDB - Pinecone`: Used for storing OpenAI vectors
 
   - `OpenAI`: LLM for generating text.
 

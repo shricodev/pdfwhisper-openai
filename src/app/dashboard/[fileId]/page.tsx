@@ -30,7 +30,7 @@ const page = async ({ params }: PageProps) => {
       userId,
     },
   });
-  
+
   if (!file) notFound();
 
   return (

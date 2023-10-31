@@ -1,5 +1,5 @@
-import { NextResponse, NextRequest } from "next/server";
 import { jwtVerify, createRemoteJWKSet } from "jose";
+import { NextResponse, NextRequest } from "next/server";
 
 const hankoApiUrl = process.env.NEXT_PUBLIC_HANKO_API_URL ?? "";
 
@@ -7,7 +7,7 @@ export async function middleware(req: NextRequest) {
   const hanko = req.cookies.get("hanko")?.value;
 
   const JWKS = createRemoteJWKSet(
-    new URL(`${hankoApiUrl}/.well-known/jwks.json`)
+    new URL(`${hankoApiUrl}/.well-known/jwks.json`),
   );
 
   try {

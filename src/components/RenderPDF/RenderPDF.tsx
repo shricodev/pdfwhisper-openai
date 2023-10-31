@@ -5,6 +5,8 @@ import { useState } from "react";
 import { z } from "zod";
 import SimpleBar from "simplebar-react";
 import { useForm } from "react-hook-form";
+import "react-pdf/dist/Page/TextLayer.css";
+import "react-pdf/dist/Page/AnnotationLayer.css";
 import { Document, Page, pdfjs } from "react-pdf";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useResizeDetector } from "react-resize-detector";
@@ -18,6 +20,8 @@ import {
   SearchIcon,
 } from "lucide-react";
 
+import FullscreenPDF from "../FullscreenPDF/FullscreenPDF";
+
 import { toast } from "@/hooks/use-toast";
 
 import { cn } from "@/lib/utils";
@@ -29,10 +33,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "../ui/DropdownMenu";
-
-import "react-pdf/dist/Page/TextLayer.css";
-import "react-pdf/dist/Page/AnnotationLayer.css";
-import FullscreenPDF from "../FullscreenPDF/FullscreenPDF";
 
 interface Props {
   url: string;

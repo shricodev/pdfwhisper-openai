@@ -1,10 +1,10 @@
+import { ZodError } from "zod";
 import { NextRequest, NextResponse } from "next/server";
 
 import { db } from "@/db";
 
-import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
 import { GetPDFValidator } from "@/lib/validators/getUserPDF";
-import { ZodError } from "zod";
+import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
 
 export async function POST(req: NextRequest) {
   try {

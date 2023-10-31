@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar/Navbar";
 import { Toaster } from "@/components/ui/Toaster";
 import Providers from "@/components/Providers/Providers";
-
 import ParticipationBanner from "@/components/ParticipationBanner/ParticipationBanner";
 import "./globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -20,7 +19,7 @@ export const metadata: Metadata = {
     "PDFwhisper allows you to have a conversation with your PDF docs. Finding info on your PDF files is now easier than ever. Most secure authentication measures using Passkeys.",
 };
 
-// This is a fix for the issue with the CustomEvent problem in Hanko.
+// This is a fix for the build issue with the CustomEvent problem in Hanko.
 export const dynamic = "force-dynamic";
 
 export default function RootLayout({

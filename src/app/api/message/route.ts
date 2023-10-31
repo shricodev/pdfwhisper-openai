@@ -1,6 +1,7 @@
 import { ZodError } from "zod";
 import { OpenAIError } from "openai";
 import { NextRequest, NextResponse } from "next/server";
+import { OpenAIStream, StreamingTextResponse } from "ai";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 
@@ -10,7 +11,6 @@ import { openai } from "@/lib/openai";
 import { pinecone } from "@/lib/pinecone";
 import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
 import { AddMessageValidator } from "@/lib/validators/addMessage";
-import { OpenAIStream, StreamingTextResponse } from "ai";
 
 export async function POST(req: NextRequest) {
   try {

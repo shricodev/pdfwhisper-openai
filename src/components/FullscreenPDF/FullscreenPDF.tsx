@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/Dialog";
-import { Expand, Loader2 } from "lucide-react";
-import { Button } from "../ui/Button";
+
 import SimpleBar from "simplebar-react";
 import { Document, Page } from "react-pdf";
-import { toast } from "@/hooks/use-toast";
+import { Expand, Loader2 } from "lucide-react";
 import { useResizeDetector } from "react-resize-detector";
+
+import { toast } from "@/hooks/use-toast";
+
+import { Button } from "../ui/Button";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/Dialog";
 
 interface Props {
   url: string;

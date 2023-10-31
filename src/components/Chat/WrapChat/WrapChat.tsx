@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 import axios from "axios";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
@@ -7,11 +9,11 @@ import { ChevronLeft, Loader2, XCircle } from "lucide-react";
 
 import ChatInput from "../ChatInput/ChatInput";
 
+import { ChatContextProvider } from "../Context/ChatContext";
+
 import Messages from "../Messages/Messages";
 
 import { buttonVariants } from "@/components/ui/Button";
-import { useEffect } from "react";
-import { ChatContextProvider } from "../Context/ChatContext";
 
 interface Props {
   fileId: string;

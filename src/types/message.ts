@@ -1,7 +1,6 @@
 import { Prettify } from "./prettify";
 
 export type TMessageFetched = {
-  // messages: TMessage[];
   messages: {
     text: string;
     id: string;
@@ -10,13 +9,6 @@ export type TMessageFetched = {
   }[];
   nextCursor?: string | undefined;
 };
-
-// export type TMessage = {
-//   text: string;
-//   id: string;
-//   isUserMessage: boolean;
-//   createdAt: Date;
-// };
 
 type TOriginalMessage = {
   text: string;

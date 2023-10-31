@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 
+import axios from "axios";
 import Dropzone from "react-dropzone";
+import { File } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { FileText, Loader2, UploadCloud } from "lucide-react";
 
@@ -14,11 +16,9 @@ import {
 import { toast } from "@/hooks/use-toast";
 
 import { useUploadThing } from "@/lib/uploadThing";
+import { TGetPDF } from "@/lib/validators/getUserPDF";
 
 import { Progress } from "../ui/Progress";
-import axios from "axios";
-import { File } from "@prisma/client";
-import { TGetPDF } from "@/lib/validators/getUserPDF";
 
 const FileUploadDropzone = () => {
   const router = useRouter();

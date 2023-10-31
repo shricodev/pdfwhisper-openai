@@ -1,7 +1,7 @@
-import { AvatarProps } from "@radix-ui/react-avatar";
-import { Avatar, AvatarFallback } from "../ui/Avatar";
 import { User2 } from "lucide-react";
-import { Button, buttonVariants } from "../ui/Button";
+import { AvatarProps } from "@radix-ui/react-avatar";
+
+import { Avatar } from "../ui/Avatar";
 
 interface UserAvatarProps extends AvatarProps {}
 

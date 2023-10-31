@@ -10,6 +10,7 @@ import WrapWidth from "@/helpers/WrapWidth";
 
 import { cn } from "@/lib/utils";
 import { isAuth } from "@/lib/getUserDetailsServer";
+import { getUserSubscriptionPlan } from "@/lib/khalti";
 
 import { buttonVariants } from "@/components/ui/Button";
 import UpgradeButton from "@/components/UpgradeButton/UpgradeButton";
@@ -20,7 +21,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/Tooltip";
-import { getUserSubscriptionPlan } from "@/lib/khalti";
 
 const page = async () => {
   const isAuthenticated = await isAuth();

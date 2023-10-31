@@ -43,7 +43,6 @@ export async function POST(req: NextRequest) {
 
     // Parse the body with zod to make sure the request is what we expect.
     const body = await req.json();
-    console.log(body);
 
     const { customer_info } = PaymentValidator.parse(body);
 
@@ -55,7 +54,8 @@ export async function POST(req: NextRequest) {
       // amount: amountFromUSDtoNPR * 100, // convert to paisa
       amount: 900 * 100, // TODO: Switch back to the previous line after the project is done reviewing.
       customer_info,
-      purchase_order_id: uuidv4() + "_" + customer_info.name, // the name equals "userId" since we don't have a name for the user yet from hanko, so use the userId for now.
+      // the name equals "userId" since we don't have a name for the user yet from hanko, so use the userId for now.
+      purchase_order_id: uuidv4() + "_" + customer_info.name,
       purchase_order_name: "Langchain Subscription",
       return_url: `${websiteURL}dashboard`,
       website_url: websiteURL,

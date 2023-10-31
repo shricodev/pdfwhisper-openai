@@ -1,12 +1,12 @@
 import { createUploadthing } from "uploadthing/next";
+import { PDFLoader } from "langchain/document_loaders/fs/pdf";
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { PineconeStore } from "langchain/vectorstores/pinecone";
 
 import { db } from "@/db";
 
-import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
-import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { pinecone } from "@/lib/pinecone";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
-import { PineconeStore } from "langchain/vectorstores/pinecone";
+import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
 
 const f = createUploadthing();
 

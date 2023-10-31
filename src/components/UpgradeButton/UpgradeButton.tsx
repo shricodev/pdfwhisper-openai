@@ -3,6 +3,7 @@
 import { useContext, useEffect, useState } from "react";
 
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 
@@ -13,7 +14,6 @@ import { toast } from "@/hooks/use-toast";
 import { TKhaltiResponse } from "@/types/subscription";
 
 import { Button, buttonVariants } from "../ui/Button";
-import { useRouter } from "next/navigation";
 
 interface Props {
   isSubscribed: boolean;

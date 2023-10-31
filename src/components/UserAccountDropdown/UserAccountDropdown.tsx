@@ -4,6 +4,12 @@ import { useContext } from "react";
 
 import Link from "next/link";
 
+import LogoutButton from "../HankoLogout/LogoutBotton";
+
+import { UserDataContext } from "../Providers/UserDataContext";
+
+import UserAvatar from "../UserIcon/UserIcon";
+
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -11,14 +17,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from "../ui/DropdownMenu";
-import { UserDataContext } from "../Providers/UserDataContext";
-import UserAvatar from "../UserIcon/UserIcon";
-import { useRouter } from "next/navigation";
-import LogoutButton from "../HankoLogout/LogoutBotton";
 
 const UserAccountDropdown = () => {
   const { email } = useContext(UserDataContext);
-  const router = useRouter();
 
   return (
     <DropdownMenu>

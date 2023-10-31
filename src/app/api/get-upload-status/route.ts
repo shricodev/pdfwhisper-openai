@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
 import { db } from "@/db";
+
+import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
 
 export async function GET(req: NextRequest) {
   try {
@@ -12,6 +13,10 @@ export async function GET(req: NextRequest) {
     }
 
     const userId = await getUserId();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
 
     const url = new URL(req.url);
     const fileId = url.searchParams.get("fileId");

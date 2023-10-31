@@ -20,14 +20,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/Tooltip";
+import { getUserSubscriptionPlan } from "@/lib/khalti";
 
 const page = async () => {
   const isAuthenticated = await isAuth();
 
+  const { isSubscribed } = await getUserSubscriptionPlan();
   const pricingItems = [
     {
       plan: "Free",
-      tagline: "For small side projects.",
+      tagline: "For small talks with your PDFs",
       quota: 5,
       features: [
         {
@@ -50,7 +52,7 @@ const page = async () => {
     },
     {
       plan: "Pro",
-      tagline: "For larger projects with higher needs.",
+      tagline: "For larger projects with higher needs",
       quota: 20,
       features: [
         {
@@ -113,9 +115,10 @@ const page = async () => {
         <div className="grid grid-cols-1 gap-10 pt-12 lg:grid-cols-2">
           <TooltipProvider>
             {pricingItems.map(({ plan, tagline, features, quota }) => {
-              // ! check if the user is subscribed user.
-              const priceForSubscription = plan === "Pro" ? 10 : 0;
-              // const isSubscribed =
+              {
+                /* TODO: switch back to dollars once the project is done reviewing. */
+              }
+              const priceForSubscription = plan === "Pro" ? 900 : 0;
 
               return (
                 <div
@@ -137,7 +140,8 @@ const page = async () => {
                     </h3>
                     <p className="text-gray-500">{tagline}</p>
                     <p className="font-display my-5 text-6xl font-semibold">
-                      ${priceForSubscription}
+                      {/* TODO: switch back to dollars once the project is done reviewing. */}
+                      Rs. {priceForSubscription}
                     </p>
                     <p className="text-gray-500">per month</p>
                   </div>
@@ -208,7 +212,7 @@ const page = async () => {
                         <ArrowRight className="ml-1.5 h-5 w-5" />
                       </Link>
                     ) : isAuthenticated ? (
-                      <UpgradeButton />
+                      <UpgradeButton isSubscribed={isSubscribed} />
                     ) : (
                       <Link
                         href="/login"
@@ -216,7 +220,7 @@ const page = async () => {
                           className: "w-full",
                         })}
                       >
-                        {isAuthenticated ? "Upgrade now" : "Sign up"}
+                        {isAuthenticated ? "Upgrade now" : "Login"}
                         <ArrowRight className="ml-1.5 h-5 w-5" />
                       </Link>
                     )}

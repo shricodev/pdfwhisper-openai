@@ -12,11 +12,17 @@ import { toast } from "@/hooks/use-toast";
 
 import { TKhaltiResponse } from "@/types/subscription";
 
-import { Button } from "../ui/Button";
+import { Button, buttonVariants } from "../ui/Button";
+import { useRouter } from "next/navigation";
 
-const UpgradeButton = () => {
+interface Props {
+  isSubscribed: boolean;
+}
+
+const UpgradeButton = ({ isSubscribed }: Props) => {
   const { email, id } = useContext(UserDataContext);
   const [isDataFetched, setIsDataFetched] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (email && id) {
@@ -32,11 +38,15 @@ const UpgradeButton = () => {
           name: id,
         },
       };
-      const { data } = await axios.post("/api/payment", payload);
+      const {
+        data: { data },
+      } = await axios.post("/api/payment", payload);
       return data as TKhaltiResponse;
     },
-    onSuccess: (data) => {},
-    onError: () => {
+    onSuccess: ({ payment_url }) => {
+      router.push(payment_url);
+    },
+    onError: (error) => {
       return toast({
         title: "There was a problem creating your subscription",
         description: "Please refresh this page and try again later",
@@ -44,6 +54,20 @@ const UpgradeButton = () => {
       });
     },
   });
+
+  if (isSubscribed) {
+    return (
+      <Button
+        className={buttonVariants({
+          className: "w-full",
+        })}
+        disabled
+      >
+        Already Subscribed
+        <ArrowRight className="ml-1.5 h-5 w-5" />
+      </Button>
+    );
+  }
 
   return (
     <Button

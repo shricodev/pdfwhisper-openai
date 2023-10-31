@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
       orderBy: {
         createdAt: "asc",
       },
-      take: 7,
+      take: 6,
     });
 
     const formattedPrevMessages = prevMessages.map((message) => ({

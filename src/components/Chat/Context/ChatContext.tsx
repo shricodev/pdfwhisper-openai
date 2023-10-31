@@ -59,6 +59,7 @@ export const ChatContextProvider = ({ fileId, children }: Props) => {
       setMessage(backupMessage.current);
     },
     onSuccess: async (stream) => {
+      setIsLoading(false);
       if (!stream) {
         return toast({
           title: "There was a problem sending this message",

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
@@ -11,12 +11,14 @@ import { INFINITE_QUERY_LIMIT } from "@/config/config";
 
 import { TGetMessageValidator } from "@/lib/validators/getMessage";
 import { TMessageFetched } from "@/types/message";
+import { ChatContext } from "../Context/ChatContext";
 
 interface Props {
   fileId: string;
 }
 
 const Messages = ({ fileId }: Props) => {
+  const { isLoading: isThinking } = useContext(ChatContext);
   const { data, fetchNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
       queryKey: ["get-messages"],
@@ -54,7 +56,7 @@ const Messages = ({ fileId }: Props) => {
   const messages = data?.pages.flatMap((page) => page.messages);
 
   const combinedMessages = [
-    ...(true ? [loadingMessage] : []),
+    ...(isThinking ? [loadingMessage] : []),
     ...(messages ?? []),
   ];
 
@@ -94,7 +96,7 @@ const Messages = ({ fileId }: Props) => {
       ) : (
         <div className="flex flex-1 flex-col items-center justify-center gap-2">
           <MessageCircle className="h-10 w-10 text-primary" />
-          <h3 className="text-xl font-semibold">You&apos;r all set!</h3>
+          <h3 className="text-xl font-semibold">You&apos;re all set!</h3>
           <p className="text-sm text-zinc-500">
             Ask your first question to the PDFwhisper bot.
           </p>

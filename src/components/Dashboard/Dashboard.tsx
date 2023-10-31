@@ -6,16 +6,9 @@ import axios from "axios";
 import Link from "next/link";
 import { format } from "date-fns";
 import { File } from "@prisma/client";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import {
-  Bomb,
-  Ghost,
-  Loader2,
-  MessageCircle,
-  PlusCircle,
-  Text,
-} from "lucide-react";
+import { Bomb, Ghost, Loader2, PlusCircle, Text } from "lucide-react";
 
 import FileUploadButton from "../FileUploadButton/FileUploadButton";
 
@@ -24,6 +17,7 @@ import { toast } from "@/hooks/use-toast";
 import { TDeletePDF } from "@/lib/validators/deletePDF";
 
 const Dashboard = () => {
+  const queryClient = useQueryClient();
   const [currentlyDeletingFile, setCurrentlyDeletingFile] = useState<
     string | null
   >(null);
@@ -34,14 +28,12 @@ const Dashboard = () => {
     isFetching: isFetchingUserFiles,
   } = useQuery({
     queryKey: ["user-files"],
-    enabled: false,
     queryFn: async () => {
       const { data } = await axios.get("/api/get-user-pdfs");
       return data as File[];
     },
   });
 
-  // TODO: Make sure to auto refresh the site after a file was deleted.
   const { mutate: deleteFile } = useMutation({
     mutationFn: async (id: string) => {
       const payload: TDeletePDF = { id };
@@ -55,6 +47,9 @@ const Dashboard = () => {
       return toast({
         title: "File deleted successfully",
       });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["user-files"]);
     },
   });
 
@@ -125,7 +120,7 @@ const Dashboard = () => {
             })}
         </ul>
       ) : isFetchingUserFiles ? (
-        <div className="mt-8 grid grid-cols-1 gap-5 px-4 lg:grid-cols-2 lg:px-0">
+        <div className="mt-8 grid grid-cols-1 gap-5 px-4 lg:grid-cols-3 lg:px-0">
           <SkeletonTheme baseColor="#fff" highlightColor="#f1fdfa">
             <Skeleton
               height={100}

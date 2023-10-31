@@ -1,8 +1,11 @@
-import { Icons } from "@/components/Icons/Icons";
-import { cn } from "@/lib/utils";
-import { TExtendedMessage } from "@/types/message";
 import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
+
+import { cn } from "@/lib/utils";
+
+import { TExtendedMessage } from "@/types/message";
+
+import { Icons } from "@/components/Icons/Icons";
 
 interface Props {
   message: TExtendedMessage;

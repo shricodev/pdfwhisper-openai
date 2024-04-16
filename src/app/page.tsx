@@ -5,15 +5,16 @@ import { Lightbulb, LogInIcon } from "lucide-react";
 
 import WrapWidth from "@/helpers/WrapWidth";
 
-import { isAuth } from "@/lib/getUserDetailsServer";
-
 import { Separator } from "@/components/ui/Separator";
 import { buttonVariants } from "@/components/ui/Button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export default async function Home() {
-  const isAuthenticated = await isAuth();
-  if (isAuthenticated) redirect("/dashboard");
+  const { isAuthenticated } = getKindeServerSession();
+  const isAuth = await isAuthenticated();
+
+  if (isAuth) redirect("/dashboard");
 
   return (
     <>

@@ -45,6 +45,7 @@ const RenderPDF = ({ url }: Props) => {
   const [currPage, setCurrPage] = useState<number>(1);
   const [rotation, setRotation] = useState<number>(0);
   const [scale, setScale] = useState<number>(1);
+  // To show the previous scaled page, unless the new page is rendered. This helps reduce flicker when changing scale.
   const [renderedScale, setRenderedScale] = useState<number | null>(null);
   const { width, ref } = useResizeDetector();
 
@@ -56,21 +57,21 @@ const RenderPDF = ({ url }: Props) => {
       .refine((val) => Number(val) > 0 && Number(val) <= numberPages!),
   });
 
-  type CustomPageLoadType = z.infer<typeof CustomPageLoadValidator>;
+  type TCustomPageLoad = z.infer<typeof CustomPageLoadValidator>;
 
   const {
     handleSubmit,
     register,
     setValue,
     formState: { errors },
-  } = useForm<CustomPageLoadType>({
+  } = useForm<TCustomPageLoad>({
     defaultValues: {
       index: "1",
     },
     resolver: zodResolver(CustomPageLoadValidator),
   });
 
-  const handlePageSubmit = ({ index }: CustomPageLoadType) => {
+  const handlePageSubmit = ({ index }: TCustomPageLoad) => {
     setCurrPage(Number(index));
     setValue("index", String(index));
   };
@@ -198,6 +199,7 @@ const RenderPDF = ({ url }: Props) => {
                   width={width ? width : 1}
                 />
               ) : null}
+
               {/* The new scaled page. */}
               <Page
                 key={"page_scale" + currPage + scale}

@@ -11,17 +11,19 @@ import { db } from "@/db";
 import { absoluteUrl } from "@/lib/utils";
 import { getUserSubscriptionPlan } from "@/lib/khalti";
 import { PaymentValidator } from "@/lib/validators/payment";
-import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const isAuthenticated = await isAuth();
+    const { isAuthenticated, getUser } = getKindeServerSession();
+    const isAuth = await isAuthenticated();
 
-    if (!isAuthenticated) {
+    if (!isAuth) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const userId = await getUserId();
+    const user = await getUser();
+    const userId = user?.id;
 
     // Not so necessary as it is already handled above, but just to be sure.
     if (!userId) {
@@ -51,8 +53,7 @@ export async function POST(req: NextRequest) {
       .to("NPR");
     const websiteURL = absoluteUrl("/");
     const payload = {
-      // amount: amountFromUSDtoNPR * 100, // convert to paisa
-      amount: 900 * 100, // TODO: Switch back to the previous line after the project is done reviewing.
+      amount: amountFromUSDtoNPR * 100, // convert to paisa
       customer_info,
       // the name equals "userId" since we don't have a name for the user yet from hanko, so use the userId for now.
       purchase_order_id: uuidv4() + "_" + customer_info.name,

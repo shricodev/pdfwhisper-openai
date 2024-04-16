@@ -1,64 +1,55 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-import axios from "axios";
 import Link from "next/link";
 import { format } from "date-fns";
-import { File } from "@prisma/client";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { Bomb, Ghost, Loader2, PlusCircle, Text } from "lucide-react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import FileUploadButton from "../FileUploadButton/FileUploadButton";
 
+import { Button } from "../ui/Button";
+import { trpc } from "@/app/_trpc/client";
+import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
 
-import { TDeletePDF } from "@/lib/validators/deletePDF";
+// For displaying the Skeletons for loading state.
+const SkeletonList = ({ count }: { count: number }) => {
+  const skeletons = Array.from({ length: count }, (_, index) => (
+    <Skeleton
+      key={index} // It's important to provide a unique key for each child in a list
+      height={100}
+      className="my-2 flex items-center"
+      count={1}
+    />
+  ));
 
-import { Button } from "../ui/Button";
+  return <>{skeletons}</>;
+};
 
 const Dashboard = () => {
-  const queryClient = useQueryClient();
+  const { data: userPDFs, isLoading: isFetchingUserPDFs } =
+    trpc.getUserPDFs.useQuery();
   const [currentlyDeletingFile, setCurrentlyDeletingFile] = useState<
     string | null
   >(null);
 
-  const {
-    refetch: fetchUserFiles,
-    data: userFiles,
-    isFetching: isFetchingUserFiles,
-  } = useQuery({
-    queryKey: ["user-files"],
-    queryFn: async () => {
-      const { data } = await axios.get("/api/get-user-pdfs");
-      return data as File[];
-    },
-  });
+  const utils = trpc.useContext();
 
-  const { mutate: deleteFile } = useMutation({
-    mutationFn: async (id: string) => {
-      const payload: TDeletePDF = { id };
-      await axios.post(`/api/delete-pdf`, payload);
+  const { mutate: deletePDF } = trpc.deletePDF.useMutation({
+    onSuccess: () => {
+      toast({
+        title: "File deleted successfully",
+        description: "The file has been successfully deleted",
+      });
+      utils.getUserPDFs.invalidate();
     },
-    onMutate: (id: string) => {
+    onMutate({ id }) {
       setCurrentlyDeletingFile(id);
     },
-    onSettled: () => {
+    onSettled() {
       setCurrentlyDeletingFile(null);
-      return toast({
-        title: "File deleted successfully",
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user-files"]);
     },
   });
-
-  useEffect(() => {
-    fetchUserFiles();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <main className="mx-auto max-w-7xl md:p-10">
@@ -68,22 +59,22 @@ const Dashboard = () => {
         </h1>
         <FileUploadButton />
       </div>
-      {userFiles && userFiles.length > 0 ? (
+      {userPDFs && userPDFs.length > 0 ? (
         <ul className="mt-8 grid grid-cols-1 gap-6 divide-y divide-zinc-200 px-2 md:grid-cols-2 md:px-0 lg:grid-cols-3">
-          {userFiles
+          {userPDFs
             .sort(
               (a, b) =>
                 new Date(b.createdAt).getTime() -
                 new Date(a.createdAt).getTime(),
             )
-            .map((file) => {
+            .map((pdf) => {
               return (
                 <li
-                  key={file.id}
+                  key={pdf.id}
                   className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow transition hover:shadow-lg"
                 >
                   <Link
-                    href={`/dashboard/${file.id}`}
+                    href={`/dashboard/${pdf.id}`}
                     className="flex flex-col gap-2"
                   >
                     <div className="flex w-full items-center justify-between space-x-6 px-6 pt-6">
@@ -91,7 +82,7 @@ const Dashboard = () => {
                       <div className="flex-1 truncate">
                         <div className="flex items-center space-x-3">
                           <h3 className="truncate text-lg font-medium text-zinc-900">
-                            {file.name}
+                            {pdf.name}
                           </h3>
                         </div>
                       </div>
@@ -101,16 +92,16 @@ const Dashboard = () => {
                   <div className="mt-4 grid grid-cols-2 place-items-center gap-6 px-6 py-4 text-xs text-zinc-500">
                     <div className="flex items-center gap-2">
                       <PlusCircle className="h-4 w-4" />
-                      {format(new Date(file.createdAt), "MMM d yyyy")}
+                      {format(new Date(pdf.createdAt), "MMM d yyyy")}
                     </div>
 
                     <Button
-                      onClick={() => deleteFile(file.id)}
+                      onClick={() => deletePDF({ id: pdf.id })}
                       size="sm"
                       className="w-full"
                       variant="destructive"
                     >
-                      {currentlyDeletingFile === file.id ? (
+                      {currentlyDeletingFile === pdf.id ? (
                         <Loader2 className="h-4 w-4 animate-spin text-primary" />
                       ) : (
                         <Bomb className="h-4 w-4" />
@@ -121,39 +112,10 @@ const Dashboard = () => {
               );
             })}
         </ul>
-      ) : isFetchingUserFiles ? (
+      ) : isFetchingUserPDFs ? (
         <div className="mt-8 grid grid-cols-1 gap-5 px-4 lg:grid-cols-3 lg:px-0">
           <SkeletonTheme baseColor="#fff" highlightColor="#f1fdfa">
-            <Skeleton
-              height={100}
-              className="my-2 flex items-center"
-              count={1}
-            />
-            <Skeleton
-              height={100}
-              className="my-2 flex items-center"
-              count={1}
-            />
-            <Skeleton
-              height={100}
-              className="my-2 flex items-center"
-              count={1}
-            />
-            <Skeleton
-              height={100}
-              className="my-2 flex items-center"
-              count={1}
-            />
-            <Skeleton
-              height={100}
-              className="my-2 flex items-center"
-              count={1}
-            />
-            <Skeleton
-              height={100}
-              className="my-2 flex items-center"
-              count={1}
-            />
+            <SkeletonList count={6} />
           </SkeletonTheme>
         </div>
       ) : (

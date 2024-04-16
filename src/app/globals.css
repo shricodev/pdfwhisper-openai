@@ -24,19 +24,6 @@
     --input: 220 13% 91%;
     --ring: 262.1 83.3% 57.8%;
     --radius: 0.5rem;
-
-    /* For customising Hanko components. */
-    --color: #111827;
-    --color-shade-1: #d1d5db;
-    --brand-color: #884dee;
-    --background-color: #ffffff;
-    --headline1-font-size: 29px;
-    --headline2-font-size: 16px;
-    --border-radius: 6px;
-    --font-size: 14px;
-    --item-height: 36px;
-    --link-color: #1c73e8;
-    --divider-padding: 0 15px;
   }
 
   .dark {
@@ -72,53 +59,6 @@
     display: none;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
-  }
-
-  hanko-auth,
-  hanko-profile {
-    font-family: "Poppins", Sans;
-    @apply shadow-2xl;
-  }
-
-  hanko-auth {
-    --container-max-width: 640px;
-    --container-padding: 40px;
-  }
-
-  hanko-profile {
-    --container-max-width: 550px;
-    --container-padding: 30px;
-  }
-
-  hanko-auth::part(container),
-  hanko-profile::part(container) {
-    @apply rounded-2xl;
-    border: solid 1px #d8dee3;
-  }
-
-  hanko-auth::part(headline1),
-  hanko-profile::part(headline1),
-  hanko-auth::part(headline2),
-  hanko-profile::part(headline2) {
-    color: #1f2328;
-    line-height: 36px;
-  }
-
-  hanko-auth::part(form-item) {
-    @apply min-w-full;
-  }
-
-  hanko-auth::part(input),
-  hanko-profile::part(input) {
-    @apply mb-3 bg-white;
-  }
-
-  hanko-auth::part(secondary-button) {
-    border-color: var(--color-shade-1);
-  }
-
-  hanko-auth::part(divider) {
-    @apply mx-0 my-6;
   }
 
   .scrollbar-w-2::-webkit-scrollbar {

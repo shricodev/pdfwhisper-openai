@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 
-import axios from "axios";
 import Dropzone from "react-dropzone";
-import { File } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { FileText, Loader2, UploadCloud } from "lucide-react";
 
@@ -16,9 +14,9 @@ import {
 import { toast } from "@/hooks/use-toast";
 
 import { useUploadThing } from "@/lib/uploadThing";
-import { TGetPDF } from "@/lib/validators/getUserPDF";
 
-import { Progress } from "../ui/Progress";
+import { Progress } from "@/components/ui/Progress";
+import { trpc } from "@/app/_trpc/client";
 
 const FileUploadDropzone = () => {
   const router = useRouter();
@@ -42,6 +40,14 @@ const FileUploadDropzone = () => {
     }, 500);
     return interval;
   };
+
+  const { mutate: startPolling } = trpc.getPDF.useMutation({
+    onSuccess: (file) => {
+      router.push(`/dashboard/${file.id}`);
+    },
+    retry: true,
+    retryDelay: 500,
+  });
 
   return (
     <Dropzone
@@ -72,19 +78,7 @@ const FileUploadDropzone = () => {
         clearInterval(progress);
         setUploadProgress(100);
 
-        try {
-          const payload: TGetPDF = { key };
-          const { data, status }: { data: File; status: number } =
-            await axios.post("/api/get-pdf", payload);
-          if (status === 200) {
-            router.push(`/dashboard/${data.id}`);
-          }
-        } catch (error) {
-          return toast({
-            variant: "destructive",
-            title: "Something went wrong. Please try again later.",
-          });
-        }
+        startPolling({ key });
       }}
     >
       {({ getRootProps, getInputProps, acceptedFiles }) => (
@@ -146,6 +140,15 @@ const FileUploadDropzone = () => {
                   ) : null}
                 </div>
               ) : null}
+
+              {/* Adding this input tag is required in some browsers to show the file upload popup. */}
+              {/* Refer to this issue for Firefox: https://github.com/react-dropzone/react-dropzone/issues/1294 */}
+              <input
+                {...getInputProps()}
+                type="file"
+                id="dropzone-pdf"
+                className="hidden"
+              />
             </label>
           </div>
         </div>

@@ -2,7 +2,7 @@ import { useContext, useRef } from "react";
 
 import { SendHorizonal } from "lucide-react";
 
-import { ChatContext } from "../Context/ChatContext";
+import { ChatContext } from "@/components/Chat/Context/ChatContext";
 
 import { Button } from "@/components/ui/Button";
 import { Textarea } from "@/components/ui/Textarea";

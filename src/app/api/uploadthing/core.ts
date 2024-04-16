@@ -6,7 +6,7 @@ import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { db } from "@/db";
 
 import { pinecone } from "@/lib/pinecone";
-import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 const f = createUploadthing();
 
@@ -16,9 +16,13 @@ export const ourFileRouter = {
   pdfUploader: f({ pdf: { maxFileSize: "4MB" } })
     // Set permissions and file types for this FileRoute
     .middleware(async ({ req }) => {
-      const isAuthenticated = await isAuth();
-      if (!isAuthenticated) throw new Error("Unauthorized");
-      const userId = await getUserId();
+      const { isAuthenticated, getUser } = getKindeServerSession();
+      const isAuth = await isAuthenticated();
+      const user = await getUser();
+
+      if (!isAuth) throw new Error("Unauthorized");
+      const userId = user?.id;
+
       if (!userId) throw new Error("Unauthorized");
       return { userId };
     })
@@ -49,6 +53,7 @@ export const ourFileRouter = {
         });
 
         await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
+          // TODO: Fix it
           pineconeIndex,
           // ! The namespace feature is not supported for the free tier of Pinecone.
           // namespace: createdFile.id,

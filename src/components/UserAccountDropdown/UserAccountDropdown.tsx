@@ -1,14 +1,8 @@
 "use client";
 
-import { useContext } from "react";
-
 import Link from "next/link";
 
-import LogoutButton from "../HankoLogout/LogoutBotton";
-
-import { UserDataContext } from "../Providers/UserDataContext";
-
-import UserAvatar from "../UserIcon/UserIcon";
+import Image from "next/image";
 
 import {
   DropdownMenu,
@@ -17,20 +11,51 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from "../ui/DropdownMenu";
+import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import { Button } from "../ui/Button";
+import { Avatar, AvatarFallback } from "../ui/Avatar";
+import { User2 } from "lucide-react";
 
-const UserAccountDropdown = () => {
-  const { email } = useContext(UserDataContext);
+interface Props {
+  email: string | undefined;
+  name: string;
+  imageUrl: string;
+}
 
+const UserAccountDropdown = ({ email, name, imageUrl }: Props) => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
-        <UserAvatar className="h-10 w-10 sm:h-7 sm:w-7" />
+      <DropdownMenuTrigger asChild className="overflow-visible">
+        <Button className="aspect-square h-8 w-8 rounded-full bg-slate-400">
+          <Avatar className="relative h-8 w-8">
+            {imageUrl ? (
+              <div className="relative aspect-square h-full w-full">
+                <Image
+                  fill
+                  src={imageUrl}
+                  alt="profile picture"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+            ) : (
+              <AvatarFallback>
+                <span className="sr-only">{name}</span>
+                <User2 className="h-4 w-4 text-zinc-900" />
+              </AvatarFallback>
+            )}
+          </Avatar>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-white" align="end">
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex flex-col space-y-1 leading-none">
-            {email && (
+            {name && (
               <p className="w-[200px] truncate text-sm text-zinc-700 dark:text-zinc-300">
+                {name}
+              </p>
+            )}
+            {email && (
+              <p className="w-[200px] truncate text-sm text-zinc-400 dark:text-zinc-300">
                 {email}
               </p>
             )}
@@ -51,7 +76,7 @@ const UserAccountDropdown = () => {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem className="cursor-pointer">
-          <LogoutButton className="w-full" />
+          <LogoutLink>Logout</LogoutLink>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

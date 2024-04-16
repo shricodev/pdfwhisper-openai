@@ -1,44 +1,31 @@
 "use client";
 
-import { useEffect } from "react";
-
-import axios from "axios";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, Loader2, XCircle } from "lucide-react";
 
-import ChatInput from "../ChatInput/ChatInput";
+import ChatInput from "@/components/Chat/ChatInput/ChatInput";
 
-import { ChatContextProvider } from "../Context/ChatContext";
+import { ChatContextProvider } from "@/components/Chat/Context/ChatContext";
 
-import Messages from "../Messages/Messages";
+import Messages from "@/components/Chat/Messages/Messages";
 
 import { buttonVariants } from "@/components/ui/Button";
+import { trpc } from "@/app/_trpc/client";
 
 interface Props {
-  fileId: string;
+  pdfID: string;
 }
 
-const WrapChat = ({ fileId }: Props) => {
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: ["get-upload-status"],
-    enabled: false,
-    queryFn: async () => {
-      if (!fileId) return;
-      const { data } = await axios.get(
-        `/api/get-upload-status?fileId=${fileId}`,
-      );
-      type UploadStatus = "SUCCESS" | "PENDING" | "FAILURE" | "PROCESSING";
-      return data?.uploadStatus as UploadStatus;
+const WrapChat = ({ pdfID: fileId }: Props) => {
+  const { data, isLoading } = trpc.getPDFUploadStatus.useQuery(
+    {
+      id: fileId,
     },
-    refetchInterval: (dataStatus) =>
-      dataStatus === "SUCCESS" || dataStatus === "FAILURE" ? false : 500,
-  });
-
-  useEffect(() => {
-    refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    {
+      refetchInterval: (data) =>
+        data?.status === "SUCCESS" || data?.status === "FAILED" ? false : 500,
+    },
+  );
 
   if (isLoading) {
     return (
@@ -60,7 +47,7 @@ const WrapChat = ({ fileId }: Props) => {
     );
   }
 
-  if (data === "PROCESSING") {
+  if (data?.status === "PROCESSING") {
     return (
       <div className="relative flex min-h-full flex-col justify-between gap-2 divide-y divide-zinc-200 bg-zinc-50">
         <div className="mb-28 flex flex-1 flex-col items-center justify-center">
@@ -78,7 +65,8 @@ const WrapChat = ({ fileId }: Props) => {
     );
   }
 
-  if (data === "FAILURE") {
+  // The file rendering is going to fail if the number of pages is more than specified in the quota.
+  if (data?.status === "FAILED") {
     return (
       <div className="relative flex min-h-full flex-col justify-between gap-2 divide-y divide-zinc-200 bg-zinc-50">
         <div className="mb-28 flex flex-1 flex-col items-center justify-center">
@@ -86,7 +74,8 @@ const WrapChat = ({ fileId }: Props) => {
             <XCircle className="h-8 w-8 text-red-500" />
             <h3 className="text-xl font-semibold">Too many pages in PDF</h3>
             <p className="text-sm text-zinc-500">
-              Your <span className="font-medium">Free</span> plan supports up to{" "}
+              {/* TODO: Change this value to dynamic based on the user's plan. */}
+              Your <span className="font-medium">Free</span> plan supports up to
               5 pages per PDF.
             </p>
             <Link

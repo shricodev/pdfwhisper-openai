@@ -1,13 +1,11 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
-
-import { UserDataContext } from "../Providers/UserDataContext";
 
 import { toast } from "@/hooks/use-toast";
 
@@ -20,7 +18,9 @@ interface Props {
 }
 
 const UpgradeButton = ({ isSubscribed }: Props) => {
-  const { email, id } = useContext(UserDataContext);
+  // TODO: Change these with the actual values.
+  const email = "",
+    id = "";
   const [isDataFetched, setIsDataFetched] = useState<boolean>(false);
   const router = useRouter();
 

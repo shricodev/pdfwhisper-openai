@@ -1,16 +1,20 @@
 import Link from "next/link";
-import { Github, LogInIcon, Rocket } from "lucide-react";
+import { Github, Rocket } from "lucide-react";
 
 import UserAccountDropdown from "../UserAccountDropdown/UserAccountDropdown";
 
 import WrapWidth from "@/helpers/WrapWidth";
 
-import { isAuth } from "@/lib/getUserDetailsServer";
+import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
 
 import { buttonVariants } from "../ui/Button";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 const Navbar = async () => {
-  const isAuthenticated = await isAuth();
+  const { isAuthenticated, getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  const isAuth = await isAuthenticated();
   return (
     <nav className="sticky inset-x-0 top-0 z-50 h-14 w-full border-b border-gray-200 bg-white/75 pr-4 backdrop-blur-lg transition-all">
       <WrapWidth>
@@ -46,19 +50,25 @@ const Navbar = async () => {
               >
                 Pricing
               </Link>
-              {isAuthenticated ? (
-                <UserAccountDropdown />
+              {isAuth ? (
+                <UserAccountDropdown
+                  name={
+                    !user?.given_name || !user?.family_name
+                      ? "Your Account"
+                      : `${user.given_name} ${user.family_name}`
+                  }
+                  email={user?.email ?? ""}
+                  imageUrl={user?.picture ?? ""}
+                />
               ) : (
-                <Link
-                  href="/login"
+                <LoginLink
                   className={buttonVariants({
                     variant: "default",
                     size: "sm",
                   })}
                 >
                   Login
-                  <LogInIcon className="ml-px h-5 w-5" />
-                </Link>
+                </LoginLink>
               )}
             </>
           </div>

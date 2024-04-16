@@ -1,18 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { db } from "@/db";
-
-import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export async function GET(req: NextRequest) {
   try {
-    const isAuthenticated = await isAuth();
+    const { isAuthenticated, getUser } = getKindeServerSession();
 
     if (!isAuthenticated) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const userId = await getUserId();
+    const user = await getUser();
+    const userId = user?.id;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });

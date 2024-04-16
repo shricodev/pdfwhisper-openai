@@ -1,13 +1,13 @@
 import { PLANS } from "@/config/plans";
 
 import { db } from "@/db";
-
-import { getUserId, isAuth } from "./getUserDetailsServer";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export async function getUserSubscriptionPlan() {
-  const isAuthenticated = await isAuth();
+  const { isAuthenticated, getUser } = getKindeServerSession();
+  const isAuth = await isAuthenticated();
 
-  if (!isAuthenticated) {
+  if (!isAuth) {
     return {
       ...PLANS[0],
       isSubscribed: false,
@@ -15,7 +15,8 @@ export async function getUserSubscriptionPlan() {
     };
   }
 
-  const userId = await getUserId();
+  const user = await getUser();
+  const userId = user?.id;
 
   // Not so necessary as it is already handled above, but just to be sure.
   if (!userId) {

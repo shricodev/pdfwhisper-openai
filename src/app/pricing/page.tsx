@@ -9,7 +9,7 @@ import {
 import WrapWidth from "@/helpers/WrapWidth";
 
 import { cn } from "@/lib/utils";
-import { isAuth } from "@/lib/getUserDetailsServer";
+
 import { getUserSubscriptionPlan } from "@/lib/khalti";
 
 import { buttonVariants } from "@/components/ui/Button";
@@ -21,9 +21,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/Tooltip";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 const page = async () => {
-  const isAuthenticated = await isAuth();
+  const { isAuthenticated } = getKindeServerSession();
+
+  const isAuth = await isAuthenticated();
 
   const { isSubscribed } = await getUserSubscriptionPlan();
   const pricingItems = [
@@ -202,16 +205,16 @@ const page = async () => {
                   <div className="p-5">
                     {plan === "Free" ? (
                       <Link
-                        href={isAuthenticated ? "/dashboard" : "/login"}
+                        href={isAuth ? "/dashboard" : "/login"}
                         className={buttonVariants({
                           className: "w-full",
                           variant: "secondary",
                         })}
                       >
-                        {isAuthenticated ? "Dashboard" : "Login"}
+                        {isAuth ? "Dashboard" : "Login"}
                         <ArrowRight className="ml-1.5 h-5 w-5" />
                       </Link>
-                    ) : isAuthenticated ? (
+                    ) : isAuth ? (
                       <UpgradeButton isSubscribed={isSubscribed} />
                     ) : (
                       <Link
@@ -220,7 +223,7 @@ const page = async () => {
                           className: "w-full",
                         })}
                       >
-                        {isAuthenticated ? "Upgrade now" : "Login"}
+                        {isAuth ? "Upgrade now" : "Login"}
                         <ArrowRight className="ml-1.5 h-5 w-5" />
                       </Link>
                     )}

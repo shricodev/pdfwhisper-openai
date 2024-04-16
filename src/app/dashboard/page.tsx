@@ -2,15 +2,16 @@ import { redirect } from "next/navigation";
 
 import { db } from "@/db";
 
-import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 import Dashboard from "@/components/Dashboard/Dashboard";
 
 const Page = async () => {
-  const isAuthenticated = await isAuth();
+  const { isAuthenticated, getUser } = getKindeServerSession();
   if (!isAuthenticated) return redirect("/login");
 
-  const userId = await getUserId();
+  const user = await getUser();
+  const userId = user?.id;
   if (!userId) return redirect("/login");
 
   // search for user in database with userId

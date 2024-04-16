@@ -3,27 +3,24 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { db } from "@/db";
 
-import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { AuthCallbackValidator } from "@/lib/validators/authCallback";
+import { trpc } from "@/app/_trpc/client";
 
 export async function POST(req: NextRequest) {
   try {
-    const isAuthenticated = await isAuth();
+    const { isAuthenticated, getUser } = getKindeServerSession();
 
     if (!isAuthenticated) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const userId = await getUserId();
+    const user = await getUser();
+    const userId = user?.id;
+
     const body = await req.json();
     // Parse the body with zod to make sure the request is what we expect.
     const { email, id } = AuthCallbackValidator.parse(body);
-
-    // Validate all the data is there.
-    // id is sent from the frontend. They both are same.
-    if (!userId || !email || !id) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
 
     const dbUser = await db.user.findFirst({
       where: {
@@ -34,7 +31,7 @@ export async function POST(req: NextRequest) {
     if (!dbUser) {
       await db.user.create({
         data: {
-          id: userId,
+          id: userId ?? "",
           email: email,
         },
       });

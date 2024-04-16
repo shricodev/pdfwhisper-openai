@@ -27,13 +27,8 @@ const FullscreenPDF = ({ url }: Props) => {
         }
       }}
     >
-      <DialogTrigger asChild>
-        <Button
-          aria-label="full screen"
-          variant="ghost"
-          size="sm"
-          onClick={() => setIsOpen(true)}
-        >
+      <DialogTrigger asChild onClick={() => setIsOpen(true)}>
+        <Button aria-label="full screen" variant="ghost" size="sm">
           <Expand className="h-4 w-4" />
         </Button>
       </DialogTrigger>

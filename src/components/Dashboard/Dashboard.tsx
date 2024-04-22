@@ -5,18 +5,24 @@ import { format } from "date-fns";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { Bomb, Ghost, Loader2, PlusCircle, Text } from "lucide-react";
 
-import FileUploadButton from "../FileUploadButton/FileUploadButton";
+import FileUploadButton from "@/components/FileUploadButton/FileUploadButton";
 
-import { Button } from "../ui/Button";
+import { Button } from "@/components/ui/Button";
 import { trpc } from "@/app/_trpc/client";
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
+import { getUserSubscriptionPlan } from "@/lib/stripe";
+
+interface Props {
+  subscriptionPlan: Awaited<ReturnType<typeof getUserSubscriptionPlan>>;
+}
 
 // For displaying the Skeletons for loading state.
 const SkeletonList = ({ count }: { count: number }) => {
   const skeletons = Array.from({ length: count }, (_, index) => (
     <Skeleton
-      key={index} // It's important to provide a unique key for each child in a list
+      // It's important to provide a unique key for each child in a list
+      key={index}
       height={100}
       className="my-2 flex items-center"
       count={1}
@@ -26,9 +32,10 @@ const SkeletonList = ({ count }: { count: number }) => {
   return <>{skeletons}</>;
 };
 
-const Dashboard = () => {
+const Dashboard = ({ subscriptionPlan }: Props) => {
   const { data: userPDFs, isLoading: isFetchingUserPDFs } =
     trpc.getUserPDFs.useQuery();
+
   const [currentlyDeletingFile, setCurrentlyDeletingFile] = useState<
     string | null
   >(null);
@@ -57,7 +64,7 @@ const Dashboard = () => {
         <h1 className="mb-3 hidden text-4xl font-bold text-gray-900 md:block">
           Your Uploads 📂
         </h1>
-        <FileUploadButton />
+        <FileUploadButton isSubscribed={subscriptionPlan.isSubscribed} />
       </div>
       {userPDFs && userPDFs.length > 0 ? (
         <ul className="mt-8 grid grid-cols-1 gap-6 divide-y divide-zinc-200 px-2 md:grid-cols-2 md:px-0 lg:grid-cols-3">
@@ -122,7 +129,7 @@ const Dashboard = () => {
         <div className="mt-20 flex flex-col items-center gap-2">
           <Ghost className="h-10 w-10 text-zinc-800" />
           <h3 className="text-xl font-semibold">
-            You have not uploaded any files.
+            You have not uploaded any PDFs.
           </h3>
           <p>Start by uploading your first PDF file 🗃️</p>
         </div>

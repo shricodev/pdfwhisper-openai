@@ -1,20 +1,12 @@
 import Link from "next/link";
-import { AlertCircle, ArrowRight, BadgeHelp, Check, Minus } from "lucide-react";
-
-import {
-  SUBSCRIBED_USER_FILE_SIZE,
-  UNSUBSCRIBED_USER_FILE_SIZE,
-} from "@/config/config";
+import { ArrowRight, BadgeHelp, Check, Minus } from "lucide-react";
 
 import WrapWidth from "@/helpers/WrapWidth";
 
 import { cn } from "@/lib/utils";
 
-import { getUserSubscriptionPlan } from "@/lib/khalti";
-
 import { buttonVariants } from "@/components/ui/Button";
 import UpgradeButton from "@/components/UpgradeButton/UpgradeButton";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
 import {
   Tooltip,
   TooltipContent,
@@ -22,110 +14,34 @@ import {
   TooltipTrigger,
 } from "@/components/ui/Tooltip";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { PLANS, PRICINGITEMS } from "@/config/plans";
 
 const page = async () => {
-  const { isAuthenticated } = getKindeServerSession();
+  const { getUser } = getKindeServerSession();
 
-  const isAuth = await isAuthenticated();
-
-  const { isSubscribed } = await getUserSubscriptionPlan();
-  const pricingItems = [
-    {
-      plan: "Free",
-      tagline: "For small talks with your PDFs",
-      quota: 5,
-      features: [
-        {
-          text: `${UNSUBSCRIBED_USER_FILE_SIZE}MB file size limit`,
-          footnote: "The maximum file size of a single PDF file.",
-        },
-        {
-          text: "Mobile-friendly interface",
-        },
-        {
-          text: "Higher-quality responses",
-          footnote: "Better algorithmic responses for enhanced content quality",
-          negative: true,
-        },
-        {
-          text: "Priority support",
-          negative: true,
-        },
-      ],
-    },
-    {
-      plan: "Pro",
-      tagline: "For larger projects with higher needs",
-      quota: 20,
-      features: [
-        {
-          text: `${SUBSCRIBED_USER_FILE_SIZE}MB file size limit`,
-          footnote: "The maximum file size of a single PDF file.",
-        },
-        {
-          text: "Mobile-friendly interface",
-        },
-        {
-          text: "Higher-quality responses",
-          footnote: "Better algorithmic responses for enhanced content quality",
-        },
-        {
-          text: "Priority support",
-        },
-      ],
-    },
-  ];
+  const user = await getUser();
+  const userId = user?.id;
 
   return (
     <>
-      <div className="mx-auto max-w-5xl pt-5 md:pt-8">
-        <Alert className="shadow-md">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Heads Up!</AlertTitle>
-          <AlertDescription>
-            This feature is not ready for production as it is in review. No
-            proper payment gateway like{" "}
-            <span className="text-base text-primary">Stripe</span>,{" "}
-            <span className="text-base text-primary">Razorpay</span>, are
-            available in <span className="font-semibold">Nepal</span>. However,
-            I have implemented{" "}
-            <span className="text-base text-primary">Khalti</span> payment
-            gateway for testing.
-            <h3 className="font-primary my-2 flex h-10 items-center border-l-4 border-orange-300 font-semibold">
-              <span className="pl-2">Test Credentials</span>
-            </h3>
-            <p className="text-zinc-700">
-              <span className="font-semibold">Mobile Number:</span> 9800000000,
-              9800000001, 9800000002
-            </p>
-            <p className="text-zinc-700">
-              <span className="font-semibold">MPIN:</span> 1111
-            </p>
-            <p className="text-zinc-700">
-              <span className="font-semibold">OTP:</span> 987654
-            </p>
-          </AlertDescription>
-        </Alert>
-      </div>
       <WrapWidth className="mx-auto mb-8 mt-24 max-w-5xl text-center">
         <div className="mx-auto mb-10 sm:max-w-lg">
           <h1 className="text-6xl font-bold sm:text-7xl">Pricing 💸</h1>
           <p className="mt-5 text-gray-600 sm:text-lg">
             Whether you&apos;re just trying out our service or upgrade to a PRO
-            Plan, I&apos;ve got you covered. 🔥🚀
+            Plan, we&apos;ve got you covered. 🔥🚀
           </p>
         </div>
         <div className="grid grid-cols-1 gap-10 pt-12 lg:grid-cols-2">
           <TooltipProvider>
-            {pricingItems.map(({ plan, tagline, features, quota }) => {
-              {
-                /* TODO: switch back to dollars once the project is done reviewing. */
-              }
-              const priceForSubscription = plan === "Pro" ? 900 : 0;
+            {PRICINGITEMS.map(({ plan, tagline, features, quota }) => {
+              const planPrice =
+                PLANS.find((p) => p.slug === plan.toLowerCase())?.price
+                  .amount || 0;
 
               return (
                 <div
-                  key={quota}
+                  key={plan}
                   className={cn("relative rounded-2xl bg-white shadow-lg", {
                     "border-2 border-purple-600 shadow-purple-200":
                       plan === "Pro",
@@ -143,14 +59,13 @@ const page = async () => {
                     </h3>
                     <p className="text-gray-500">{tagline}</p>
                     <p className="font-display my-5 text-6xl font-semibold">
-                      {/* TODO: switch back to dollars once the project is done reviewing. */}
-                      Rs. {priceForSubscription}
+                      ${planPrice}
                     </p>
                     <p className="text-gray-500">per month</p>
                   </div>
                   <div className="flex h-20 items-center justify-center border-b border-t border-gray-200 bg-gray-50">
                     <div className="flex items-center space-x-1">
-                      <p>{quota.toLocaleString()} PDFs/mo included</p>
+                      <p>{quota?.toLocaleString() ?? "-"} PDFs/mo included</p>
                       <Tooltip delayDuration={300}>
                         <TooltipTrigger className="ml-1.5 cursor-default">
                           <BadgeHelp className="h-4 w-4 text-zinc-500" />
@@ -205,25 +120,25 @@ const page = async () => {
                   <div className="p-5">
                     {plan === "Free" ? (
                       <Link
-                        href={isAuth ? "/dashboard" : "/login"}
+                        href={userId ? "/dashboard" : "/api/auth/login"}
                         className={buttonVariants({
                           className: "w-full",
                           variant: "secondary",
                         })}
                       >
-                        {isAuth ? "Dashboard" : "Login"}
+                        {userId ? "Dashboard" : "Login"}
                         <ArrowRight className="ml-1.5 h-5 w-5" />
                       </Link>
-                    ) : isAuth ? (
-                      <UpgradeButton isSubscribed={isSubscribed} />
+                    ) : userId ? (
+                      <UpgradeButton />
                     ) : (
                       <Link
-                        href="/login"
+                        href="/api/auth/register"
                         className={buttonVariants({
                           className: "w-full",
                         })}
                       >
-                        {isAuth ? "Upgrade now" : "Login"}
+                        {userId ? "Upgrade now" : "Sign up"}
                         <ArrowRight className="ml-1.5 h-5 w-5" />
                       </Link>
                     )}

@@ -8,29 +8,27 @@ import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { db } from "@/db";
 
 import { openai } from "@/lib/openai";
-import { pinecone } from "@/lib/pinecone";
-import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
+import { getPineconeClient } from "@/lib/pinecone";
+
 import { AddMessageValidator } from "@/lib/validators/addMessage";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const isAuthenticated = await isAuth();
+    const { isAuthenticated, getUser } = getKindeServerSession();
+    const isAuth = await isAuthenticated();
 
-    if (!isAuthenticated) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
+    if (!isAuth) return new NextResponse("Unauthorized", { status: 401 });
 
-    const userId = await getUserId();
+    const user = await getUser();
+    const userId = user?.id;
 
-    if (!userId) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
+    if (!userId) return new NextResponse("Unauthorized", { status: 401 });
+
+    const pinecone = await getPineconeClient();
+
     const body = await req.json();
     const { fileId, message } = AddMessageValidator.parse(body);
-
-    if (!fileId || !message) {
-      return new NextResponse("Bad Request", { status: 400 });
-    }
 
     const file = await db.file.findFirst({
       where: {
@@ -39,9 +37,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    if (!file) {
-      return new NextResponse("File not found", { status: 404 });
-    }
+    if (!file) return new NextResponse("File not found", { status: 404 });
 
     await db.message.create({
       data: {

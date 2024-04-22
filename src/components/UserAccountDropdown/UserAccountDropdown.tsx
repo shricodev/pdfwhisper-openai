@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 
 import Image from "next/image";
@@ -10,11 +8,12 @@ import {
   DropdownMenuContent,
   DropdownMenuSeparator,
   DropdownMenuItem,
-} from "../ui/DropdownMenu";
+} from "@/components/ui/DropdownMenu";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
-import { Button } from "../ui/Button";
-import { Avatar, AvatarFallback } from "../ui/Avatar";
+import { Button } from "@/components/ui/Button";
+import { Avatar, AvatarFallback } from "@/components/ui/Avatar";
 import { User2 } from "lucide-react";
+import { getUserSubscriptionPlan } from "@/lib/stripe";
 
 interface Props {
   email: string | undefined;
@@ -22,7 +21,8 @@ interface Props {
   imageUrl: string;
 }
 
-const UserAccountDropdown = ({ email, name, imageUrl }: Props) => {
+const UserAccountDropdown = async ({ email, name, imageUrl }: Props) => {
+  const subscriptionPlan = await getUserSubscriptionPlan();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="overflow-visible">
@@ -67,11 +67,11 @@ const UserAccountDropdown = ({ email, name, imageUrl }: Props) => {
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild className="cursor-pointer">
-          <Link href="/profile">Profile</Link>
-        </DropdownMenuItem>
-
-        <DropdownMenuItem asChild className="cursor-pointer">
-          <Link href="/pricing">Pricing</Link>
+          {subscriptionPlan?.isSubscribed ? (
+            <Link href="/dashboard/billing">Manage Subscription</Link>
+          ) : (
+            <Link href="/pricing">Upgrade Now</Link>
+          )}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
 

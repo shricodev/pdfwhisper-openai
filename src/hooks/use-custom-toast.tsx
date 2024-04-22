@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
-import { toast } from "./use-toast";
+import { toast } from "@/hooks/use-toast";
 
 import { buttonVariants } from "@/components/ui/Button";
 
@@ -14,7 +14,7 @@ export const useCustomToast = () => {
       className: "rounded-xl",
       action: (
         <Link
-          href="/login"
+          href="/api/auth/login"
           onClick={() => dismiss()}
           className={cn(
             buttonVariants({

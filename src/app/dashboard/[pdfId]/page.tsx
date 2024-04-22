@@ -17,7 +17,7 @@ const page = async ({ params }: Props) => {
   const { isAuthenticated, getUser } = getKindeServerSession();
   const isAuth = await isAuthenticated();
 
-  if (!isAuth) redirect("/login");
+  if (!isAuth) redirect("/api/auth/login");
 
   const user = await getUser();
   const userId = user?.id;

@@ -59,7 +59,7 @@ export default async function Home() {
           PDFwhisper allows you to have a conversation with your PDF documents
         </p>
         <Link
-          href="/dashboard"
+          href="/api/auth/login"
           className={buttonVariants({
             size: "lg",
             className: "mt-2 rounded-[1.5rem]",
@@ -100,7 +100,7 @@ export default async function Home() {
                   href="/pricing"
                   className="text-orange-500 underline underline-offset-2"
                 >
-                  premium plan
+                  pro plan
                 </Link>
                 .
               </span>

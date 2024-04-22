@@ -20,19 +20,19 @@ import {
   SearchIcon,
 } from "lucide-react";
 
-import FullscreenPDF from "../FullscreenPDF/FullscreenPDF";
+import FullscreenPDF from "@/components/FullscreenPDF/FullscreenPDF";
 
 import { toast } from "@/hooks/use-toast";
 
 import { cn } from "@/lib/utils";
 
 import { Input } from "../ui/Input";
-import { Button } from "../ui/Button";
+import { Button } from "@/components/ui/Button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "../ui/DropdownMenu";
+} from "@/components/ui/DropdownMenu";
 
 interface Props {
   url: string;
@@ -45,8 +45,10 @@ const RenderPDF = ({ url }: Props) => {
   const [currPage, setCurrPage] = useState<number>(1);
   const [rotation, setRotation] = useState<number>(0);
   const [scale, setScale] = useState<number>(1);
+
   // To show the previous scaled page, unless the new page is rendered. This helps reduce flicker when changing scale.
   const [renderedScale, setRenderedScale] = useState<number | null>(null);
+
   const { width, ref } = useResizeDetector();
 
   const isLoading = renderedScale !== null && renderedScale !== scale;

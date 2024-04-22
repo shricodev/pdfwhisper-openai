@@ -5,9 +5,9 @@ import Skeleton from "react-loading-skeleton";
 import { Loader2, MessageCircle } from "lucide-react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-import { ChatContext } from "../Context/ChatContext";
+import { ChatContext } from "@/components/Chat/Context/ChatContext";
 
-import Message from "../Message/Message";
+import Message from "@/components/Chat/Message/Message";
 
 import { INFINITE_QUERY_LIMIT } from "@/config/config";
 
@@ -100,11 +100,6 @@ const Messages = ({ fileId }: Props) => {
           <h3 className="text-xl font-semibold">You&apos;re all set!</h3>
           <p className="text-sm text-zinc-500">
             Ask your first question to the PDFwhisper bot.
-          </p>
-          <p className="max-w-2xl text-sm text-zinc-500">
-            <span className="font-semibold">🔴Message to Reviewers:</span>{" "}
-            Running low on time, couldn&apos;t add optimistic chat update.
-            Please refresh the page to view the message.
           </p>
         </div>
       )}

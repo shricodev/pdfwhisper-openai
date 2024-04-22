@@ -1,14 +1,15 @@
 import Link from "next/link";
 import { Github, Rocket } from "lucide-react";
 
-import UserAccountDropdown from "../UserAccountDropdown/UserAccountDropdown";
+import UserAccountDropdown from "@/components/UserAccountDropdown/UserAccountDropdown";
 
 import WrapWidth from "@/helpers/WrapWidth";
 
 import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
 
-import { buttonVariants } from "../ui/Button";
+import { buttonVariants } from "@/components/ui/Button";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import MobileNavbar from "@/components/MobileNavbar/MobileNavbar";
 
 const Navbar = async () => {
   const { isAuthenticated, getUser } = getKindeServerSession();
@@ -26,6 +27,9 @@ const Navbar = async () => {
             <Rocket className="h-6 w-6" />
             pdfwhisper.
           </Link>
+
+          {/* The navbar menu for Mobile phones. */}
+          <MobileNavbar isAuth={isAuth} />
 
           <div className="hidden items-center space-x-4 sm:flex">
             <>

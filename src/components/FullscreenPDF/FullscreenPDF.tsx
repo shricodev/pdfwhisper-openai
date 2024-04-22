@@ -7,8 +7,8 @@ import { useResizeDetector } from "react-resize-detector";
 
 import { toast } from "@/hooks/use-toast";
 
-import { Button } from "../ui/Button";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/Dialog";
+import { Button } from "@/components/ui/Button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 
 interface Props {
   url: string;

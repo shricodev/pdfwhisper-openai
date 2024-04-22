@@ -84,7 +84,7 @@ The project currently supports **Google**, **Github** as our OAuth providers.
 👤 **Shrijal Acharya @shricodev**
 
 - Website: https://shricodev.tech
-- Twitter: [@shricodevv](https://twitter.com/shricodevv)
+- Twitter: [@shricodev](https://twitter.com/shricodev)
 - Github: [@shricodev](https://github.com/shricodev)
 - LinkedIn: [@shrijal007](https://linkedin.com/in/shrijal007)
 

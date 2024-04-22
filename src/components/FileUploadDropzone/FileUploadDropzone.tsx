@@ -6,10 +6,7 @@ import Dropzone from "react-dropzone";
 import { useRouter } from "next/navigation";
 import { FileText, Loader2, UploadCloud } from "lucide-react";
 
-import {
-  SUBSCRIBED_USER_FILE_SIZE,
-  UNSUBSCRIBED_USER_FILE_SIZE,
-} from "@/config/config";
+import { PAID_USER_PDF_SIZE, FREE_USER_PDF_SIZE } from "@/config/config";
 
 import { toast } from "@/hooks/use-toast";
 
@@ -18,12 +15,14 @@ import { useUploadThing } from "@/lib/uploadThing";
 import { Progress } from "@/components/ui/Progress";
 import { trpc } from "@/app/_trpc/client";
 
-const FileUploadDropzone = () => {
+const FileUploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
   const router = useRouter();
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [isUploading, setIsUploading] = useState<boolean>(false);
 
-  const { startUpload } = useUploadThing("pdfUploader");
+  const { startUpload } = useUploadThing(
+    isSubscribed ? "freePlanPDFUpload" : "proPlanPDFUpload",
+  );
 
   // This is a simulation of progress. UploadThing does not provide a progress
   // status till the upload is complete.
@@ -100,9 +99,7 @@ const FileUploadDropzone = () => {
                 <p className="text-xs text-zinc-500">
                   PDF (up to{" "}
                   <span className="font-semibold">
-                    {true
-                      ? SUBSCRIBED_USER_FILE_SIZE
-                      : UNSUBSCRIBED_USER_FILE_SIZE}
+                    {isSubscribed ? PAID_USER_PDF_SIZE : FREE_USER_PDF_SIZE}
                     MB
                   </span>
                   )

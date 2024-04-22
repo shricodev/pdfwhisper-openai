@@ -12,17 +12,17 @@ datasource db {
 }
 
 model User {
-  id    String @id @unique //matches kinde user id
+  id    String @id @unique // matches kinde user id
   email String @unique
 
   Message Message[]
   File    File[]
 
-  khaltiPidx             String?       @unique @map(name: "khalti_pidx")
-  khaltiPaymentStatus    PaymentStatus @default(Pending)
-  khaltiTransactionId    String?       @unique @map(name: "khalti_transaction_id")
-  khaltiPaymentId        String?       @unique @map(name: "khalti_payment_id")
-  khaltiCurrentPeriodEnd DateTime?     @map(name: "khalti_current_period_end")
+  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
+  // This is unique for a product.
+  stripePriceId          String?   @map(name: "stripe_price_id")
+  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
 }
 
 enum UploadStatus {
@@ -30,14 +30,6 @@ enum UploadStatus {
   PROCESSING
   SUCCESS
   PENDING
-}
-
-enum PaymentStatus {
-  Completed
-  Pending
-  Initiated
-  Refunded
-  Expired
 }
 
 model File {

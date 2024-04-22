@@ -10,7 +10,7 @@ import { toast } from "@/hooks/use-toast";
 import { TAddMessageValidator } from "@/lib/validators/addMessage";
 
 interface Props {
-  fileId: string;
+  pdfId: string;
   children: React.ReactNode;
 }
 
@@ -30,7 +30,7 @@ export const ChatContext = createContext<TChatContext>({
   isLoading: false,
 });
 
-export const ChatContextProvider = ({ fileId, children }: Props) => {
+export const ChatContextProvider = ({ pdfId: fileId, children }: Props) => {
   const [message, setMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const backupMessage = useRef<string>("");
@@ -43,12 +43,13 @@ export const ChatContextProvider = ({ fileId, children }: Props) => {
         message,
       };
       const { data, status } = await axios.post("/api/message", payload);
-      if (status !== 200) {
-        return toast({
+      if (status < 200 || status >= 400) {
+        toast({
           title: "There was a problem sending this message",
           description: "Please refresh this page and try again",
           variant: "destructive",
         });
+        throw new Error("There was a problem sending this message");
       }
       return data;
     },
@@ -56,9 +57,9 @@ export const ChatContextProvider = ({ fileId, children }: Props) => {
       backupMessage.current = message;
       setMessage("");
     },
-    onError: () => {
-      setMessage(backupMessage.current);
-    },
+
+    onError: () => setMessage(backupMessage.current),
+
     onSuccess: async (stream) => {
       setIsLoading(false);
       if (!stream) {
@@ -69,20 +70,14 @@ export const ChatContextProvider = ({ fileId, children }: Props) => {
         });
       }
     },
-    onSettled: () => {
-      setIsLoading(false);
-    },
+    onSettled: () => setIsLoading(false),
   });
 
-  const addMessage = () => {
-    sendMessage({ message });
-  };
+  const addMessage = () => sendMessage({ message });
 
   const handleUserInputChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
-    setMessage(event.target.value);
-  };
+  ) => setMessage(event.target.value);
 
   return (
     <ChatContext.Provider

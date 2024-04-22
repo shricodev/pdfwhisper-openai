@@ -5,18 +5,22 @@ import { INFINITE_QUERY_LIMIT } from "@/config/config";
 
 import { db } from "@/db";
 
-import { getUserId, isAuth } from "@/lib/getUserDetailsServer";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { GetMessageValidator } from "@/lib/validators/getMessage";
 
 export async function GET(req: NextRequest) {
   try {
-    const isAuthenticated = await isAuth();
+    const { isAuthenticated, getUser } = getKindeServerSession();
 
-    if (!isAuthenticated) {
+    const isAuth = await isAuthenticated();
+
+    if (!isAuth) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const userId = await getUserId();
+    const user = await getUser();
+    const userId = user?.id;
+
     // Not so necessary as it is already handled above, but just to be sure.
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });

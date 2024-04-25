@@ -1,20 +1,19 @@
 import { createUploadthing } from "uploadthing/next";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
-import { PineconeStore } from "langchain/vectorstores/pinecone";
+import { OpenAIEmbeddings } from "@langchain/openai";
+import { PineconeStore } from "@langchain/pinecone";
 
 import { db } from "@/db";
 
-// import { pinecone } from "@/lib/pinecone";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { getUserSubscriptionPlan } from "@/lib/stripe";
 import { PLANS } from "@/config/plans";
-import { FREE_USER_PDF_SIZE, PAID_USER_PDF_SIZE } from "@/config/config";
+import { FREE_USER_PDF_SIZE, PRO_USER_PDF_SIZE } from "@/config/config";
 import { getPineconeClient } from "@/lib/pinecone";
 
 const f = createUploadthing();
 
-const pinecone = getPineconeClient();
+const pinecone = await getPineconeClient();
 
 const middleware = async () => {
   const { isAuthenticated, getUser } = getKindeServerSession();
@@ -66,19 +65,21 @@ const onUploadComplete = async ({
       `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`,
     );
     const pdfBlob = await pdfResponse.blob();
+
+    // Langchain to parse PDF
     const loader = new PDFLoader(pdfBlob);
-    const pageLevelDocs = await loader.load();
-    const pagesAmount = pageLevelDocs.length;
+    const pageLevelDocuments = await loader.load();
+    const pagesCount = pageLevelDocuments.length;
 
     const {
       subscritionPlan: { isSubscribed },
     } = metadata;
 
     const proPagesExceeded =
-      pagesAmount > PLANS.find((plan) => plan.slug === "pro")!.pagesPerPdf;
+      pagesCount > PLANS.find((plan) => plan.slug === "pro")!.pagesPerPdf;
 
     const freePagesExceeded =
-      pagesAmount > PLANS.find((plan) => plan.slug === "free")!.pagesPerPdf;
+      pagesCount > PLANS.find((plan) => plan.slug === "free")!.pagesPerPdf;
 
     // If the user exceeded the page limit, we will mark the file as failed.
     if (
@@ -101,12 +102,12 @@ const onUploadComplete = async ({
       openAIApiKey: process.env.OPENAI_API_KEY,
     });
 
-    await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
-      // TODO: Fix it
+    await PineconeStore.fromDocuments(pageLevelDocuments, embeddings, {
       pineconeIndex,
-      // ! The namespace feature is not supported for the free tier of Pinecone.
+      // TODO: Add namespace feature. The namespace feature is not supported for the free tier of Pinecone.
       // namespace: createdFile.id,
     });
+
     await db.file.update({
       where: {
         id: createdFile.id,
@@ -130,7 +131,7 @@ const onUploadComplete = async ({
 };
 
 const freePlanPDFSizeLimit = FREE_USER_PDF_SIZE;
-const proPlanPDFSizeLimit = PAID_USER_PDF_SIZE;
+const proPlanPDFSizeLimit = PRO_USER_PDF_SIZE;
 
 // FileRouter for the app, can contain multiple FileRoutes
 export const ourFileRouter = {

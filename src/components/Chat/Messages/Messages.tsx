@@ -1,65 +1,60 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef, } from "react";
 
-import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import { Loader2, MessageCircle } from "lucide-react";
-import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { ChatContext } from "@/components/Chat/Context/ChatContext";
 
 import Message from "@/components/Chat/Message/Message";
 
-import { INFINITE_QUERY_LIMIT } from "@/config/config";
+import { MESSAGES_INFINITE_QUERY_LIMIT } from "@/config/config";
+import { useIntersection } from "@mantine/hooks"
 
-import { TGetMessageValidator } from "@/lib/validators/getMessage";
+import { trpc } from "@/app/_trpc/client";
 
-import { TMessageFetched } from "@/types/message";
-
-interface Props {
-  fileId: string;
-}
-
-const Messages = ({ fileId }: Props) => {
+const Messages = ({ fileId }: { fileId: string }) => {
   const { isLoading: isThinking } = useContext(ChatContext);
-  const { data, fetchNextPage, isLoading } = useInfiniteQuery({
-    queryKey: ["get-messages"],
-    queryFn: async ({ pageParam = 0 }) => {
-      const payload: TGetMessageValidator = {
-        fileId,
-        limit: INFINITE_QUERY_LIMIT,
-      };
-      const { data, status } = await axios.get(`/api/get-messages`, {
-        params: payload,
-      });
-      if (status !== 200) throw new Error("Error getting messages");
-      return data as TMessageFetched;
-    },
-    getNextPageParam: (lastPage, pages) => lastPage?.nextCursor,
-    keepPreviousData: true,
-  });
 
-  useEffect(() => {
-    fetchNextPage();
-  }, [fetchNextPage]);
+  const lastMsgRef = useRef<HTMLDivElement>(null);
+
+  const { data, isLoading, fetchNextPage } = trpc.getPDFMessages.useInfiniteQuery({
+    pdfId: fileId,
+    messagesLimit: MESSAGES_INFINITE_QUERY_LIMIT,
+  }, {
+    getNextPageParam: (lastPage) => lastPage?.nextCursor,
+    keepPreviousData: true,
+  })
+
+  const { ref, entry } = useIntersection({
+    root: lastMsgRef.current,
+    threshold: 1
+  })
+
+  const messages = data?.pages.flatMap((page) => page.messages)
 
   const loadingMessage = {
     id: "loading-message",
     text: (
       <span className="flex h-full items-center justify-center">
-        Loading...
+        I'm thinking...
         <Loader2 className="ml-1.5 h-3 w-3 animate-spin text-primary" />
       </span>
     ),
     isUserMessage: false,
-    createdAt: new Date(),
+    createdAt: new Date().toISOString(),
   };
-
-  const messages = data?.pages.flatMap((page) => page.messages);
 
   const combinedMessages = [
     ...(isThinking ? [loadingMessage] : []),
     ...(messages ?? []),
   ];
+
+  useEffect(() => {
+    if (entry?.isIntersecting) {
+      fetchNextPage()
+    }
+  }, [fetchNextPage, entry])
+
 
   return (
     <div className="scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch flex max-h-[calc(100vh-7rem-7rem)] flex-1 flex-col-reverse gap-4 overflow-y-auto border-zinc-200 p-3">
@@ -72,6 +67,7 @@ const Messages = ({ fileId }: Props) => {
           if (index === combinedMessages.length - 1) {
             return (
               <Message
+                ref={ref}
                 key={message.id}
                 isNextMsgSamePerson={isNextMessageSamePerson}
                 message={message}

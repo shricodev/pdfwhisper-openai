@@ -6,7 +6,7 @@ import Dropzone from "react-dropzone";
 import { useRouter } from "next/navigation";
 import { FileText, Loader2, UploadCloud } from "lucide-react";
 
-import { PAID_USER_PDF_SIZE, FREE_USER_PDF_SIZE } from "@/config/config";
+import { PRO_USER_PDF_SIZE, FREE_USER_PDF_SIZE } from "@/config/config";
 
 import { toast } from "@/hooks/use-toast";
 
@@ -99,7 +99,7 @@ const FileUploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
                 <p className="text-xs text-zinc-500">
                   PDF (up to{" "}
                   <span className="font-semibold">
-                    {isSubscribed ? PAID_USER_PDF_SIZE : FREE_USER_PDF_SIZE}
+                    {isSubscribed ? PRO_USER_PDF_SIZE : FREE_USER_PDF_SIZE}
                     MB
                   </span>
                   )

@@ -11,6 +11,13 @@ datasource db {
   relationMode = "prisma"
 }
 
+enum UploadStatus {
+  FAILED
+  PROCESSING
+  SUCCESS
+  PENDING
+}
+
 model User {
   id    String @id @unique // matches kinde user id
   email String @unique
@@ -20,17 +27,12 @@ model User {
 
   stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
+
   // This is unique for a product.
   stripePriceId          String?   @map(name: "stripe_price_id")
   stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
 }
 
-enum UploadStatus {
-  FAILED
-  PROCESSING
-  SUCCESS
-  PENDING
-}
 
 model File {
   id   String @id @default(cuid())

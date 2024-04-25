@@ -5,9 +5,10 @@ import { createContext, useRef, useState } from "react";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 
-import { toast } from "@/hooks/use-toast";
-
+import { useToast } from "@/hooks/use-toast";
 import { TAddMessageValidator } from "@/lib/validators/addMessage";
+import { trpc } from "@/app/_trpc/client";
+import { MESSAGES_INFINITE_QUERY_LIMIT } from "@/config/config";
 
 interface Props {
   pdfId: string;
@@ -25,25 +26,33 @@ export type TChatContext = {
 
 export const ChatContext = createContext<TChatContext>({
   message: "",
-  addMessage: () => {},
-  handleUserInputChange: () => {},
+  addMessage: () => { },
+  handleUserInputChange: () => { },
   isLoading: false,
 });
 
 export const ChatContextProvider = ({ pdfId: fileId, children }: Props) => {
   const [message, setMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const backupMessage = useRef<string>("");
+  const userMsgBackup = useRef<string>("");
 
+  const { toast } = useToast()
+  const utils = trpc.useContext();
+
+  // We want to stream the response to the client.Currently trpc does not support
+  // response streaming.So, we will be using a regular NextJS API route.
   const { mutate: sendMessage } = useMutation({
     mutationKey: ["addMessage"],
     mutationFn: async ({ message }: { message: string }) => {
       const payload: TAddMessageValidator = {
         fileId,
         message,
-      };
-      const { data, status } = await axios.post("/api/message", payload);
-      if (status < 200 || status >= 400) {
+      }
+      const response = await fetch("/api/message", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) {
         toast({
           title: "There was a problem sending this message",
           description: "Please refresh this page and try again",
@@ -51,26 +60,134 @@ export const ChatContextProvider = ({ pdfId: fileId, children }: Props) => {
         });
         throw new Error("There was a problem sending this message");
       }
-      return data;
+      return response.body;
     },
-    onMutate: () => {
-      backupMessage.current = message;
+    onMutate: async ({ message }) => {
+      userMsgBackup.current = message;
       setMessage("");
+
+      // Cancel any other outgoing request.
+      await utils.getPDFMessages.cancel()
+
+      const prevMessages = utils.getPDFMessages.getInfiniteData()
+      // Add the msg to the UI for optimistic update.
+      utils.getPDFMessages.setInfiniteData(
+        { pdfId: fileId, messagesLimit: MESSAGES_INFINITE_QUERY_LIMIT },
+        (old) => {
+          if (!old) {
+            // Need to comply with the React Query's expected return type
+            return {
+              pages: [],
+              pageParams: [],
+            }
+          }
+
+          let newPages = [...old.pages]
+          let latestPage = newPages[0]!
+
+          latestPage.messages = [
+            {
+              createdAt: new Date().toISOString(),
+              id: crypto.randomUUID(),
+              text: message,
+              isUserMessage: true,
+            },
+            ...latestPage.messages
+          ]
+          newPages[0] = latestPage
+
+          return {
+            ...old,
+            pages: newPages
+          }
+        }
+      )
+
+      setIsLoading(true);
+      return {
+        prevMessages: prevMessages?.pages.flatMap((page) => page.messages) ?? []
+      }
     },
 
-    onError: () => setMessage(backupMessage.current),
+    onError: (_, __, context) => {
+      setMessage(userMsgBackup.current),
+        utils.getPDFMessages.setData(
+          { pdfId: fileId },
+          { messages: context?.prevMessages ?? [] }
+        )
+    },
 
     onSuccess: async (stream) => {
       setIsLoading(false);
       if (!stream) {
         return toast({
           title: "There was a problem sending this message",
-          description: "Please refresh this page and try again",
+          description: "Please refresh the page and try again",
           variant: "destructive",
         });
       }
+      const reader = stream.getReader();
+      const decoder = new TextDecoder()
+      let done = false;
+
+      // Total response from the AI
+      let aiAccumulatedResponse = ""
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        const chunkValue = decoder.decode(value);
+
+        aiAccumulatedResponse += chunkValue
+        utils.getPDFMessages.setInfiniteData(
+          { pdfId: fileId, messagesLimit: MESSAGES_INFINITE_QUERY_LIMIT },
+          (old) => {
+            if (!old) {
+              return {
+                pages: [],
+                pageParams: [],
+              }
+            }
+            let isAiResponseCreated = old.pages.some((page) => page.messages.some((msg) => msg.id === "ai-response"))
+            let updatedPages = old.pages.map((page) => {
+              if (page === old.pages[0]) {
+                let updatedMessages;
+                if (!isAiResponseCreated) {
+                  updatedMessages = [{
+                    createdAt: new Date().toISOString(),
+                    id: "ai-response",
+                    text: aiAccumulatedResponse,
+                    isUserMessage: false,
+                  },
+                  ...page.messages
+                  ]
+                } else {
+                  updatedMessages = page.messages.map((message) => {
+                    if (message.id === "ai-response") {
+                      return {
+                        ...message,
+                        text: aiAccumulatedResponse
+                      }
+                    }
+                    return message;
+                  })
+                }
+                return {
+                  ...page,
+                  messages: updatedMessages
+                }
+              }
+              return page
+            })
+            return { ...old, pages: updatedPages }
+          },
+        )
+      }
+
     },
-    onSettled: () => setIsLoading(false),
+    onSettled: async () => {
+      setIsLoading(false);
+      await utils.getPDFMessages.invalidate({ pdfId: fileId })
+    },
   });
 
   const addMessage = () => sendMessage({ message });

@@ -14,5 +14,9 @@ export const PRO_PDF_QUOTA = 30;
 export const FREE_PDF_PAGES = 5;
 export const PRO_PDF_PAGES = 20;
 
+// Number of messages to feed into the OpenAI model.
+export const FREE_PREV_MESSAGES = 4;
+export const PRO_PREV_MESSAGES = 10;
+
 // Messages to fetch from the database
 export const MESSAGES_INFINITE_QUERY_LIMIT = 10;

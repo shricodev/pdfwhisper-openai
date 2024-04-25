@@ -2,16 +2,17 @@ import { ZodError } from "zod";
 import { OpenAIError } from "openai";
 import { NextRequest, NextResponse } from "next/server";
 import { OpenAIStream, StreamingTextResponse } from "ai";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
-import { PineconeStore } from "langchain/vectorstores/pinecone";
+import { OpenAIEmbeddings } from "@langchain/openai";
+import { PineconeStore } from "@langchain/pinecone";
 
 import { db } from "@/db";
 
-import { openai } from "@/lib/openai";
+import { createOpenAIResponse } from "@/lib/openai";
 import { getPineconeClient } from "@/lib/pinecone";
 
 import { AddMessageValidator } from "@/lib/validators/addMessage";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { FREE_PREV_MESSAGES, PRO_PREV_MESSAGES } from "@/config/config";
 
 export async function POST(req: NextRequest) {
   try {
@@ -37,7 +38,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    if (!file) return new NextResponse("File not found", { status: 404 });
+    if (!file) return new NextResponse("PDF not found", { status: 404 });
 
     await db.message.create({
       data: {
@@ -52,14 +53,26 @@ export async function POST(req: NextRequest) {
     const embeddings = new OpenAIEmbeddings({
       openAIApiKey: process.env.OPENAI_API_KEY,
     });
+
+    // If we are here, we can be sure that pinecone has an index with the PINECONE_INDEX_NAME name.
+    // Because the pinecone client creation handles the index creation if not exist.
     const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX_NAME!);
 
-    const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
-      pineconeIndex,
-      // ! The namespace feature is not supported for the free tier of Pinecone.
-      // namespace: file.id,
+    const vectorStore = await PineconeStore.fromExistingIndex(embeddings, { pineconeIndex });
+
+    const dbUser = await db.user.findFirst({
+      where: {
+        id: user.id,
+      },
     });
 
+    const isSubscribed = dbUser && Boolean(
+      dbUser.stripePriceId &&
+      dbUser.stripeCurrentPeriodEnd &&
+      dbUser.stripeCurrentPeriodEnd.getTime() + 86_400_000 > Date.now(), // 86400000 = 1 day
+    );
+
+    // This is the entire logic of our application.
     const results = await vectorStore.similaritySearch(message, 4);
     const prevMessages = await db.message.findMany({
       where: {
@@ -68,7 +81,8 @@ export async function POST(req: NextRequest) {
       orderBy: {
         createdAt: "asc",
       },
-      take: 6,
+      // Feed the AI with the correct amount of previous messages based on the user's subscription status.
+      take: isSubscribed ? PRO_PREV_MESSAGES : FREE_PREV_MESSAGES,
     });
 
     const formattedPrevMessages = prevMessages.map((message) => ({
@@ -76,37 +90,11 @@ export async function POST(req: NextRequest) {
       content: message.text,
     }));
 
-    const openaiResponse = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      stream: true,
-      temperature: 0,
-      messages: [
-        {
-          role: "system",
-          content:
-            "Use the following pieces of context (or previous conversaton if needed) to answer the users question in markdown format.",
-        },
-        {
-          role: "user",
-          content: `Use the following pieces of context (or previous conversaton if needed) to answer the users question in markdown format. \nIf you don't know the answer, just say that you don't know, don't try to make up an answer.
-          
-    \n----------------\n
-    
-    PREVIOUS CONVERSATION:
-    ${formattedPrevMessages.map((message) => {
-      if (message.role === "user") return `User: ${message.content}\n`;
-      return `Assistant: ${message.content}\n`;
-    })}
-    
-    \n----------------\n
-    
-    CONTEXT:
-    ${results.map((r) => r.pageContent).join("\n\n")}
-    
-    USER INPUT: ${message}`,
-        },
-      ],
-    });
+    const openaiResponse = await createOpenAIResponse(
+      formattedPrevMessages,
+      results,
+      message,
+    );
 
     const stream = OpenAIStream(openaiResponse, {
       async onCompletion(completion) {

@@ -6,6 +6,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { PLANS } from "@/config/plans";
 import { getUserSubscriptionPlan, stripe } from "@/lib/stripe";
+import { MESSAGES_INFINITE_QUERY_LIMIT } from "@/config/config";
 
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
@@ -103,6 +104,56 @@ export const appRouter = router({
       return { status: pdf.uploadStatus };
     }),
 
+  getPDFMessages: privateProcedure.input(
+    z.object({
+      messagesLimit: z.number().min(1).max(50).nullish(),
+      cursor: z.string().nullish(),
+      pdfId: z.string()
+    })
+  ).query(async ({ ctx, input }) => {
+    const { userId } = ctx;
+    const { pdfId: fileId, cursor } = input;
+    const messagesLimit = input.messagesLimit ?? MESSAGES_INFINITE_QUERY_LIMIT;
+
+    const file = await db.file.findFirst({
+      where: {
+        id: fileId,
+        userId
+      }
+    })
+
+    if (!file) throw new TRPCError({ code: "NOT_FOUND" });
+
+    const messages = await db.message.findMany({
+      // We take +1 message to act as a point to fetch the next set of messages.
+      take: messagesLimit + 1,
+      where: {
+        fileId: file.id,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      cursor: cursor ? { id: cursor } : undefined,
+      select: {
+        id: true,
+        isUserMessage: true,
+        createdAt: true,
+        text: true,
+      },
+    });
+
+    let nextCursor: typeof cursor | undefined = undefined;
+    if (messages.length > messagesLimit) {
+      const nextItem = messages.pop();
+      nextCursor = nextItem?.id;
+    }
+
+    return {
+      messages,
+      nextCursor,
+    }
+  }),
+
   createStripeSession: privateProcedure.mutation(async ({ ctx }) => {
     const { userId } = ctx;
 
@@ -154,4 +205,4 @@ export const appRouter = router({
 
 // Export type router type signature,
 // NOT the router itself.
-export type AppRouter = typeof appRouter;
+export type TAppRouter = typeof appRouter;

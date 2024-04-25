@@ -1,26 +1,13 @@
-import { Prettify } from "./prettify";
+import { TAppRouter } from "@/trpc";
+import { inferRouterOutputs } from "@trpc/server";
 
-export type TMessageFetched = {
-  messages: {
-    text: string;
-    id: string;
-    isUserMessage: boolean;
-    createdAt: Date;
-  }[];
-  nextCursor?: string | undefined;
-};
+type TRouterOutput = inferRouterOutputs<TAppRouter>
+type TMessages = TRouterOutput["getPDFMessages"]["messages"]
 
-type TOriginalMessage = {
-  text: string;
-  id: string;
-  isUserMessage: boolean;
-  createdAt: Date;
-  nextCursor?: string | undefined;
-};
+type TOmitText = Omit<TMessages[number], 'text'>
 
 type TExtendedText = {
-  text: string | JSX.Element;
-};
+  text: string | JSX.Element
+}
 
-export type TOmitText = Omit<TOriginalMessage, "text">;
-export type TExtendedMessage = Prettify<TOmitText & TExtendedText>;
+export type TExtendedMessage = TOmitText & TExtendedText

@@ -74,14 +74,14 @@ const WrapChat = ({ pdfID, isSubscribed }: Props) => {
         <div className="mb-28 flex flex-1 flex-col items-center justify-center">
           <div className="flex flex-col items-center gap-2">
             <XCircle className="h-8 w-8 text-red-500" />
-            <h3 className="text-xl font-semibold">Too many pages in PDF</h3>
+            <h3 className="text-xl font-semibold">Something went wrong</h3>
+            <p>There was an error on our side or PDF hit page limit</p>
             <p className="text-sm text-zinc-500">
-              {/* TODO: Change this value to dynamic based on the user's plan. */}
               Your{" "}
               <span className="font-medium">
                 {isSubscribed ? "Pro" : "Free"}
               </span>{" "}
-              plan supports up to
+              plan supports up to{" "}
               {isSubscribed
                 ? PLANS.find((plan) => plan.slug === "pro")?.pagesPerPdf
                 : PLANS.find((plan) => plan.slug === "free")?.pagesPerPdf}{" "}

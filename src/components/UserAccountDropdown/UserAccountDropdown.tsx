@@ -75,9 +75,11 @@ const UserAccountDropdown = async ({ email, name, imageUrl }: Props) => {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem className="cursor-pointer">
-          <LogoutLink>Logout</LogoutLink>
-        </DropdownMenuItem>
+        <LogoutLink>
+          <DropdownMenuItem className="cursor-pointer">
+            Logout
+          </DropdownMenuItem>
+        </LogoutLink>
       </DropdownMenuContent>
     </DropdownMenu>
   );

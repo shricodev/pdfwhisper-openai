@@ -86,7 +86,7 @@ const onUploadComplete = async ({
       (!isSubscribed && freePagesExceeded) ||
       (isSubscribed && proPagesExceeded)
     ) {
-      return await db.file.update({
+      await db.file.update({
         where: {
           id: createdFile.id,
           userId: metadata.userId,
@@ -95,6 +95,7 @@ const onUploadComplete = async ({
           uploadStatus: "FAILED",
         },
       });
+      return;
     }
 
     const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX_NAME!);

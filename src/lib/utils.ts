@@ -16,8 +16,9 @@ export function absoluteUrl(path: string): string {
   path = path.startsWith("/") ? path : `/${path}`;
 
   // Get base URL
-  const baseUrl =
-    `https://${process.env.VERCEL_URL}` || `http://localhost:${process.env.PORT ?? 3000}`;
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : `http://localhost:${process.env.PORT ?? 3000}`;
 
   // Sanitize base URL
   const sanitizedBaseUrl = baseUrl.endsWith("/")

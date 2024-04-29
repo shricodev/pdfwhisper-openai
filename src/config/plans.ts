@@ -49,19 +49,23 @@ export const PRICINGITEMS = [
     quota: PLANS.find((plan) => plan.slug === "free")?.quota,
     features: [
       {
-        text: `${FREE_USER_PDF_SIZE}MB file size limit`,
+        text: `${FREE_USER_PDF_SIZE}MB file size limit.`,
         footnote: "The maximum file size of a single PDF file.",
       },
       {
-        text: "Mobile-friendly interface",
+        text: `${FREE_PDF_PAGES} pages per PDF.`,
+        footnote: "The maximum number of pages in a single PDF file.",
       },
       {
-        text: "Higher-quality responses",
-        footnote: "Better algorithmic responses for enhanced content quality",
+        text: "Mobile-friendly interface.",
+      },
+      {
+        text: "Higher-quality responses.",
+        footnote: "Better algorithmic responses for enhanced content quality.",
         negative: true,
       },
       {
-        text: "Priority support",
+        text: "Priority support.",
         negative: true,
       },
     ],
@@ -72,18 +76,22 @@ export const PRICINGITEMS = [
     quota: PLANS.find((plan) => plan.slug === "pro")?.quota,
     features: [
       {
-        text: `${PRO_USER_PDF_SIZE}MB file size limit`,
+        text: `${PRO_USER_PDF_SIZE}MB file size limit.`,
         footnote: "The maximum file size of a single PDF file.",
       },
       {
-        text: "Mobile-friendly interface",
+        text: `${PRO_PDF_PAGES} pages per PDF.`,
+        footnote: "The maximum number of pages in a single PDF file.",
       },
       {
-        text: "Higher-quality responses",
-        footnote: "Better algorithmic responses for enhanced content quality",
+        text: "Mobile-friendly interface.",
       },
       {
-        text: "Priority support",
+        text: "Higher-quality responses.",
+        footnote: "Better algorithmic responses for enhanced content quality.",
+      },
+      {
+        text: "Priority support.",
       },
     ],
   },

@@ -36,7 +36,7 @@ const Messages = ({ fileId }: { fileId: string }) => {
     id: "loading-message",
     text: (
       <span className="flex h-full items-center justify-center">
-        I'm thinking...
+        I&apos;m thinking...
         <Loader2 className="ml-1.5 h-3 w-3 animate-spin text-primary" />
       </span>
     ),

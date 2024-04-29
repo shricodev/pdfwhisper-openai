@@ -3,8 +3,6 @@ import { Github, Rocket } from "lucide-react";
 
 import UserAccountDropdown from "@/components/UserAccountDropdown/UserAccountDropdown";
 
-import WrapWidth from "@/helpers/WrapWidth";
-
 import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
 
 import { buttonVariants } from "@/components/ui/Button";
@@ -18,7 +16,7 @@ const Navbar = async () => {
   const isAuth = await isAuthenticated();
   return (
     <nav className="sticky inset-x-0 top-0 z-50 h-14 w-full border-b border-gray-200 bg-white/75 pr-4 backdrop-blur-lg transition-all">
-      <WrapWidth>
+      <div className="mx-auto w-full px-2.5 md:px-5">
         <div className="flex h-14 items-center justify-between border-b border-zinc-200">
           <Link
             href="/"
@@ -77,7 +75,7 @@ const Navbar = async () => {
             </>
           </div>
         </div>
-      </WrapWidth>
+      </div>
     </nav>
   );
 };

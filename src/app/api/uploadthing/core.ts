@@ -86,7 +86,7 @@ const onUploadComplete = async ({
       (!isSubscribed && freePagesExceeded) ||
       (isSubscribed && proPagesExceeded)
     ) {
-      await db.file.update({
+      return await db.file.update({
         where: {
           id: createdFile.id,
           userId: metadata.userId,

@@ -28,13 +28,11 @@ async function createIndex(client: Pinecone, indexName: string) {
       }
     });
     console.log(
-      `Waiting for ${parseInt(indexInitTimeout, 10) / 1000
+      `INFO: Waiting for ${parseInt(indexInitTimeout, 10) / 1000
       } seconds for index initialization to complete...`,
     );
     await delay(parseInt(indexInitTimeout, 10));
-    console.log("Index created !!");
   } catch (error) {
-    console.error("error ", error);
     throw new Error("Index creation failed");
   }
 }
@@ -58,12 +56,11 @@ async function initPineconeClient() {
     if (!indexExists(existingIndexes, indexName)) {
       createIndex(pinecone, indexName);
     } else {
-      console.log("The index with the name already exists.");
+      console.log("INFO: The index with the name already exists.");
     }
 
     return pinecone;
   } catch (error) {
-    console.error("error", error);
     throw new Error("Failed to initialize Pinecone Client");
   }
 }

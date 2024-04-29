@@ -46,7 +46,7 @@ export const StripeBillingForm = ({ subscriptionPlan }: Props) => {
           <CardHeader>
             <CardTitle>Subscription Plan</CardTitle>
             <CardDescription>
-              You are currently <strong>subscribed</strong> to our plan.
+              You are currently <strong>{subscriptionPlan.isSubscribed ? "subscribed" : "not subscribed"}</strong> to our plan.
             </CardDescription>
           </CardHeader>
 

@@ -19,7 +19,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Just one extra day to be on the safer side. The result are announced on 5th Nov.
   return (
     <html lang="en" className="light">
       <Providers>

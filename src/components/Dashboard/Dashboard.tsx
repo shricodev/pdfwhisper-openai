@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { format } from "date-fns";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import { Bomb, Ghost, Loader2, PlusCircle, Text } from "lucide-react";
+import { Bomb, Calendar, Ghost, Loader2, Text } from "lucide-react";
 
 import FileUploadButton from "@/components/FileUploadButton/FileUploadButton";
 
@@ -59,7 +59,7 @@ const Dashboard = ({ subscriptionPlan }: Props) => {
   });
 
   return (
-    <main className="mx-auto max-w-7xl md:p-10">
+    <main className="mx-auto max-w-screen-xl md:p-10">
       <div className="mt-8 flex flex-col items-start justify-between gap-4 border-b border-gray-200 px-5 pb-5 sm:flex-row sm:items-center sm:gap-0 md:px-0">
         <h1 className="mb-3 hidden text-4xl font-bold text-gray-900 md:block">
           Your Uploads 📂
@@ -98,7 +98,7 @@ const Dashboard = ({ subscriptionPlan }: Props) => {
 
                   <div className="mt-4 grid grid-cols-2 place-items-center gap-6 px-6 py-4 text-xs text-zinc-500">
                     <div className="flex items-center gap-2">
-                      <PlusCircle className="h-4 w-4" />
+                      <Calendar className="h-4 w-4" />
                       {format(new Date(pdf.createdAt), "MMM d yyyy")}
                     </div>
 

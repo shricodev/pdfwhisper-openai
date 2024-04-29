@@ -19,33 +19,6 @@ export default async function Home() {
   return (
     <>
       <WrapWidth className="mb-12 mt-28 flex flex-col items-center justify-center text-center sm:mt-40">
-        <div className="mx-3 mb-20 text-left">
-          <Alert className="shadow-md">
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Heads up!</AlertTitle>
-            <AlertDescription>
-              This is not a production ready application. It is built as a side
-              project of{" "}
-              <a
-                href="https://github.com/shricodev"
-                target="_blank"
-                rel="noopener"
-                className="text-purple-500"
-              >
-                @shricodev
-              </a>{" "}
-              for{" "}
-              <a
-                href="https://www.hanko.io/hackathon"
-                target="_blank"
-                rel="noopener"
-                className="text-orange-500"
-              >
-                Hanko Hackathon
-              </a>
-            </AlertDescription>
-          </Alert>
-        </div>
         <div className="mx-auto mb-4 flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-full border-2 border-gray-200 bg-white px-7 py-2 shadow-md backdrop-blur transition-all hover:border-2 hover:border-gray-200 hover:bg-white/80">
           <p className="text-sm font-semibold text-gray-700">
             Whisper with your PDF!

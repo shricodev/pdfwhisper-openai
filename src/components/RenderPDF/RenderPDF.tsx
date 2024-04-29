@@ -26,7 +26,7 @@ import { toast } from "@/hooks/use-toast";
 
 import { cn } from "@/lib/utils";
 
-import { Input } from "../ui/Input";
+import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import {
   DropdownMenu,

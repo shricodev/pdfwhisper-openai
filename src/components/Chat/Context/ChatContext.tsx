@@ -2,7 +2,6 @@
 
 import { createContext, useRef, useState } from "react";
 
-import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 
 import { useToast } from "@/hooks/use-toast";

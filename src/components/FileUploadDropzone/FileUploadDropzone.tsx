@@ -21,7 +21,7 @@ const FileUploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
   const [isUploading, setIsUploading] = useState<boolean>(false);
 
   const { startUpload } = useUploadThing(
-    isSubscribed ? "freePlanPDFUpload" : "proPlanPDFUpload",
+    isSubscribed ? "proPlanPDFUpload" : "freePlanPDFUpload",
   );
 
   // This is a simulation of progress. UploadThing does not provide a progress
@@ -45,7 +45,7 @@ const FileUploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
       router.push(`/dashboard/${file.id}`);
     },
     retry: true,
-    retryDelay: 500,
+    retryDelay: 1000,
   });
 
   return (

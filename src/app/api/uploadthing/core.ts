@@ -54,16 +54,15 @@ const onUploadComplete = async ({
       key: file.key,
       name: file.name,
       userId: metadata.userId,
-      // The file.url throws timeout error sometimes. So, we are directly using the S3 url.
-      url: `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`,
+      // NOTE: Sometimes, the file.url throws timeout. In that case, try constructing it manually.
+      // url: https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}
+      url: file.url,
       uploadStatus: "PROCESSING",
     },
   });
 
   try {
-    const pdfResponse = await fetch(
-      `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`,
-    );
+    const pdfResponse = await fetch(file.url);
     const pdfBlob = await pdfResponse.blob();
 
     // Langchain to parse PDF

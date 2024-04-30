@@ -5,6 +5,7 @@ import { db } from "@/db";
 import RenderPDF from "@/components/RenderPDF/RenderPDF";
 import WrapChat from "@/components/Chat/WrapChat/WrapChat";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { getUserSubscriptionPlan } from "@/lib/stripe";
 
 interface Props {
   params: {
@@ -12,7 +13,7 @@ interface Props {
   };
 }
 
-const page = async ({ params }: Props) => {
+const Page = async ({ params }: Props) => {
   const { pdfId } = params;
   const { isAuthenticated, getUser } = getKindeServerSession();
   const isAuth = await isAuthenticated();
@@ -32,6 +33,8 @@ const page = async ({ params }: Props) => {
     },
   });
 
+  const subscriptionPlan = await getUserSubscriptionPlan()
+
   if (!pdf) notFound();
 
   return (
@@ -44,11 +47,11 @@ const page = async ({ params }: Props) => {
         </div>
 
         <div className="flex-[0.75] shrink-0 border-t border-gray-200 lg:w-96 lg:border-l lg:border-t-0">
-          <WrapChat pdfID={pdf.id} />
+          <WrapChat pdfID={pdf.id} isSubscribed={subscriptionPlan.isSubscribed} />
         </div>
       </div>
     </div>
   );
 };
 
-export default page;
+export default Page;

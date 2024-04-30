@@ -34,7 +34,7 @@ const Page = () => {
       return <Error statusCode={500} />;
     },
     retry: true,
-    retryDelay: 500,
+    retryDelay: 1000,
   });
 
   return (

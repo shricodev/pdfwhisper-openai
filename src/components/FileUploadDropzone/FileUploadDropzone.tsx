@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 
-import axios from "axios";
-import Dropzone from "react-dropzone";
 import { File } from "@prisma/client";
-import { useRouter } from "next/navigation";
+import axios from "axios";
 import { FileText, Loader2, UploadCloud } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Dropzone from "react-dropzone";
 
 import {
+  DROPDOWN_ACCEPTED_FILE_TYPES,
   SUBSCRIBED_USER_FILE_SIZE,
   UNSUBSCRIBED_USER_FILE_SIZE,
 } from "@/config/config";
@@ -43,14 +44,27 @@ const FileUploadDropzone = () => {
     return interval;
   };
 
+  // Create an object of Accept type for Dropzone to understand.
+  const acceptFileTypes = () => {
+    const resultObject: { [key: string]: string[] } = {};
+    DROPDOWN_ACCEPTED_FILE_TYPES.forEach(
+      (fileType) => (resultObject[fileType] = []),
+    );
+    return resultObject;
+  };
+
   return (
     <Dropzone
       multiple={false}
+      accept={acceptFileTypes()}
       onDrop={async (acceptedFile) => {
         setIsUploading(true);
         const progress = startUploadProgress();
         const uploadResponse = await startUpload(acceptedFile);
         if (!uploadResponse) {
+          setIsUploading(false);
+          clearInterval(progress);
+          console.log("this is the error with the upload response");
           return toast({
             variant: "destructive",
             title: "Something went wrong",
@@ -61,6 +75,10 @@ const FileUploadDropzone = () => {
         const [fileUploadResponse] = uploadResponse;
         const key = fileUploadResponse?.key;
         if (!key) {
+          setIsUploading(false);
+          clearInterval(progress);
+          console.log("this is the error with the upload key");
+
           return toast({
             variant: "destructive",
             title: "Something went wrong",
@@ -124,6 +142,15 @@ const FileUploadDropzone = () => {
                   </div>
                 </div>
               ) : null}
+
+              {/* Adding this input tag is required in some browsers to show the file upload popup. */}
+              {/* Refer to this issue for Firefox: https://github.com/react-dropzone/react-dropzone/issues/1294 */}
+              <input
+                {...getInputProps()}
+                type="file"
+                id="dropzone-pdf"
+                className="hidden"
+              />
 
               {isUploading ? (
                 <div className="mx-auto mt-4 w-full max-w-xs">

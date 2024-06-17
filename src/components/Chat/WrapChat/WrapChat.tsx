@@ -2,10 +2,10 @@
 
 import { useEffect } from "react";
 
-import axios from "axios";
-import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { ChevronLeft, Loader2, XCircle } from "lucide-react";
+import Link from "next/link";
 
 import ChatInput from "../ChatInput/ChatInput";
 
@@ -39,6 +39,27 @@ const WrapChat = ({ fileId }: Props) => {
     refetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (process.env.NODE_ENV === "production") {
+    return (
+      <div className="relative flex min-h-full flex-col justify-between gap-2 divide-y divide-zinc-200 bg-zinc-50">
+        <div className="mb-28 flex flex-1 flex-col items-center justify-center">
+          <div className="flex flex-col items-center gap-2">
+            <XCircle className="h-8 w-8 text-primary" />
+            <h3 className="text-xl font-semibold">
+              No OpenAI and Pinecone API
+            </h3>
+            <p className="text-sm text-zinc-500">
+              You will not be able to use the chatbot unless you set it up
+              locally with the necessary APIs.
+            </p>
+          </div>
+        </div>
+
+        <ChatInput isDisabled />
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (

@@ -1,9 +1,9 @@
 import { useContext, useEffect } from "react";
 
-import axios from "axios";
-import Skeleton from "react-loading-skeleton";
-import { Loader2, MessageCircle } from "lucide-react";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { Loader2, MessageCircle } from "lucide-react";
+import Skeleton from "react-loading-skeleton";
 
 import { ChatContext } from "../Context/ChatContext";
 
@@ -101,8 +101,8 @@ const Messages = ({ fileId }: Props) => {
           <p className="text-sm text-zinc-500">
             Ask your first question to the PDFwhisper bot.
           </p>
-          <p className="max-w-2xl text-sm text-zinc-500">
-            <span className="font-semibold">🔴Message to Reviewers:</span>{" "}
+          <p className="mt-10 font-semibold">🔴 Message to Hanko Reviewers:</p>
+          <p className="max-w-2xl text-center text-sm text-zinc-500">
             Running low on time, couldn&apos;t add optimistic chat update.
             Please refresh the page to view the message.
           </p>

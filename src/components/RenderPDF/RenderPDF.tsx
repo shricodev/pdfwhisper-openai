@@ -105,7 +105,7 @@ const RenderPDF = ({ url }: Props) => {
               }}
             />
             <p className="space-x-1 text-sm text-zinc-700">
-              <span className="text-zinc-500">/</span>
+              <span className="text-zinc-500 dark:text-zinc-100">/</span>
               <span>
                 {numberPages ?? (
                   <Loader2 className="inline h-3 w-3 animate-spin" />

@@ -10,6 +10,7 @@ import ParticipationBanner from "@/components/ParticipationBanner/ParticipationB
 import "./globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import "simplebar-react/dist/simplebar.min.css";
+import { ThemeProviders } from "./theme-providers";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600"] });
 
@@ -31,20 +32,22 @@ export default function RootLayout({
   const hackathonEndDate = new Date("2023-11-06");
   const currentDate = new Date();
   return (
-    <html lang="en" className="light">
+    <html lang="en" className="light" suppressHydrationWarning>
       <Providers>
         <body
           className={cn(
-            "min-h-screen bg-gradient-to-r from-rose-50 to-teal-50 antialiased",
+            "min-h-screen bg-gradient-to-r from-rose-50 to-teal-50 antialiased dark:from-gray-900 dark:to-gray-800",
             poppins.className,
           )}
         >
-          <Toaster />
-          {currentDate.getTime() < hackathonEndDate.getTime() ? (
-            <ParticipationBanner />
-          ) : null}
-          <Navbar />
-          {children}
+          <ThemeProviders>
+            <Toaster />
+            {currentDate.getTime() < hackathonEndDate.getTime() ? (
+              <ParticipationBanner />
+            ) : null}
+            <Navbar />
+            {children}
+          </ThemeProviders>
         </body>
       </Providers>
     </html>

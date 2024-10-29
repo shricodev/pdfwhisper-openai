@@ -30,7 +30,7 @@ const Message = ({ message, isNextMsgSamePerson }: Props) => {
         )}
       >
         {message.isUserMessage ? (
-          <Icons.user className="h-3/4 w-3/4 fill-zinc-200 text-zinc-200" />
+          <Icons.user className="h-3/4 w-3/4 fill-zinc-200 text-zinc-200  dark:text-zinc-700" />
         ) : (
           <Icons.logo className="h-4 w-4 fill-zinc-300" />
         )}
@@ -51,7 +51,8 @@ const Message = ({ message, isNextMsgSamePerson }: Props) => {
           {typeof message.text === "string" ? (
             <ReactMarkdown
               className={cn("prose", {
-                "text-zinc-50 selection:text-zinc-800": message.isUserMessage,
+                "text-zinc-50 selection:text-zinc-800  dark:text-zinc-800 ":
+                  message.isUserMessage,
               })}
             >
               {message.text}

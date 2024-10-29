@@ -83,7 +83,7 @@ const UpgradeButton = ({ isSubscribed }: Props) => {
           <ArrowRight className="ml-1.5 h-5 w-5" />
         </>
       ) : (
-        <Loader2 className="h-6 w-6 animate-spin text-zinc-200" />
+        <Loader2 className="h-6 w-6 animate-spin text-zinc-200 dark:text-zinc-700" />
       )}
     </Button>
   );

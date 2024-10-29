@@ -98,11 +98,11 @@ const Messages = ({ fileId }: Props) => {
         <div className="flex flex-1 flex-col items-center justify-center gap-2">
           <MessageCircle className="h-10 w-10 text-primary" />
           <h3 className="text-xl font-semibold">You&apos;re all set!</h3>
-          <p className="text-sm text-zinc-500">
+          <p className="text-sm text-zinc-500  dark:text-zinc-100">
             Ask your first question to the PDFwhisper bot.
           </p>
           <p className="mt-10 font-semibold">🔴 Message to Hanko Reviewers:</p>
-          <p className="max-w-2xl text-center text-sm text-zinc-500">
+          <p className="max-w-2xl text-center text-sm text-zinc-500 dark:text-zinc-100">
             Running low on time, couldn&apos;t add optimistic chat update.
             Please refresh the page to view the message.
           </p>

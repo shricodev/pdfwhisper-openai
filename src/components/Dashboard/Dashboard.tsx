@@ -63,7 +63,7 @@ const Dashboard = () => {
   return (
     <main className="mx-auto max-w-7xl md:p-10">
       <div className="mt-8 flex flex-col items-start justify-between gap-4 border-b border-gray-200 px-5 pb-5 sm:flex-row sm:items-center sm:gap-0 md:px-0">
-        <h1 className="mb-3 hidden text-4xl font-bold text-gray-900 md:block">
+        <h1 className="mb-3 hidden text-4xl font-bold text-gray-900 dark:text-gray-100  md:block">
           Your Uploads 📂
         </h1>
         <FileUploadButton />
@@ -90,7 +90,7 @@ const Dashboard = () => {
                       <Text className="h-10 w-10" />
                       <div className="flex-1 truncate">
                         <div className="flex items-center space-x-3">
-                          <h3 className="truncate text-lg font-medium text-zinc-900">
+                          <h3 className="truncate text-lg font-medium text-zinc-900  dark:text-zinc-100">
                             {file.name}
                           </h3>
                         </div>
@@ -98,7 +98,7 @@ const Dashboard = () => {
                     </div>
                   </Link>
 
-                  <div className="mt-4 grid grid-cols-2 place-items-center gap-6 px-6 py-4 text-xs text-zinc-500">
+                  <div className="mt-4 grid grid-cols-2 place-items-center gap-6 px-6 py-4 text-xs text-zinc-500  dark:text-zinc-100">
                     <div className="flex items-center gap-2">
                       <PlusCircle className="h-4 w-4" />
                       {format(new Date(file.createdAt), "MMM d yyyy")}
@@ -158,7 +158,7 @@ const Dashboard = () => {
         </div>
       ) : (
         <div className="mt-20 flex flex-col items-center gap-2">
-          <Ghost className="h-10 w-10 text-zinc-800" />
+          <Ghost className="h-10 w-10 text-zinc-800  dark:text-zinc-100 " />
           <h3 className="text-xl font-semibold">
             You have not uploaded any files.
           </h3>

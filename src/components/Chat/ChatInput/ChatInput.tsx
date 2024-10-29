@@ -57,7 +57,7 @@ const ChatInput = ({ isDisabled }: Props) => {
         </div>
       </div>
       <div className="mx-auto flex max-w-fit items-center justify-center overflow-hidden rounded-full border-2 border-gray-200 bg-white px-5 shadow-md backdrop-blur transition-all hover:border-2 hover:border-gray-200 hover:bg-white/80">
-        <p className="text-sm font-semibold text-gray-700">
+        <p className="text-sm font-semibold text-gray-700  dark:text-gray-100">
           Made with ❤️ by{" "}
           <a
             href="https://github.com/shricodev"

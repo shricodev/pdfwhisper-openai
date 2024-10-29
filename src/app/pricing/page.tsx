@@ -91,14 +91,14 @@ const page = async () => {
             <h3 className="font-primary my-2 flex h-10 items-center border-l-4 border-orange-300 font-semibold">
               <span className="pl-2">Test Credentials</span>
             </h3>
-            <p className="text-zinc-700">
+            <p className="text-zinc-700 dark:text-zinc-100">
               <span className="font-semibold">Mobile Number:</span> 9800000000,
               9800000001, 9800000002
             </p>
-            <p className="text-zinc-700">
+            <p className="text-zinc-700 dark:text-zinc-100">
               <span className="font-semibold">MPIN:</span> 1111
             </p>
-            <p className="text-zinc-700">
+            <p className="text-zinc-700 dark:text-zinc-100">
               <span className="font-semibold">OTP:</span> 987654
             </p>
           </AlertDescription>
@@ -107,7 +107,7 @@ const page = async () => {
       <WrapWidth className="mx-auto mb-8 mt-24 max-w-5xl text-center">
         <div className="mx-auto mb-10 sm:max-w-lg">
           <h1 className="text-6xl font-bold sm:text-7xl">Pricing 💸</h1>
-          <p className="mt-5 text-gray-600 sm:text-lg">
+          <p className="mt-5 text-gray-600 dark:text-zinc-100 sm:text-lg">
             Whether you&apos;re just trying out our service or upgrade to a PRO
             Plan, I&apos;ve got you covered. 🔥🚀
           </p>
@@ -123,11 +123,15 @@ const page = async () => {
               return (
                 <div
                   key={quota}
-                  className={cn("relative rounded-2xl bg-white shadow-lg", {
-                    "border-2 border-purple-600 shadow-purple-200":
-                      plan === "Pro",
-                    "border border-gray-200": plan !== "Pro",
-                  })}
+                  className={cn(
+                    "relative rounded-2xl bg-white shadow-lg dark:bg-black",
+                    {
+                      "border-2 border-purple-600 shadow-purple-200":
+                        plan === "Pro",
+                      "border border-gray-200 dark:border-gray-700":
+                        plan !== "Pro",
+                    },
+                  )}
                 >
                   {plan === "Pro" && (
                     <div className="absolute -top-5 left-0 right-0 mx-auto w-32 rounded-full bg-gradient-to-r from-purple-600 to-cyan-600 px-3 py-2 text-sm font-medium text-white selection:text-gray-800">
@@ -138,19 +142,23 @@ const page = async () => {
                     <h3 className="font-display my-3 text-center text-3xl font-bold">
                       {plan}
                     </h3>
-                    <p className="text-gray-500">{tagline}</p>
+                    <p className="text-gray-500 dark:text-zinc-100">
+                      {tagline}
+                    </p>
                     <p className="font-display my-5 text-6xl font-semibold">
                       {/* TODO: switch back to dollars once the project is done reviewing. */}
                       Rs. {priceForSubscription}
                     </p>
-                    <p className="text-gray-500">per month</p>
+                    <p className="text-gray-500 dark:text-zinc-100">
+                      per month
+                    </p>
                   </div>
-                  <div className="flex h-20 items-center justify-center border-b border-t border-gray-200 bg-gray-50">
+                  <div className="flex h-20 items-center justify-center border-b border-t border-gray-200 bg-gray-50 dark:bg-gray-900">
                     <div className="flex items-center space-x-1">
                       <p>{quota.toLocaleString()} PDFs/mo included</p>
                       <Tooltip delayDuration={300}>
                         <TooltipTrigger className="ml-1.5 cursor-default">
-                          <BadgeHelp className="h-4 w-4 text-zinc-500" />
+                          <BadgeHelp className="h-4 w-4 text-zinc-500 dark:text-zinc-100" />
                         </TooltipTrigger>
                         <TooltipContent className="w-80 p-2">
                           The number of PDFs you can upload per month
@@ -163,7 +171,7 @@ const page = async () => {
                       <li key={text} className="flex space-x-5">
                         <div className="flex-shrink-0">
                           {negative ? (
-                            <Minus className="h-6 w-6 text-gray-300" />
+                            <Minus className="h-6 w-6 text-gray-300 dark:text-gray-600" />
                           ) : (
                             <Check className="h-6 w-6 text-primary" />
                           )}
@@ -171,15 +179,18 @@ const page = async () => {
                         {footnote ? (
                           <div className="flex items-center space-x-1">
                             <p
-                              className={cn("text-gray-400", {
-                                "text-gray-600": negative,
-                              })}
+                              className={cn(
+                                "text-gray-400 dark:text-gray-300",
+                                {
+                                  "text-gray-600": negative,
+                                },
+                              )}
                             >
                               {text}
                             </p>
                             <Tooltip delayDuration={300}>
                               <TooltipTrigger className="ml-1.5 cursor-default">
-                                <BadgeHelp className="h-4 w-4 text-zinc-500" />
+                                <BadgeHelp className="h-4 w-4 text-zinc-500 dark:text-zinc-100" />
                               </TooltipTrigger>
                               <TooltipContent className="w-80 p-2">
                                 {footnote}
@@ -188,8 +199,8 @@ const page = async () => {
                           </div>
                         ) : (
                           <p
-                            className={cn("text-gray-400", {
-                              "text-gray-600": negative,
+                            className={cn("text-gray-400 dark:text-gray-200", {
+                              "text-gray-600 dark:text-gray-100": negative,
                             })}
                           >
                             {text}
@@ -198,7 +209,7 @@ const page = async () => {
                       </li>
                     ))}
                   </ul>
-                  <div className="border-t border-gray-200" />
+                  <div className="border-t border-gray-200 dark:border-gray-500" />
                   <div className="p-5">
                     {plan === "Free" ? (
                       <Link

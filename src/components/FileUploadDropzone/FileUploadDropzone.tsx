@@ -113,15 +113,15 @@ const FileUploadDropzone = () => {
           <div className="flex h-full w-full items-center justify-center">
             <label
               htmlFor="dropzone-file"
-              className="flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg bg-gray-50 hover:bg-gray-100"
+              className="flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg bg-gray-50 hover:bg-gray-100 dark:bg-gray-950 "
             >
               <div className="flex flex-col items-center justify-center pb-6 pt-5">
-                <UploadCloud className="mb-2 h-8 w-8 text-zinc-500" />
-                <p className="mb-2 text-sm text-zinc-700">
+                <UploadCloud className="mb-2 h-8 w-8 text-zinc-500 dark:text-zinc-100" />
+                <p className="mb-2 text-sm text-zinc-700 dark:text-zinc-50">
                   <span className="font-semibold">Click to upload</span> or{" "}
                   <span className="font-light">drag and drop</span>
                 </p>
-                <p className="text-xs text-zinc-500">
+                <p className="text-xs text-zinc-500 dark:text-zinc-100">
                   PDF (up to{" "}
                   <span className="font-semibold">
                     {true
@@ -133,7 +133,7 @@ const FileUploadDropzone = () => {
                 </p>
               </div>
               {acceptedFiles && acceptedFiles[0] ? (
-                <div className="flex max-w-xs items-center divide-x divide-zinc-200 overflow-hidden rounded-md bg-white outline outline-[1px] outline-zinc-200">
+                <div className="flex max-w-xs items-center divide-x divide-zinc-200 overflow-hidden rounded-md bg-white outline outline-[1px] outline-zinc-200 dark:bg-black dark:outline-zinc-600">
                   <div className="grid h-full place-items-center px-3 py-2">
                     <FileText className="h-4 w-4 text-blue-500" />
                   </div>
@@ -156,17 +156,17 @@ const FileUploadDropzone = () => {
                 <div className="mx-auto mt-4 w-full max-w-xs">
                   <Progress
                     value={uploadProgress}
-                    className="h-1 w-full rounded-xl bg-zinc-200"
+                    className="h-1 w-full rounded-xl bg-zinc-200 dark:bg-zinc-500"
                     progressColor={uploadProgress === 100 ? "bg-green-500" : ""}
                   />
                   {uploadProgress >= 50 && uploadProgress < 100 ? (
-                    <div className="flex items-center justify-center gap-1 pt-2 text-center text-sm text-zinc-700">
+                    <div className="flex items-center justify-center gap-1 pt-2 text-center text-sm text-zinc-700 dark:text-zinc-100">
                       <Loader2 className="h-3 w-3 animate-spin text-primary" />
                       Almost There...✨
                     </div>
                   ) : null}
                   {uploadProgress === 100 ? (
-                    <div className="flex items-center justify-center gap-1 pt-2 text-center text-sm text-zinc-700">
+                    <div className="flex items-center justify-center gap-1 pt-2 text-center text-sm text-zinc-700 dark:text-zinc-100">
                       <Loader2 className="h-3 w-3 animate-spin text-primary" />
                       Redirecting...🚀
                     </div>

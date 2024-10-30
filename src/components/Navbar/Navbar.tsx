@@ -59,7 +59,7 @@ const Navbar = async () => {
                     size: "sm",
                   })}
                 >
-                  <span className="text-gray-900 dark:text-gray-100">
+                  <span className="dark:text-gray-100">
                     Login
                   </span>
                   <LogInIcon className="ml-px h-5 w-5 text-gray-900 dark:text-gray-100" />
